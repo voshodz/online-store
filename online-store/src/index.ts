@@ -1,6 +1,19 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 import '../src/styles/index.scss';
+import { StateManager } from './components/app/StateManager';
 
-//import img from './assets/img/anime.png'; //не работает пока в ts файле, надо думать
-//в sass работает вставка картинок
+const img = require('./assets//img/girl.png');
+//import myImportedImg from './assets/img/anime.png';
+//console.log(myImportedImg); //ошибка выходит
 
-console.log('hello world!');
+const body = document.querySelector('body');
+if (body) {
+  const myImg = document.createElement('img');
+  myImg.src = img;
+  body.appendChild(myImg);
+}
+console.log(img);
+
+const STATE_MANAGER = new StateManager();
+STATE_MANAGER.printFilterState();
