@@ -4,9 +4,9 @@ import '../src/styles/index.scss';
 import { StateManager } from './components/app/StateManager';
 import { BrandFilter } from './components/filter/BrandFilter';
 
-const img = require('./assets//img/girl.png');
-//import myImportedImg from './assets/img/anime.png';
-//console.log(myImportedImg); //ошибка выходит
+// const img = require('./assets//img/girl.png');
+import img from './assets/img/anime.png';
+console.log(img); //ошибка выходит
 
 const body = document.querySelector('body');
 if (body) {
