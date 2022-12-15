@@ -9,7 +9,7 @@ import { sourceData } from './domain/source';
 
 export const STATE_MANAGER = new StateManager();
 const brandHandler = new BrandFilter();
-renderProducts(sourceData);
+//renderProducts(sourceData);
 
 /*
 эксперименты с URL, можешь глянуть, если непонятно спроси
