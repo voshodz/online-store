@@ -11,9 +11,7 @@ import { sourceData } from './domain/source';
 
 export const STATE_MANAGER = new StateManager();
 const brandHandler = new BrandFilter();
-const priceHandler = new PriceFilter();
-const stockHandler = new StockFilter();
-renderProducts(sourceData);
+
 
 /*
 эксперименты с URL, можешь глянуть, если непонятно спроси

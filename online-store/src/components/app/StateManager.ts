@@ -1,6 +1,7 @@
 import { dispatchType, FilterState, SortType } from '../../domain/IState';
-import { sourceData } from '../../domain/source';
+import { BrandType } from '../../domain/model';
 import { filterAllData } from '../util/filterLogic/filterData';
+import { parseBrand, updateUrlFromState } from '../util/parseLogic/parseUrl';
 import { renderProducts } from '../views/render';
 
 export class StateManager {
@@ -14,6 +15,32 @@ export class StateManager {
       search: '',
       big: false,
     };
+    this.parseNewWindowUrl();
+  }
+  private parseNewWindowUrl() {
+    const baseUrl = window.location.origin;
+    let queryString = window.location.href.slice(baseUrl.length);
+    if (queryString === '/') {
+      return;
+    }
+    queryString = queryString.replace('/#', ''); //удаляем решетку
+    if (queryString[0] === '?') {
+      queryString = queryString.replace('?', '');
+    }
+    console.log(queryString);
+    let queryBrands: string[] = [];
+    const queryParametres = queryString.split('&');
+    queryParametres.forEach((st) => {
+      if (st[0] == 'b') {
+        queryBrands = parseBrand(st);
+      }
+    });
+    const brands: BrandType[] = [];
+    queryBrands.forEach((brandString) => {
+      const brandValue = (brandString[0].toUpperCase() + brandString.slice(1, brandString.length)) as BrandType;
+      brands.push(brandValue);
+    });
+    this.setState({ brand: brands });
   }
 
   private setState(newState: dispatchType) {
@@ -23,6 +50,8 @@ export class StateManager {
   private stateChangeddhandler() {
     const filteredData = filterAllData(this.state);
     renderProducts(filteredData);
+    updateUrlFromState(this.state);
+    //this.printFilterState();
   }
   public dispatchState(dispatchedState: dispatchType) {
     this.setState(dispatchedState);
