@@ -1,0 +1,11 @@
+.product-card {
+  background-color: #fff;
+}
+
+.card__img {
+  max-width: 200px;
+
+  & img {
+    width: 100%;
+  }
+}
