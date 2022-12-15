@@ -13,21 +13,16 @@ export class BrandFilter implements IFilter {
     this.loadListeners();
   }
   private loadListeners() {
-    //TODO need refactor, need one loop for checkboxes
     if (this.appleBtn && this.samsungBtn) {
-      this.appleBtn.addEventListener('change', (e) => {
-        const checkInput = e.target as HTMLInputElement;
-        console.log(checkInput.value);
-        console.log(checkInput.checked);
-        this.updateBrandsArray(checkInput.checked, checkInput.value as BrandType); //надеюсь не будет ошибок при таком as
-      });
-      this.samsungBtn.addEventListener('change', (e) => {
-        const checkInput = e.target as HTMLInputElement;
-        console.log(checkInput.value);
-        console.log(checkInput.checked);
-        this.updateBrandsArray(checkInput.checked, checkInput.value as BrandType);
-      });
+      this.appleBtn.addEventListener('change', this.checkboxListener);
+      this.samsungBtn.addEventListener('change', this.checkboxListener);
     }
+  }
+  private checkboxListener(e: Event): void {
+    const checkInput = e.target as HTMLInputElement;
+    console.log(checkInput.value);
+    console.log(checkInput.checked);
+    this.updateBrandsArray(checkInput.checked, checkInput.value as BrandType);
   }
   private updateBrandsArray(checked: boolean, value: BrandType) {
     if (checked) {

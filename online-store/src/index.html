@@ -12,12 +12,27 @@
         <label for="Apple">Apple</label>
         <input type="checkbox" value="Apple" name="apple" class="apple"/>
         <label for="Samsung">Samsung</label>
-        <input type="checkbox" value="Samsung" name="samsung" class="samsung"/>
+        <input type="checkbox" value="Samsung" name="samsung" class="samsung"/><br>
+        <input type="range" value="0" min="0" max="1749" id="min-price">
+        <input type="range" value="1749" min="0" max="1749" id="max-price"><br>
+        <input type="range" value="2" min="2" max="150" id="min-stock">
+        <input type="range" value="150" min="2" max="150" id="max-stock">
       </div>
       <button class="btn">click me</button>
       <div class="products-items">
-
+        
       </div>
+
+
+      <template id="card-template">
+        <div class="product-card">
+          <div class="card__img">
+            <img src="" alt="">
+          </div>
+        </div>
+        <div class="card__content">
+        </div>
+      </template>
     </body>
 </html>
 
