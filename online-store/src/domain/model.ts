@@ -9,10 +9,32 @@ export interface Product {
   rating: number;
   stock: number;
   brand: BrandType; //надо дополнить BrandType
-  category: string; //надо типизировать как BrandType, чтобы не было багов потом
+  category: CategoryType; //надо типизировать как BrandType, чтобы не было багов потом
   thumbnail: string;
   images: Array<string>;
 }
+
+export type CategoryType =
+  | 'smartphones'
+  | 'laptops'
+  | 'fragrances'
+  | 'skincare'
+  | 'groceries'
+  | 'home-decoration'
+  | 'furniture'
+  | 'tops'
+  | 'womens-dresses'
+  | 'womens-shoes'
+  | 'mens-shirts'
+  | 'mens-shoes'
+  | 'mens-watches'
+  | 'womens-watches'
+  | 'womens-bags'
+  | 'womens-jewellery'
+  | 'sunglasses'
+  | 'automotive'
+  | 'motorcycle'
+  | 'lighting';
 
 export type BrandType =
   | 'OPPO'
