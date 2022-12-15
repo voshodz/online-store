@@ -11,8 +11,8 @@ import { sourceData } from './domain/source';
 
 export const STATE_MANAGER = new StateManager();
 const brandHandler = new BrandFilter();
-
-
+const priceFilter = new PriceFilter();
+const stockFilter = new StockFilter();
 /*
 эксперименты с URL, можешь глянуть, если непонятно спроси
 const btn = document.querySelector('.btn') as HTMLButtonElement;

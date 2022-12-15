@@ -1,5 +1,6 @@
 import { dispatchType, FilterState, SortType } from '../../domain/IState';
 import { BrandType } from '../../domain/model';
+import { sourceData } from '../../domain/source';
 import { filterAllData } from '../util/filterLogic/filterData';
 import { parseBrand, updateUrlFromState } from '../util/parseLogic/parseUrl';
 import { renderProducts } from '../views/render';
@@ -10,20 +11,24 @@ export class StateManager {
     this.state = {
       filteredArray: [],
       brand: [],
-      price: [1, 100],
+      price: [1, 2000],
+      stock: [1, 150],
       sort: SortType.default,
       search: '',
       big: false,
     };
+    renderProducts(sourceData); // basic render
     this.parseNewWindowUrl();
   }
   private parseNewWindowUrl() {
+    console.log(window.location.href);
+    //return;
     const baseUrl = window.location.origin;
     let queryString = window.location.href.slice(baseUrl.length);
     if (queryString === '/') {
       return;
     }
-    queryString = queryString.replace('/#', ''); //удаляем решетку
+    queryString = queryString.replace('/', ''); //удаляем черточку
     if (queryString[0] === '?') {
       queryString = queryString.replace('?', '');
     }
@@ -41,6 +46,7 @@ export class StateManager {
       brands.push(brandValue);
     });
     this.setState({ brand: brands });
+    //this.printFilterState();
   }
 
   private setState(newState: dispatchType) {

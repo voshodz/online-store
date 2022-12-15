@@ -8,7 +8,11 @@ export const parseBrand = (queryByBrand: string): string[] => {
 };
 
 export const updateUrlFromState = (state: FilterState): string => {
-  let brandQuery = '#?brand=';
+  if (state.brand?.length === 0) {
+    window.history.pushState({}, '', '/');
+    return '';
+  }
+  let brandQuery = '?brand=';
   state.brand?.forEach((brandValue) => {
     brandQuery += brandValue.toLowerCase() + '+';
   });

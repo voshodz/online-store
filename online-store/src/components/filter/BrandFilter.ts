@@ -14,12 +14,15 @@ export class BrandFilter implements IFilter {
   }
   private loadListeners() {
     if (this.appleBtn && this.samsungBtn) {
-      this.appleBtn.addEventListener('change', this.checkboxListener);
-      this.samsungBtn.addEventListener('change', this.checkboxListener);
+      this.appleBtn.addEventListener('change', this.checkboxListener.bind(this));
+      this.samsungBtn.addEventListener('change', this.checkboxListener.bind(this));
     }
   }
   private checkboxListener(e: Event): void {
+    console.log(e);
+    console.log(e.target);
     const checkInput = e.target as HTMLInputElement;
+    console.log(checkInput);
     console.log(checkInput.value);
     console.log(checkInput.checked);
     this.updateBrandsArray(checkInput.checked, checkInput.value as BrandType);
