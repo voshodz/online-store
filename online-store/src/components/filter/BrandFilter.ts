@@ -13,7 +13,6 @@ export class BrandFilter implements IFilter {
     this.loadListeners();
   }
   private loadListeners() {
-    //TODO need refactor, need one loop for checkboxes
     if (this.appleBtn && this.samsungBtn) {
       this.appleBtn.addEventListener('change', this.checkboxListener);
       this.samsungBtn.addEventListener('change', this.checkboxListener);

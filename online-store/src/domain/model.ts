@@ -9,12 +9,12 @@ export interface Product {
   rating: number;
   stock: number;
   brand: BrandType; //надо дополнить BrandType
-  category: CategoryType; //надо типизировать как BrandType, чтобы не было багов потом
+  category: CategoriesType; //надо типизировать как BrandType, чтобы не было багов потом
   thumbnail: string;
   images: Array<string>;
 }
 
-export type CategoryType =
+export type CategoriesType =
   | 'smartphones'
   | 'laptops'
   | 'fragrances'
