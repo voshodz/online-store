@@ -10,3 +10,11 @@ body {
 h1 {
   color: red;
 }
+
+.products-items {
+  display: grid;
+  justify-content: center;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 100%;
+}
