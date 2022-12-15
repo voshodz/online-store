@@ -1,10 +1,3 @@
-//интерфейсы
-export enum SortType {
-  Default = '',
-  AZ = 'AZ',
-  ZA = 'ZA',
-}
-
 //export type CategoryType = 'lighting' | 'motorcycle' | 'motorcycle';
 
 export interface Product {

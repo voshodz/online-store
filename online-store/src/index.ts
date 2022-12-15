@@ -4,24 +4,38 @@ import '../src/styles/index.scss';
 import { StateManager } from './components/app/StateManager';
 import { BrandFilter } from './components/filter/BrandFilter';
 
-// const img = require('./assets//img/girl.png');
-import img from './assets/img/anime.png';
-console.log(img); //ошибка выходит
-
-const body = document.querySelector('body');
-if (body) {
-  const myImg = document.createElement('img');
-  myImg.src = img;
-  body.appendChild(myImg);
-}
-//console.log(img);
+import { renderProducts } from './components/views/render';
+import { sourceData } from './domain/source';
 
 export const STATE_MANAGER = new StateManager();
 const brandHandler = new BrandFilter();
-STATE_MANAGER.printFilterState();
-STATE_MANAGER.dispatchState({ maxPrice: 25 });
-STATE_MANAGER.printFilterState();
-brandHandler.dispatchState();
-console.log('После добавления брэндов в состояние');
-STATE_MANAGER.printFilterState();
-//https://prnt.sc/AUHTMqBgR9DV глянь картинку
+renderProducts(sourceData);
+
+/*
+эксперименты с URL, можешь глянуть, если непонятно спроси
+const btn = document.querySelector('.btn') as HTMLButtonElement;
+btn.addEventListener('click', () => {
+  renderProducts(sourceData);
+});*/
+
+/*const categoriesArray: string[] = ['apple', 'xiaomi', 'samsung'];
+const getQueryParametres = () => {
+  let result = '?brand=';
+  categoriesArray.forEach((item) => {
+    result += `${item}+`;
+  });
+  return '#' + result.slice(0, -1);
+};
+console.log(window.location.href);
+let query = '#';
+
+const btn = document.querySelector('.btn') as HTMLButtonElement;
+btn.addEventListener('click', () => {
+  query += '+';
+  window.history.pushState({}, '', getQueryParametres());
+  console.log('changed:  ' + window.location.href);
+});
+
+window.onpopstate = () => {
+  console.log(window.location.href);
+};*/

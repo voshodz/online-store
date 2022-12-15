@@ -4,8 +4,8 @@ import { sourceData } from '../../../domain/source';
 
 export const filterAllData = (state: FilterState): Product[] => {
   let filterAllData = sourceData;
-  if (state.brandType) {
-    filterAllData = filterByBrand(state.brandType, filterAllData);
+  if (state.brand) {
+    filterAllData = filterByBrand(state.brand, filterAllData);
   }
   //будет много функции, которые "очищают" и фильтруют данные,
   //потом эти функции легко тестировать
@@ -13,6 +13,10 @@ export const filterAllData = (state: FilterState): Product[] => {
 };
 
 const filterByBrand = (brands: BrandType[], data: Product[]): Product[] => {
-  console.log(brands);
-  return data;
+  //console.log(brands);
+  if (brands.length === 0) {
+    return data;
+  }
+  const filteredData = data.filter((product) => brands.includes(product.brand));
+  return filteredData;
 };
