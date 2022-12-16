@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import '../src/styles/index.scss';
+import { RouteManager } from './components/app/RouteManager';
 import { StateManager } from './components/app/StateManager';
 import { BrandFilter } from './components/filter/BrandFilter';
 import { PriceFilter } from './components/filter/PriceFilter';
@@ -10,34 +11,14 @@ import { renderProducts } from './components/views/render';
 import { sourceData } from './domain/source';
 
 export const STATE_MANAGER = new StateManager();
+export const ROUTE_MANAGER = new RouteManager();
+
 const brandHandler = new BrandFilter();
 const priceFilter = new PriceFilter();
 const stockFilter = new StockFilter();
-/*
-эксперименты с URL, можешь глянуть, если непонятно спроси
-const btn = document.querySelector('.btn') as HTMLButtonElement;
-btn.addEventListener('click', () => {
-  renderProducts(sourceData);
-});*/
-
-/*const categoriesArray: string[] = ['apple', 'xiaomi', 'samsung'];
-const getQueryParametres = () => {
-  let result = '?brand=';
-  categoriesArray.forEach((item) => {
-    result += `${item}+`;
-  });
-  return '#' + result.slice(0, -1);
-};
-console.log(window.location.href);
-let query = '#';
-
-const btn = document.querySelector('.btn') as HTMLButtonElement;
-btn.addEventListener('click', () => {
-  query += '+';
-  window.history.pushState({}, '', getQueryParametres());
-  console.log('changed:  ' + window.location.href);
-});
 
 window.onpopstate = () => {
-  console.log(window.location.href);
-};*/
+  console.log('onpopstate' + window.location.href);
+  //STATE_MANAGER.loadStateFromUrl();
+  STATE_MANAGER.loadStateFromUrl();
+};

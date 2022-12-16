@@ -1,9 +1,11 @@
+import { ROUTE_MANAGER } from '../..';
 import { dispatchType, FilterState, SortType } from '../../domain/IState';
 import { BrandType } from '../../domain/model';
 import { sourceData } from '../../domain/source';
 import { filterAllData } from '../util/filterLogic/filterData';
 import { parseBrand, updateUrlFromState } from '../util/parseLogic/parseUrl';
 import { renderProducts } from '../views/render';
+import { RouteManager } from './RouteManager';
 
 export class StateManager {
   private state: FilterState;
@@ -18,7 +20,20 @@ export class StateManager {
       big: false,
     };
     renderProducts(sourceData); // basic render
-    this.parseNewWindowUrl();
+    //this.parseNewWindowUrl();
+    this.loadStateFromUrl();
+  }
+  public loadStateFromUrl() {
+    const resultFromUrl = RouteManager.getStateFromUrl();
+    if (typeof resultFromUrl === 'string') {
+      this.stateChangeddhandler();
+      return;
+    }
+    console.log(resultFromUrl);
+    if (typeof resultFromUrl === 'object') {
+      this.dispatchState(resultFromUrl);
+    }
+    //console.log(resultFromUrl);
   }
   private parseNewWindowUrl() {
     console.log(window.location.href);
@@ -57,6 +72,7 @@ export class StateManager {
     const filteredData = filterAllData(this.state);
     renderProducts(filteredData);
     updateUrlFromState(this.state);
+    //тут еще вызовем функция обновления фильтров от состояния
     //this.printFilterState();
   }
   public dispatchState(dispatchedState: dispatchType) {
