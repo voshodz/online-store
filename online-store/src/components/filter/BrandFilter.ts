@@ -19,12 +19,10 @@ export class BrandFilter implements IFilter {
     }
   }
   private checkboxListener(e: Event): void {
-    console.log(e);
-    console.log(e.target);
     const checkInput = e.target as HTMLInputElement;
-    console.log(checkInput);
+    /*console.log(checkInput);
     console.log(checkInput.value);
-    console.log(checkInput.checked);
+    console.log(checkInput.checked);*/
     this.updateBrandsArray(checkInput.checked, checkInput.value as BrandType);
   }
   private updateBrandsArray(checked: boolean, value: BrandType) {
@@ -34,12 +32,11 @@ export class BrandFilter implements IFilter {
       const index = this.brandsArray.indexOf(value as BrandType);
       this.brandsArray.splice(index, 1);
     }
-    console.log(this.brandsArray);
+    //console.log(this.brandsArray);
     this.dispatchState(this.brandsArray);
   }
   //may be private, not sure
   public dispatchState(brands: BrandType[]) {
-    console.log('отправили данные в State Maanger');
     STATE_MANAGER.dispatchState({
       brand: brands,
     });

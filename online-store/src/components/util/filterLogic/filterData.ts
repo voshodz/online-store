@@ -28,13 +28,11 @@ const filterByBrand = (brands: BrandType[], data: Product[]): Product[] => {
 };
 
 const filterByPrice = (price: [number, number], data: Product[]): Product[] => {
-  console.log(price);
   const filteredData = data.filter((product) => product.price >= price[0] && product.price <= price[1]);
   return filteredData;
 };
 
 const filterByStock = (stock: [number, number], data: Product[]): Product[] => {
-  console.log(stock);
   const filteredData = data.filter((product) => product.stock >= stock[0] && product.stock <= stock[1]);
   return filteredData;
 };
