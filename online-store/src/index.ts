@@ -7,9 +7,7 @@ import { BrandFilter } from './components/filter/BrandFilter';
 import { PriceFilter } from './components/filter/PriceFilter';
 import { StockFilter } from './components/filter/StockFilter';
 
-import { renderProducts } from './components/views/render';
-import { sourceData } from './domain/source';
-
+//window.history.pushState({}, '', '/');
 export const STATE_MANAGER = new StateManager();
 export const ROUTE_MANAGER = new RouteManager();
 
@@ -18,7 +16,5 @@ const priceFilter = new PriceFilter();
 const stockFilter = new StockFilter();
 
 window.onpopstate = () => {
-  console.log('onpopstate' + window.location.href);
-  //STATE_MANAGER.loadStateFromUrl();
-  STATE_MANAGER.loadStateFromUrl();
+  console.log('откручивание истории, не будем обрабатывать');
 };

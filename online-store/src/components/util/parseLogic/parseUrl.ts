@@ -7,17 +7,28 @@ export const parseBrand = (queryByBrand: string): string[] => {
   return splittedArray;
 };
 
-export const updateUrlFromState = (state: FilterState): string => {
-  if (state.brand?.length === 0) {
-    window.history.pushState({}, '', '/');
-    return '';
+export const updateUrlFromState = (state: FilterState) => {
+  if (state.brand?.length === 0 && state.price && state.price[0] <= 1) {
+    window.history.replaceState({}, '', `/`);
+    return;
   }
-  let brandQuery = '?brand=';
-  state.brand?.forEach((brandValue) => {
-    brandQuery += brandValue.toLowerCase() + '+';
-  });
-  brandQuery = brandQuery.slice(0, -1);
-  window.history.pushState({}, '', brandQuery);
-  console.log(brandQuery);
-  return '';
+  let urlQuery = '?';
+  if (state.brand?.length !== 0) {
+    urlQuery += 'brand=';
+    state.brand?.forEach((brandValue) => {
+      urlQuery += brandValue.toLowerCase() + '+';
+    });
+  }
+
+  urlQuery = urlQuery.slice(0, -1);
+
+  console.log(urlQuery);
+  if (state.price && state.price[0] > 1) {
+    urlQuery += '&' + 'price=';
+    urlQuery += state.price[0] + '+' + state.price[1];
+  }
+  if (urlQuery[1] === '&') {
+    urlQuery.replace('&', '');
+  }
+  window.history.replaceState({}, '', '?' + urlQuery.slice(1, urlQuery.length));
 };

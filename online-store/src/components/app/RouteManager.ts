@@ -1,12 +1,10 @@
-import { STATE_MANAGER } from '../..';
 import { FilterState } from '../../domain/IState';
 import { BrandType } from '../../domain/model';
 import { parseBrand } from '../util/parseLogic/parseUrl';
-import { StateManager } from './StateManager';
 
 export class RouteManager {
   static getStateFromUrl(): FilterState | string {
-    console.log(window.location.href);
+    console.log('=> ' + window.location.href);
     //return;
     const baseUrl = window.location.origin;
     let queryString = window.location.href.slice(baseUrl.length);
