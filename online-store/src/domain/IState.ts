@@ -8,6 +8,12 @@ export enum SortType {
   ratingDESC = 'ratingdesc',
 }
 
+export enum Page {
+  Main,
+  Basket,
+  Details,
+}
+
 export interface FilterState {
   filteredArray?: Product[];
   category?: string[]; //Todo надо типизировать
@@ -17,6 +23,7 @@ export interface FilterState {
   sort?: SortType; //воскликацетельный знак везде потому что фильтры будут отправлять только часть поля
   search?: string;
   big?: boolean;
+  page?: Page;
 }
 
 export type dispatchType = FilterState;

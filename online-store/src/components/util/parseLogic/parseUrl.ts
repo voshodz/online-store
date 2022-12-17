@@ -8,7 +8,7 @@ export const urlGetState = (): FilterState | string => {
   if (paramsString === '') {
     return 'root';
   }
-  if (paramsString.slice(0, 6) === 'basket') {
+  if (paramsString.includes('basket')) {
     return 'basket';
   }
   const params = new URLSearchParams(paramsString);
@@ -16,7 +16,7 @@ export const urlGetState = (): FilterState | string => {
   for (const p of params) {
     arr.push(p);
   }
-  console.log(arr);
+  //console.log(arr);
   arr.forEach((item) => {
     switch (item[0]) {
       case 'brand':
@@ -46,7 +46,7 @@ export const urlGetState = (): FilterState | string => {
         break;
     }
   });
-  console.log(state);
+  //console.log(state);
   return state;
 };
 

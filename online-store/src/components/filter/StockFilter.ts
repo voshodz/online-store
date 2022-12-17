@@ -1,11 +1,15 @@
 import { STATE_MANAGER } from '../..';
+import { FilterState } from '../../domain/IState';
 import { IFilter } from '../../domain/iFilter';
+import { urlGetState } from '../util/parseLogic/parseUrl';
+import { renderStockSection } from '../views/filter/stockView';
 
 export class StockFilter implements IFilter {
   minStockInput: HTMLInputElement | null;
   maxStockInput: HTMLInputElement | null;
   stock: [number, number];
   constructor() {
+    renderStockSection(urlGetState() as FilterState);
     this.minStockInput = document.querySelector('#min-stock');
     this.maxStockInput = document.querySelector('#max-stock');
     this.stock = [2, 150];

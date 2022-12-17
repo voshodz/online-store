@@ -1,7 +1,8 @@
-import { dispatchType, FilterState, SortType } from '../../domain/IState';
+import { dispatchType, FilterState, Page, SortType } from '../../domain/IState';
 import { sourceData } from '../../domain/source';
 import { filterAllData } from '../util/filterLogic/filterData';
 import { urlGetState, urlUpdateFromState } from '../util/parseLogic/parseUrl';
+import { renderBasket } from '../views/basket';
 import { renderProducts } from '../views/render';
 
 export class StateManager {
@@ -16,8 +17,9 @@ export class StateManager {
       sort: SortType.default,
       search: '',
       big: false,
+      page: Page.Main,
     };
-    renderProducts(sourceData); // basic render
+    //renderProducts(sourceData); // basic render
     this.loadStateFromUrl();
   }
   public loadStateFromUrl() {
@@ -31,6 +33,14 @@ export class StateManager {
         sort: SortType.default,
         search: '',
         big: false,
+        page: Page.Main,
+      });
+      return;
+    }
+    if (resultFromUrl === 'basket') {
+      console.log('basket');
+      this.setState({
+        page: Page.Basket,
       });
       return;
     }
@@ -45,7 +55,16 @@ export class StateManager {
   }
   private stateChangedEventHandler() {
     const filteredData = filterAllData(this.state);
-    renderProducts(filteredData);
+    switch (this.state.page) {
+      case Page.Main:
+        renderProducts(filteredData);
+        break;
+      case Page.Basket:
+        renderBasket();
+        break;
+      default:
+        break;
+    }
     //urlUpdateFromState(this.state);
     //тут еще вызовем функция обновления фильтров от состояния
   }
