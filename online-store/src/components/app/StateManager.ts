@@ -42,7 +42,6 @@ export class StateManager {
   private setState(newState: dispatchType) {
     this.state = { ...this.state, ...newState };
     this.stateChangedEventHandler();
-    //this.printFilterState();
   }
   private stateChangedEventHandler() {
     const filteredData = filterAllData(this.state);
