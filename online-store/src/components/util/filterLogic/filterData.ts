@@ -13,6 +13,9 @@ export const filterAllData = (state: FilterState): Product[] => {
   if (state.stock) {
     filterAllData = filterByStock(state.stock, filterAllData);
   }
+  if (state.search) {
+    filterAllData = filterBySearch(state.search, filterAllData);
+  }
   //будет много функции, которые "очищают" и фильтруют данные,
   //потом эти функции легко тестировать
   return filterAllData;
@@ -34,5 +37,10 @@ const filterByPrice = (price: [number, number], data: Product[]): Product[] => {
 
 const filterByStock = (stock: [number, number], data: Product[]): Product[] => {
   const filteredData = data.filter((product) => product.stock >= stock[0] && product.stock <= stock[1]);
+  return filteredData;
+};
+
+const filterBySearch = (search: string, data: Product[]): Product[] => {
+  const filteredData = data.filter((product) => product.title.toLowerCase().includes(search.toLowerCase()));
   return filteredData;
 };

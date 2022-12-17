@@ -41,10 +41,10 @@ export class StateManager {
 
   private setState(newState: dispatchType) {
     this.state = { ...this.state, ...newState };
-    this.stateChangeddhandler();
+    this.stateChangedhandler();
     this.printFilterState();
   }
-  private stateChangeddhandler() {
+  private stateChangedhandler() {
     const filteredData = filterAllData(this.state);
     renderProducts(filteredData);
     updateUrlFromState(this.state);
