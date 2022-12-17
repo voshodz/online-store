@@ -40,3 +40,52 @@ function draw(products: Product[]) {
     containerProducts.appendChild(fragment);
   }
 }
+
+export function renderBrandCheckboxes(checkboxes: HTMLInputElement[]): void {
+  const fragment: DocumentFragment = document.createDocumentFragment();
+  checkboxes.forEach((elem) => {
+    const brand: string = elem.value;
+    const brandLabel: HTMLLabelElement = document.createElement('label');
+    brandLabel.htmlFor = brand;
+    brandLabel.textContent = brand;
+    const brandItem: HTMLDivElement = document.createElement('div');
+    brandItem.append(elem, brandLabel);
+    brandItem.classList.add('brand__item');
+    fragment.appendChild(brandItem);
+  });
+  const brandContainer = document.querySelector('.brand');
+  if (brandContainer) {
+    brandContainer.appendChild(fragment);
+  }
+}
+
+export function renderCategoryCheckboxes(checkboxes: HTMLInputElement[]): void {
+  const fragment: DocumentFragment = document.createDocumentFragment();
+  checkboxes.forEach((elem) => {
+    const brand: string = elem.value;
+    const brandLabel: HTMLLabelElement = document.createElement('label');
+    brandLabel.htmlFor = brand;
+    brandLabel.textContent = brand;
+    const brandItem: HTMLDivElement = document.createElement('div');
+    brandItem.append(elem, brandLabel);
+    brandItem.classList.add('category__item');
+    fragment.appendChild(brandItem);
+  });
+  const brandContainer = document.querySelector('.category');
+  if (brandContainer) {
+    brandContainer.appendChild(fragment);
+  }
+}
+
+export function createCheckboxes(arr: ReadonlyArray<string>): HTMLInputElement[] {
+  const array: HTMLInputElement[] = [];
+  arr.forEach((category) => {
+    const checkbox: HTMLInputElement = document.createElement('input');
+    checkbox.id = category;
+    checkbox.value = category;
+    checkbox.type = 'checkbox';
+    array.push(checkbox);
+  });
+
+  return array;
+}

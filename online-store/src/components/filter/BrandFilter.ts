@@ -1,29 +1,36 @@
 import { STATE_MANAGER } from '../..';
 import { IFilter } from '../../domain/iFilter';
-import { BrandType } from '../../domain/model';
+import { BrandArray, BrandType } from '../../domain/model';
+import { createCheckboxes, renderBrandCheckboxes } from '../views/render';
 
 export class BrandFilter implements IFilter {
-  appleBtn: HTMLInputElement | null;
-  samsungBtn: HTMLInputElement | null;
+  checkboxArray: HTMLInputElement[];
   brandsArray: BrandType[];
   constructor() {
-    this.appleBtn = document.querySelector('.apple');
-    this.samsungBtn = document.querySelector('.samsung');
+    this.checkboxArray = createCheckboxes(BrandArray);
     this.brandsArray = [];
+    renderBrandCheckboxes(this.checkboxArray);
     this.loadListeners();
+    this.updateCheckboxFromState(STATE_MANAGER.getBrandState());
   }
   private loadListeners() {
-    if (this.appleBtn && this.samsungBtn) {
-      this.appleBtn.addEventListener('change', this.checkboxListener.bind(this));
-      this.samsungBtn.addEventListener('change', this.checkboxListener.bind(this));
-    }
+    this.checkboxArray.forEach((elem) => {
+      elem.addEventListener('change', this.checkboxListener.bind(this));
+    });
   }
   private checkboxListener(e: Event): void {
     const checkInput = e.target as HTMLInputElement;
-    /*console.log(checkInput);
-    console.log(checkInput.value);
-    console.log(checkInput.checked);*/
     this.updateBrandsArray(checkInput.checked, checkInput.value as BrandType);
+  }
+  private updateCheckboxFromState(brands?: BrandType[]): void {
+    brands?.forEach((brand) => {
+      const checkbox: HTMLInputElement = this.checkboxArray.filter(
+        (el) => el.value.toLowerCase() === brand.toLowerCase()
+      )[0];
+      if (checkbox) {
+        checkbox.checked = true;
+      }
+    });
   }
   private updateBrandsArray(checked: boolean, value: BrandType) {
     if (checked) {

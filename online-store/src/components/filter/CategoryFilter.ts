@@ -1,13 +1,37 @@
 import { STATE_MANAGER } from '../..';
 import { IFilter } from '../../domain/iFilter';
-import { CategoriesType } from '../../domain/model';
+import { CategoryArray, CategoriesType } from '../../domain/model';
+import { createCheckboxes, renderCategoryCheckboxes } from '../views/render';
 
 export class CategoryFilter implements IFilter {
+  checkboxArray: HTMLInputElement[];
   categoriesArray: CategoriesType[];
   constructor() {
+    this.checkboxArray = createCheckboxes(CategoryArray);
     this.categoriesArray = [];
+    renderCategoryCheckboxes(this.checkboxArray);
+    this.loadListeners();
+    this.updateCheckboxFromState(STATE_MANAGER.getCategoryState());
   }
-  // TODO loadListeners
+  private loadListeners() {
+    this.checkboxArray.forEach((elem) => {
+      elem.addEventListener('change', this.checkboxListener.bind(this));
+    });
+  }
+  private checkboxListener(e: Event): void {
+    const checkInput = e.target as HTMLInputElement;
+    this.updateCategoriesArray(checkInput.checked, checkInput.value as CategoriesType);
+  }
+  private updateCheckboxFromState(categories?: CategoriesType[]): void {
+    categories?.forEach((category) => {
+      const checkbox: HTMLInputElement = this.checkboxArray.filter(
+        (el) => el.value.toLowerCase() === category.toLowerCase()
+      )[0];
+      if (checkbox) {
+        checkbox.checked = true;
+      }
+    });
+  }
   private updateCategoriesArray(checked: boolean, value: CategoriesType) {
     if (checked) {
       this.categoriesArray.push(value as CategoriesType);

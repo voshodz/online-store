@@ -1,0 +1,10 @@
+.brand, .category {
+  height: 400px;
+  width: 300px;
+  overflow-y: auto;
+  display: inline-block;
+  margin: 0 10px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  padding: 10px;
+}

@@ -55,6 +55,12 @@ export class StateManager {
     //чистая функция котоаря принимает FilterState, и выдаёт данные в зависимости от массива
     //далее отфильтрованные отдаются Views, там уже дом манипуляции
   }
+  public getBrandState() {
+    return this.state.brand;
+  }
+  public getCategoryState() {
+    return this.state.brand;
+  }
   public getStoreState() {
     return this.state;
   }
