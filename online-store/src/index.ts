@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import '../src/styles/index.scss';
-import { RouteManager } from './components/app/RouteManager';
 import { StateManager } from './components/app/StateManager';
 import { BrandFilter } from './components/filter/BrandFilter';
+import { CategoryFilter } from './components/filter/CategoryFilter';
 import { PriceFilter } from './components/filter/PriceFilter';
 import { SearchFilter } from './components/filter/SearchFilter';
 import { StockFilter } from './components/filter/StockFilter';
+import { urlGetState } from './components/util/parseLogic/parseUrl';
 
 //window.history.pushState({}, '', '/');
 export const STATE_MANAGER = new StateManager();
-export const ROUTE_MANAGER = new RouteManager();
 
 const brandHandler = new BrandFilter();
+const categoryHandler = new CategoryFilter();
 const priceFilter = new PriceFilter();
 const stockFilter = new StockFilter();
 const searchFilter = new SearchFilter();
@@ -20,3 +21,4 @@ const searchFilter = new SearchFilter();
 window.onpopstate = () => {
   console.log('откручивание истории, не будем обрабатывать');
 };
+urlGetState();

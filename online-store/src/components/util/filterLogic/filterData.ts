@@ -1,11 +1,14 @@
 import { FilterState } from '../../../domain/IState';
-import { BrandType, Product } from '../../../domain/model';
+import { BrandType, CategoriesType, Product } from '../../../domain/model';
 import { sourceData } from '../../../domain/source';
 
 export const filterAllData = (state: FilterState): Product[] => {
   let filterAllData = sourceData;
   if (state.brand) {
     filterAllData = filterByBrand(state.brand, filterAllData);
+  }
+  if (state.category) {
+    filterAllData = filterByCategory(state.category, filterAllData);
   }
   if (state.price) {
     filterAllData = filterByPrice(state.price, filterAllData);
@@ -27,6 +30,15 @@ const filterByBrand = (brands: BrandType[], data: Product[]): Product[] => {
     return data;
   }
   const filteredData = data.filter((product) => brands.includes(product.brand));
+  return filteredData;
+};
+
+const filterByCategory = (categories: CategoriesType[], data: Product[]): Product[] => {
+  //console.log(brands);
+  if (categories.length === 0) {
+    return data;
+  }
+  const filteredData = data.filter((product) => categories.includes(product.category));
   return filteredData;
 };
 

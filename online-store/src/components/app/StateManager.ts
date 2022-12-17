@@ -1,9 +1,8 @@
 import { dispatchType, FilterState, SortType } from '../../domain/IState';
 import { sourceData } from '../../domain/source';
 import { filterAllData } from '../util/filterLogic/filterData';
-import { updateUrlFromState } from '../util/parseLogic/parseUrl';
+import { urlGetState, urlUpdateFromState } from '../util/parseLogic/parseUrl';
 import { renderProducts } from '../views/render';
-import { RouteManager } from './RouteManager';
 
 export class StateManager {
   private state: FilterState;
@@ -11,6 +10,7 @@ export class StateManager {
     this.state = {
       filteredArray: [],
       brand: [],
+      category: [],
       price: [1, 2000],
       stock: [1, 150],
       sort: SortType.default,
@@ -21,7 +21,7 @@ export class StateManager {
     this.loadStateFromUrl();
   }
   public loadStateFromUrl() {
-    const resultFromUrl = RouteManager.getStateFromUrl(); // static method, no need create object of class
+    const resultFromUrl = urlGetState(); // static method, no need create object of class
     if (resultFromUrl === 'root') {
       this.setState({
         filteredArray: [],
@@ -41,13 +41,13 @@ export class StateManager {
 
   private setState(newState: dispatchType) {
     this.state = { ...this.state, ...newState };
-    this.stateChangedhandler();
-    this.printFilterState();
+    this.stateChangedEventHandler();
+    //this.printFilterState();
   }
-  private stateChangedhandler() {
+  private stateChangedEventHandler() {
     const filteredData = filterAllData(this.state);
     renderProducts(filteredData);
-    updateUrlFromState(this.state);
+    //urlUpdateFromState(this.state);
     //тут еще вызовем функция обновления фильтров от состояния
   }
   public dispatchState(dispatchedState: dispatchType) {
@@ -55,6 +55,12 @@ export class StateManager {
     //так как вызвалось изменение состояние, надо вызвать функцию фильтрации, filterLogic папка
     //чистая функция котоаря принимает FilterState, и выдаёт данные в зависимости от массива
     //далее отфильтрованные отдаются Views, там уже дом манипуляции
+  }
+  public getBrandState() {
+    return this.state.brand;
+  }
+  public getCategoryState() {
+    return this.state.brand;
   }
   public getStoreState() {
     return this.state;
