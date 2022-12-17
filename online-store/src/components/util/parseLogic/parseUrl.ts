@@ -1,5 +1,5 @@
 import { FilterState, SortType } from '../../../domain/IState';
-import { BrandType, CategoriesType } from '../../../domain/model';
+import { BrandArray, BrandType, CategoriesType, CategoryArray } from '../../../domain/model';
 
 export const urlGetState = (): FilterState | string => {
   const state: FilterState = {};
@@ -16,7 +16,6 @@ export const urlGetState = (): FilterState | string => {
   for (const p of params) {
     arr.push(p);
   }
-  console.log(arr);
   arr.forEach((item) => {
     switch (item[0]) {
       case 'brand':
@@ -50,46 +49,50 @@ export const urlGetState = (): FilterState | string => {
   return state;
 };
 
-export const urlUpdateFromState = (state: FilterState) => {
-  if (state.brand?.length === 0 && state.price && state.price[0] <= 1) {
-    window.history.replaceState({}, '', `/`);
-    return;
-  }
-  let urlQuery = '?';
-  if (state.brand?.length !== 0) {
-    urlQuery += 'brand=';
-    state.brand?.forEach((brandValue) => {
-      urlQuery += brandValue.toLowerCase() + '+';
-    });
-  }
-
-  urlQuery = urlQuery.slice(0, -1);
-
-  console.log(urlQuery);
-  if (state.price && state.price[0] > 1) {
-    urlQuery += '&' + 'price=';
-    urlQuery += state.price[0] + '+' + state.price[1];
-  }
-  if (urlQuery[1] === '&') {
-    urlQuery.replace('&', '');
-  }
-  window.history.replaceState({}, '', '?' + urlQuery.slice(1, urlQuery.length));
+const urlParseBrand = (query: string): BrandType[] => {
+  //console.log('=> ' + query);
+  const brandsQuerry = query.split(' ');
+  const result: BrandType[] = [];
+  brandsQuerry.forEach((brand) => {
+    const index = getIndexOfBrand(brand);
+    if (index >= 0) {
+      result.push(BrandArray[index]); //TODO: если -1, следовательно неправильный параметр, надо как то 404 продумать
+    }
+  });
+  return result;
+};
+const getIndexOfBrand = (param: string): number => {
+  let index = -1;
+  BrandArray.forEach((brand, indexInArray) => {
+    if (brand.split(' ').join('').toLowerCase() === param) {
+      index = indexInArray;
+      return index;
+    }
+  });
+  return index;
 };
 
-const urlParseBrand = (query: string): BrandType[] => {
-  //TODO: parse categories correct
-  const brandsArray = query.split(' ');
-  const result: BrandType[] = [];
-  brandsArray.forEach((brand) => {
-    result.push((brand[0].toUpperCase() + brand.slice(1)) as BrandType);
+const urlParseCategory = (query: string): CategoriesType[] => {
+  const categoryQuerry = query.split(' ');
+  const result: CategoriesType[] = [];
+  categoryQuerry.forEach((category) => {
+    const index = getIndexOfCategory(category);
+    if (index >= 0) {
+      result.push(CategoryArray[index]); //TODO: если -1, следовательно неправильный параметр, надо как то 404 продумать
+    }
   });
   return result;
 };
 
-const urlParseCategory = (query: string): CategoriesType[] => {
-  //TODO: parse categories
-  const result: CategoriesType[] = [];
-  return result;
+const getIndexOfCategory = (param: string): number => {
+  let index = -1;
+  CategoryArray.forEach((category, indexInArray) => {
+    if (category.split(' ').join('').toLowerCase() === param) {
+      index = indexInArray;
+      return index;
+    }
+  });
+  return index;
 };
 
 const urlParsePrice = (query: string): [number, number] => {
@@ -127,4 +130,90 @@ const urlParseBigMode = (query: string): boolean => {
     return false;
   }
   return false;
+};
+
+export const urlUpdateFromState = (state: FilterState) => {
+  window.history.replaceState({}, '', `/`);
+  /*if (checkDefaultState(state)) {
+    window.history.replaceState({}, '', `/`);
+    return;
+  }*/
+  let urlQuery = '?';
+  urlQuery += getQueryParamBrand(state.brand);
+  urlQuery += getQueryParamCategory(state.category);
+  urlQuery += getQueryParamPrice(state.price);
+  urlQuery += getQueryParamStock(state.stock);
+  urlQuery += getQueryParamSort(state.sort);
+  urlQuery += getQueryParamSearch(state.search);
+  if (urlQuery[1] === '&') {
+    urlQuery = urlQuery.replace('&', '');
+  }
+  if (urlQuery === '?') {
+    window.history.replaceState({}, '', `/`);
+    return;
+  }
+  window.history.replaceState({}, '', '?' + urlQuery.slice(1, urlQuery.length));
+};
+
+const checkDefaultState = (state: FilterState): boolean => {
+  if (state.brand?.length === 0 && state.price && state.price[0] <= 10 && state.price[1] === 1749) {
+    return true;
+  }
+  return false;
+};
+
+const getQueryParamBrand = (brand: BrandType[] | undefined): string => {
+  let result = '';
+  if (brand?.length !== 0 && brand) {
+    result += '&brand=';
+    brand?.forEach((brandValue) => {
+      result += brandValue.split(' ').join('').toLowerCase() + '+';
+    });
+    result = result.slice(0, -1);
+  }
+  return result;
+};
+
+const getQueryParamCategory = (categories: CategoriesType[] | undefined): string => {
+  let result = '';
+  if (categories?.length !== 0 && categories) {
+    result += '&category=';
+    categories?.forEach((category) => {
+      result += category.split(' ').join('').toLowerCase() + '+';
+    });
+    result = result.slice(0, -1);
+  }
+  return result;
+};
+
+const getQueryParamPrice = (price: [number, number] | undefined): string => {
+  let result = '';
+  if (price && (price[0] > 10 || price[1] < 1749)) {
+    //это нужно чтобы хотя бы один ползунок был сдвигнут
+    result += '&price=';
+    result += price[0] + '+' + price[1];
+  }
+  return result;
+};
+
+const getQueryParamStock = (stock: [number, number] | undefined): string => {
+  let result = '';
+  if (stock && (stock[0] > 2 || stock[1] < 150)) {
+    //это нужно чтобы хотя бы один ползунок был сдвигнут
+    result += '&stock=';
+    result += stock[0] + '+' + stock[1];
+  }
+  return result;
+};
+
+const getQueryParamSort = (sort: SortType | undefined): string => {
+  return '';
+};
+
+const getQueryParamSearch = (search: string | undefined): string => {
+  let result = '';
+  if (search && search !== '') {
+    result += '&search=' + search;
+  }
+  return result;
 };
