@@ -285,7 +285,7 @@ export const sourceData: Product[] = [
     discountPercentage: 13.31,
     rating: 4.83,
     stock: 110,
-    brand: "L'Oreal Paris",
+    brand: 'LOreal Paris',
     category: 'skincare',
     thumbnail: 'https://i.dummyjson.com/data/products/16/thumbnail.jpg',
     images: [

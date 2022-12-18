@@ -11,7 +11,7 @@ export class StateManager {
       filteredArray: [],
       brand: [],
       category: [],
-      price: [1, 2000],
+      price: [10, 1749],
       stock: [1, 150],
       sort: SortType.default,
       search: '',
@@ -26,7 +26,7 @@ export class StateManager {
       this.setState({
         filteredArray: [],
         brand: [],
-        price: [1, 2000],
+        price: [10, 1749],
         stock: [1, 150],
         sort: SortType.default,
         search: '',
@@ -42,11 +42,12 @@ export class StateManager {
   private setState(newState: dispatchType) {
     this.state = { ...this.state, ...newState };
     this.stateChangedEventHandler();
+    //this.printFilterState();
   }
   private stateChangedEventHandler() {
     const filteredData = filterAllData(this.state);
     renderProducts(filteredData);
-    //urlUpdateFromState(this.state);
+    urlUpdateFromState(this.state);
     //тут еще вызовем функция обновления фильтров от состояния
   }
   public dispatchState(dispatchedState: dispatchType) {
