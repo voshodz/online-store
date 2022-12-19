@@ -1,4 +1,4 @@
-import { FilterState, SortType } from '../../../domain/IState';
+import { FilterState, PageEnum, SortType } from '../../../domain/IState';
 import { BrandArray, BrandType, CategoriesType, CategoryArray } from '../../../domain/model';
 
 export const urlGetState = (): FilterState | string => {
@@ -8,8 +8,11 @@ export const urlGetState = (): FilterState | string => {
   if (paramsString === '') {
     return 'root';
   }
-  if (paramsString.slice(0, 6) === 'basket') {
+  if (paramsString.includes('basket')) {
     return 'basket';
+  }
+  if (paramsString.includes('details')) {
+    return 'details';
   }
   const params = new URLSearchParams(paramsString);
   const arr: Array<string[]> = [];
@@ -133,11 +136,16 @@ const urlParseBigMode = (query: string): boolean => {
 };
 
 export const urlUpdateFromState = (state: FilterState) => {
-  window.history.replaceState({}, '', `/`);
-  /*if (checkDefaultState(state)) {
-    window.history.replaceState({}, '', `/`);
+  if (state.page && state.page === PageEnum.BasketPage) {
+    window.history.replaceState({}, '', `/?basket`);
     return;
-  }*/
+  }
+  if (state.page && state.page === PageEnum.ProductDetailPage) {
+    const query = window.location.href.slice(window.location.origin.length + 1);
+    window.history.replaceState({}, '', query);
+    return;
+  }
+
   let urlQuery = '?';
   urlQuery += getQueryParamBrand(state.brand);
   urlQuery += getQueryParamCategory(state.category);
