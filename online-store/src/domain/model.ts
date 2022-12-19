@@ -1,5 +1,3 @@
-//export type CategoryType = 'lighting' | 'motorcycle' | 'motorcycle';
-
 export interface Product {
   id: number;
   title: string;
@@ -8,8 +6,8 @@ export interface Product {
   discountPercentage: number;
   rating: number;
   stock: number;
-  brand: BrandType; //надо дополнить BrandType
-  category: CategoriesType; //надо типизировать как BrandType, чтобы не было багов потом
+  brand: BrandType;
+  category: CategoriesType;
   thumbnail: string;
   images: Array<string>;
 }

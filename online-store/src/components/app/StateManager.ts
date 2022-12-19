@@ -1,4 +1,5 @@
-import { dispatchType, FilterState, SortType } from '../../domain/IState';
+import { APP_PAGES } from '../..';
+import { dispatchType, FilterState, PageEnum, SortType } from '../../domain/IState';
 import { sourceData } from '../../domain/source';
 import { filterAllData } from '../util/filterLogic/filterData';
 import { urlGetState, urlUpdateFromState } from '../util/parseLogic/parseUrl';
@@ -16,6 +17,7 @@ export class StateManager {
       sort: SortType.default,
       search: '',
       big: false,
+      page: PageEnum.MainPage,
     };
     renderProducts(sourceData); // basic render
     this.loadStateFromUrl();
@@ -23,19 +25,29 @@ export class StateManager {
   public loadStateFromUrl() {
     const resultFromUrl = urlGetState(); // static method, no need create object of class
     if (resultFromUrl === 'root') {
+      APP_PAGES.renderMain();
+      renderProducts(sourceData);
+      return;
+    }
+    if (resultFromUrl === 'basket') {
       this.setState({
-        filteredArray: [],
-        brand: [],
-        price: [10, 1749],
-        stock: [1, 150],
-        sort: SortType.default,
-        search: '',
-        big: false,
+        page: PageEnum.BasketPage,
       });
+      APP_PAGES.renderBasket();
+      return;
+    }
+    if (resultFromUrl === 'details') {
+      this.setState({
+        page: PageEnum.ProductDetailPage,
+      });
+      const query = window.location.href.slice(window.location.origin.length + 1);
+      APP_PAGES.renderProductDetails(query);
       return;
     }
     if (typeof resultFromUrl === 'object') {
-      this.dispatchState(resultFromUrl);
+      this.state = { ...this.state, ...resultFromUrl };
+      const filteredData = filterAllData(this.state);
+      renderProducts(filteredData);
     }
   }
 
