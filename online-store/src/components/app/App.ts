@@ -34,7 +34,24 @@ export class App {
     if (!this.contentContainer) {
       return;
     }
-    this.contentContainer.innerHTML = '<h1>Тут будет корзина</h1>';
+    this.contentContainer.innerHTML = `<div class="basket__wrapper">
+                                          <div class="basket__products">
+                                            <div class="basket__title">
+                                              Products in Cart
+                                            </div>
+                                            <div class="basket__items">
+                                              <div class="basket__product">
+                                                1
+                                              </div>
+                                              <div class="basket__product">
+                                                2
+                                              </div>
+                                              <div class="basket__product">
+                                                3
+                                              </div>
+                                            </div>
+                                          </div>
+                                      </div>`;
   }
 
   public renderProductDetails(/**id of product */ id: string) {
