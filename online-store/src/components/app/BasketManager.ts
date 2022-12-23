@@ -78,10 +78,21 @@ export class BasketManager {
       const totalOfPRoduct = document.createElement('span');
       totalOfPRoduct.innerHTML = item.count.toString();
       const controlWrapper = document.createElement('div');
-      controlWrapper.className = 'basket__control';
-      controlWrapper.append(addBtn);
-      controlWrapper.append(totalOfPRoduct);
-      controlWrapper.append(subBtn);
+      controlWrapper.className = 'basket__control-wrapper';
+
+      const controlBtns = document.createElement('div');
+      controlBtns.className = 'basket__control';
+      controlBtns.append(addBtn);
+      controlBtns.append(totalOfPRoduct);
+      controlBtns.append(subBtn);
+      const controlTotalStock = document.createElement('span');
+      controlTotalStock.innerHTML = 'stock: ' + currentProduct.stock.toString();
+      const controlTotalPrice = document.createElement('span');
+      controlTotalPrice.innerHTML = `сумма: ${item.count * currentProduct.price}$`;
+      controlWrapper.append(controlTotalStock);
+      controlWrapper.append(controlBtns);
+      controlWrapper.append(controlTotalPrice);
+
       this.listenerToControlBtn(addBtn, item.id, Operation.Add, currentProduct.stock);
       this.listenerToControlBtn(subBtn, item.id, Operation.Sub, currentProduct.stock);
       basketProduct.append(basketImg);
