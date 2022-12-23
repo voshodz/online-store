@@ -36,19 +36,14 @@ export class App {
     }
     this.contentContainer.innerHTML = `<div class="basket__wrapper">
                                           <div class="basket__products">
-                                            <div class="basket__title">
+                                            <div class="basket__header">
                                               Products in Cart
                                             </div>
                                             <div class="basket__items">
                                               <div class="basket__product">
                                                 1
                                               </div>
-                                              <div class="basket__product">
-                                                2
-                                              </div>
-                                              <div class="basket__product">
-                                                3
-                                              </div>
+       
                                             </div>
                                           </div>
                                       </div>`;
