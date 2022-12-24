@@ -14,16 +14,21 @@ export class BasketManager {
   private basketData: BasketProducts[];
   private promoRS: HTMLElement | null;
   private promoTS: HTMLElement | null;
+  private buyBtn: HTMLElement | null;
   constructor() {
     this.basketData = [];
     this.promoRS = document.querySelector('.basket__promo-1');
     this.promoTS = document.querySelector('.basket__promo-2');
-    if (this.promoRS && this.promoTS) {
+    this.buyBtn = document.querySelector('.basket__buybtn');
+    if (this.promoRS && this.promoTS && this.buyBtn) {
       this.promoRS.addEventListener('change', () => {
-        this.updateAppliedPromoVIew();
+        this.updateAppliedPromoView();
       });
       this.promoTS.addEventListener('change', () => {
-        this.updateAppliedPromoVIew();
+        this.updateAppliedPromoView();
+      });
+      this.buyBtn.addEventListener('click', () => {
+        alert('КНОПКА МОДАЛЬНОГО ОКНА');
       });
     }
     this.initLocalstorage();
@@ -67,13 +72,13 @@ export class BasketManager {
           case 'rs':
             if (this.promoRS) {
               this.promoRS.classList.remove('hidden');
-              this.updateAppliedPromoVIew();
+              this.updateAppliedPromoView();
             }
             break;
           case 'ts':
             if (this.promoTS) {
               this.promoTS.classList.remove('hidden');
-              this.updateAppliedPromoVIew();
+              this.updateAppliedPromoView();
             }
             console.log('tss');
             break;
@@ -81,7 +86,6 @@ export class BasketManager {
             break;
         }
       }
-      //console.log(current.value);
     });
   }
   private getTotalProductsAndPrice(): [number, number] {
@@ -123,11 +127,60 @@ export class BasketManager {
     }
     return discount;
   }
-  private updateAppliedPromoVIew() {
+  private updateAppliedPromoView() {
     const promoPrice: HTMLElement | null = document.querySelector('.basket__promo-price');
+    const promoTotalPrice: HTMLElement | null = document.querySelector('.basket__total-price');
+    if (!promoTotalPrice) {
+      return;
+    }
     if (promoPrice) {
       const discountPrice = (this.getTotalProductsAndPrice()[1] * this.getDiscount()).toFixed(0);
       promoPrice.innerHTML = `Total : ${discountPrice} $`;
+    }
+
+    const promoApplied: HTMLElement | null = document.querySelector('.basket__promo-applied');
+    if (promoApplied) {
+      promoApplied.innerHTML = '';
+      promoTotalPrice.classList.remove('basket__old-price');
+      const rsCheckbox = document.querySelector('.basket__promo-rs') as HTMLInputElement;
+      const tsCheckbox = document.querySelector('.basket__promo-ts') as HTMLInputElement;
+      if (rsCheckbox && rsCheckbox.checked && promoPrice) {
+        promoPrice.classList.remove('hidden');
+        promoTotalPrice.classList.add('basket__old-price');
+        const rsDiv = document.createElement('div');
+        rsDiv.classList.add('basket__promo-wrapper');
+        rsDiv.innerHTML = 'RS discount 10%';
+        const dropBtn = document.createElement('div');
+        dropBtn.innerHTML = 'X';
+        dropBtn.classList.add('basket__promo-dropbtn');
+        dropBtn.addEventListener('click', () => {
+          rsCheckbox.checked = false;
+          promoTotalPrice.classList.remove('basket__old-price');
+          promoPrice.classList.add('hidden');
+          promoTotalPrice.classList.remove('basket__old-price');
+          this.updateAppliedPromoView();
+        });
+        rsDiv.append(dropBtn);
+        promoApplied.append(rsDiv);
+      }
+      if (tsCheckbox && tsCheckbox.checked && promoPrice) {
+        promoPrice.classList.remove('hidden');
+        promoTotalPrice.classList.add('basket__old-price');
+        const tsDiv = document.createElement('div');
+        tsDiv.classList.add('basket__promo-wrapper');
+        tsDiv.innerHTML = 'TS discount 10%';
+        const dropBtn = document.createElement('div');
+        dropBtn.innerHTML = 'X';
+        dropBtn.classList.add('basket__promo-dropbtn');
+        dropBtn.addEventListener('click', () => {
+          tsCheckbox.checked = false;
+          promoPrice.classList.add('hidden');
+          promoTotalPrice.classList.remove('basket__old-price');
+          this.updateAppliedPromoView();
+        });
+        tsDiv.append(dropBtn);
+        promoApplied.append(tsDiv);
+      }
     }
   }
   private renderBasketItems() {
@@ -195,7 +248,7 @@ export class BasketManager {
           if (this.basketData[index].count < totalStock) {
             this.basketData[index].count += 1;
           }
-          this.updateAppliedPromoVIew();
+          this.updateAppliedPromoView();
           break;
         case Operation.Sub:
           if (this.basketData[index].count > 1) {
@@ -203,7 +256,7 @@ export class BasketManager {
           } else {
             this.basketData.splice(index, index + 1);
           }
-          this.updateAppliedPromoVIew();
+          this.updateAppliedPromoView();
           break;
       }
       this.updateDataHandler();
@@ -211,5 +264,10 @@ export class BasketManager {
   }
   private getProductFromId(id: number): Product {
     return sourceData.filter((product) => product.id === id)[0];
+  }
+  public addToBasket(id: number) {
+    const product = sourceData.filter((product) => product.id === id)[0];
+    this.basketData.push({ id: product.id, count: 1, price: product.price });
+    this.updateLocalStorage();
   }
 }

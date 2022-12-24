@@ -129,8 +129,39 @@
     text-decoration: line-through;
   }
   &__promo-applied {
+    //height: 20px;
+    //background: wheat;
+    margin-bottom: 10px;
+  }
+  &__promo-wrapper {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    background: floralwhite;
+  }
+  &__promo-dropbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    width: 20px;
     height: 20px;
-    background: wheat;
+    background-color: orangered;
+    cursor: pointer;
+  }
+  &__buybtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid orangered;
+    background: rgb(142, 16, 16);
+    width: 200px;
+    height: 50px;
+    color: black;
+    font-size: 24px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    user-select: none;
   }
   &__testbtn {
     display: flex;
@@ -148,5 +179,8 @@
     user-select: none;
     cursor: pointer;
     
+  }
+  &__textline {
+    text-decoration: line-through;
   }
 }
