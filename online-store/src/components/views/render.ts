@@ -6,7 +6,6 @@ import { Product } from '../../domain/model';
 
 //после бизнес логики, и манипулировать домом для отрисовки
 export const renderProducts = (products: Product[]) => {
-  console.log('renderingProducts');
   draw(products);
   //какие то дом манипуляции
 };

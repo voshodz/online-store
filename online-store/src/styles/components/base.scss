@@ -1,4 +1,6 @@
-
+* {
+  box-sizing: border-box;
+}
 body {
   color: #fff;
   background: #615d5c;
@@ -17,4 +19,8 @@ h1 {
   gap: 10px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   width: 100%;
+}
+
+.hidden {
+  display: none;
 }

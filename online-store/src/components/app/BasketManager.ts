@@ -12,22 +12,30 @@ enum Operation {
 }
 export class BasketManager {
   private basketData: BasketProducts[];
+  private promoRS: HTMLElement | null;
+  private promoTS: HTMLElement | null;
   constructor() {
     this.basketData = [];
+    this.promoRS = document.querySelector('.basket__promo-1');
+    this.promoTS = document.querySelector('.basket__promo-2');
+    if (this.promoRS && this.promoTS) {
+      this.promoRS.addEventListener('change', () => {
+        this.updateAppliedPromoVIew();
+      });
+      this.promoTS.addEventListener('change', () => {
+        this.updateAppliedPromoVIew();
+      });
+    }
     this.initLocalstorage();
     const items = localStorage.getItem('rs-store');
     if (items) {
       this.basketData = JSON.parse(items);
     }
-    this.updateHeaderView();
-    this.renderBasketItems();
+    this.updateDataHandler();
+    this.listenerPromoInput();
   }
-  initLocalstorage() {
-    this.basketData.push({
-      id: 1,
-      count: 1,
-      price: 549,
-    });
+  private initLocalstorage() {
+    this.basketData.push({ id: 1, count: 1, price: 549 });
     this.basketData.push({ id: 2, count: 1, price: 899 });
     this.basketData.push({ id: 75, count: 1, price: 68 });
     localStorage.setItem('rs-store', JSON.stringify(this.basketData));
@@ -35,19 +43,91 @@ export class BasketManager {
   updateDataHandler() {
     this.updateLocalStorage();
     this.updateHeaderView();
+    this.updateSummaryView();
     this.renderBasketItems();
   }
-  updateLocalStorage() {
+  private updateLocalStorage() {
     localStorage.setItem('rs-store', JSON.stringify(this.basketData));
   }
-  updateHeaderView() {
+  private listenerPromoInput() {
+    const promoInput: HTMLInputElement | null = document.querySelector('.basket__promo-input');
+
+    if (!promoInput) {
+      return;
+    }
+    promoInput.addEventListener('input', (e) => {
+      if (this.promoRS && this.promoTS) {
+        this.promoRS.classList.add('hidden');
+        this.promoTS.classList.add('hidden');
+      }
+      const target = e.target as HTMLInputElement;
+      const inputValue = target.value.toLowerCase();
+      if (inputValue === 'rs' || inputValue === 'ts') {
+        switch (inputValue) {
+          case 'rs':
+            if (this.promoRS) {
+              this.promoRS.classList.remove('hidden');
+              this.updateAppliedPromoVIew();
+            }
+            break;
+          case 'ts':
+            if (this.promoTS) {
+              this.promoTS.classList.remove('hidden');
+              this.updateAppliedPromoVIew();
+            }
+            console.log('tss');
+            break;
+          default:
+            break;
+        }
+      }
+      //console.log(current.value);
+    });
+  }
+  private getTotalProductsAndPrice(): [number, number] {
+    let price = 0;
+    let totalProducts = 0;
+    this.basketData.forEach((item) => {
+      price += item.count * item.price;
+      totalProducts += item.count;
+    });
+    return [totalProducts, price];
+  }
+  private updateHeaderView() {
     const basketCount = document.querySelector('.basket__count') as HTMLDivElement;
-    let total = 0;
     if (basketCount) {
-      this.basketData.forEach((item) => {
-        total += item.count;
-      });
-      basketCount.innerHTML = total.toString();
+      const products = this.getTotalProductsAndPrice()[0].toString();
+      basketCount.innerHTML = products;
+    }
+  }
+  private updateSummaryView() {
+    const basketTotalPrice: HTMLElement | null = document.querySelector('.basket__total-price');
+    const basketTotalProducs: HTMLElement | null = document.querySelector('.basket__total-products');
+    if (basketTotalPrice && basketTotalProducs) {
+      const totalData = this.getTotalProductsAndPrice();
+      basketTotalProducs.innerHTML = `Products: ${totalData[0]}`;
+      basketTotalPrice.innerHTML = `Total price: ${totalData[1]}$`;
+    }
+  }
+  private getDiscount(): number {
+    const rsCheckbox = document.querySelector('.basket__promo-rs') as HTMLInputElement;
+    const tsCheckbox = document.querySelector('.basket__promo-ts') as HTMLInputElement;
+    let discount = 1;
+    if (rsCheckbox && tsCheckbox) {
+      if (rsCheckbox.checked) {
+        discount -= 0.1;
+      }
+      if (tsCheckbox.checked) {
+        discount -= 0.1;
+      }
+    }
+    return discount;
+  }
+  private updateAppliedPromoVIew() {
+    const promoPrice: HTMLElement | null = document.querySelector('.basket__promo-price');
+    if (promoPrice) {
+      const discountPrice = (this.getTotalProductsAndPrice()[1] * this.getDiscount()).toFixed(0);
+      promoPrice.innerHTML = `Total : ${discountPrice} $`;
     }
   }
   private renderBasketItems() {
@@ -115,6 +195,7 @@ export class BasketManager {
           if (this.basketData[index].count < totalStock) {
             this.basketData[index].count += 1;
           }
+          this.updateAppliedPromoVIew();
           break;
         case Operation.Sub:
           if (this.basketData[index].count > 1) {
@@ -122,8 +203,7 @@ export class BasketManager {
           } else {
             this.basketData.splice(index, index + 1);
           }
-          break;
-        default:
+          this.updateAppliedPromoVIew();
           break;
       }
       this.updateDataHandler();
