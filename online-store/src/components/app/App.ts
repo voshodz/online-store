@@ -21,12 +21,12 @@ export class App {
                                       <div class="products-items"></div>
 
                                       <template id="card-template">
-                                        <div class="product-card">
+                                        <a class="product-card">
                                           <div class="card__img">
                                             <img src="" alt="" />
                                           </div>
                                           <div class="card__content"></div>
-                                        </div>
+                                        </a>
                                       </template>`;
   }
 

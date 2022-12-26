@@ -17,6 +17,10 @@ function draw(products: Product[]) {
 
   products.forEach((item: Product) => {
     const cardClone: HTMLTemplateElement | null = template?.content.cloneNode(true) as HTMLTemplateElement;
+    const cardImgLink: HTMLLinkElement | null = cardClone.querySelector('.card__img');
+    if (cardImgLink !== null) {
+      cardImgLink.href = `?details/${item.id}`;
+    }
     const cardImg: HTMLImageElement | null = cardClone.querySelector('.card__img > img');
     if (cardImg !== null) {
       cardImg.src = item.images[0];
