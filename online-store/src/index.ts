@@ -2,6 +2,7 @@
 
 import '../src/styles/index.scss';
 import { App } from './components/app/App';
+import { BasketManager } from './components/app/BasketManager';
 import { StateManager } from './components/app/StateManager';
 import { BrandFilter } from './components/filter/BrandFilter';
 import { CategoryFilter } from './components/filter/CategoryFilter';
@@ -23,3 +24,5 @@ window.onpopstate = () => {
   console.log('откручивание истории, не будем обрабатывать');
 };
 urlGetState();
+
+const basket = new BasketManager();
