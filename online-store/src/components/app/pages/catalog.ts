@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Online Store</title>
-  </head>
-  <body>
-    <header class="header">
-      <a href="."><h1>Online store</h1></a>
-      <a href="./?details/1"><h1>Карточка с id 1</h1></a>
-      <a href="./?basket"><h1>Корзина</h1></a>
-      <div class="basket__count">0</div>
-      <div class="basket__testbtn">Тест корзины</div>
-    </header>
-    <main class="root">
-
-
-
+export const catalogPageHTML = `
       <div class="wrapper">
         <aside class="aside">
         <div class="brand">
@@ -68,6 +49,8 @@
         </aside>
   
         <div class="main">
+
+          
           <div class="products-items"></div>
         </div>
 
@@ -80,8 +63,4 @@
           </a>
           <div class="card__content"></div>
         </div>
-      </template>`
-
-    </main>
-  </body>
-</html>
+      </template>`;

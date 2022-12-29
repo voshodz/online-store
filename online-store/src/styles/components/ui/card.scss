@@ -2,15 +2,20 @@
   background-color: #fff;
   color: #333;
   display: flex;
+  max-width: 100%;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
 
 .card__img {
-  max-width: 200px;
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   & img {
-    width: 100%;
+    max-width: 100%;
   }
 }

@@ -3,6 +3,7 @@
 // будет получать отфильтрованные данные
 
 import { Product } from '../../domain/model';
+import { sourceData } from '../../domain/source';
 
 //после бизнес логики, и манипулировать домом для отрисовки
 export const renderProducts = (products: Product[]) => {
@@ -44,7 +45,7 @@ function draw(products: Product[]) {
   }
 }
 
-export function renderBrandCheckboxes(checkboxes: HTMLInputElement[]): void {
+export function renderBrandCheckboxes(checkboxes: HTMLInputElement[], filteredData?: Product[]): void {
   const fragment: DocumentFragment = document.createDocumentFragment();
   checkboxes.forEach((elem) => {
     const brand: string = elem.value;
@@ -53,29 +54,52 @@ export function renderBrandCheckboxes(checkboxes: HTMLInputElement[]): void {
     brandLabel.textContent = brand;
     const brandItem: HTMLDivElement = document.createElement('div');
     brandItem.append(elem, brandLabel);
-    brandItem.classList.add('brand__item');
-    fragment.appendChild(brandItem);
+    brandItem.classList.add('brand__checkbox');
+    const brandNumber: HTMLDivElement = document.createElement('div');
+    brandNumber.classList.add('brand__count');
+    if (filteredData != undefined) {
+      const currentCount: number = filteredData.filter((el) => el.brand.toLowerCase() == brand.toLowerCase()).length;
+      const allCount: number = sourceData.filter((el) => el.brand.toLowerCase() == brand.toLowerCase()).length;
+      brandNumber.textContent = `(${currentCount}/${allCount})`;
+    }
+    const brandContent: HTMLDivElement = document.createElement('div');
+    brandContent.classList.add('brand__item');
+    brandContent.append(brandItem, brandNumber);
+    fragment.appendChild(brandContent);
   });
-  const brandContainer = document.querySelector('.brand');
+  const brandContainer = document.querySelector('.brand__content');
   if (brandContainer) {
+    brandContainer.innerHTML = '';
     brandContainer.appendChild(fragment);
   }
 }
 
-export function renderCategoryCheckboxes(checkboxes: HTMLInputElement[]): void {
+export function renderCategoryCheckboxes(checkboxes: HTMLInputElement[], filteredData?: Product[]): void {
   const fragment: DocumentFragment = document.createDocumentFragment();
   checkboxes.forEach((elem) => {
-    const brand: string = elem.value;
+    const category: string = elem.value;
     const brandLabel: HTMLLabelElement = document.createElement('label');
-    brandLabel.htmlFor = brand;
-    brandLabel.textContent = brand;
+    brandLabel.htmlFor = category;
+    brandLabel.textContent = category;
     const brandItem: HTMLDivElement = document.createElement('div');
     brandItem.append(elem, brandLabel);
-    brandItem.classList.add('category__item');
-    fragment.appendChild(brandItem);
+    brandItem.classList.add('category__checkbox');
+    const brandNumber: HTMLDivElement = document.createElement('div');
+    brandNumber.classList.add('category__count');
+    if (filteredData != undefined) {
+      const currentCount: number = filteredData.filter((el) => el.category.toLowerCase() == category.toLowerCase())
+        .length;
+      const allCount: number = sourceData.filter((el) => el.category.toLowerCase() == category.toLowerCase()).length;
+      brandNumber.textContent = `(${currentCount}/${allCount})`;
+    }
+    const brandContent: HTMLDivElement = document.createElement('div');
+    brandContent.classList.add('category__item');
+    brandContent.append(brandItem, brandNumber);
+    fragment.appendChild(brandContent);
   });
-  const brandContainer = document.querySelector('.category');
+  const brandContainer = document.querySelector('.category__content');
   if (brandContainer) {
+    brandContainer.innerHTML = '';
     brandContainer.appendChild(fragment);
   }
 }

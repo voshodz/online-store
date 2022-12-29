@@ -1,0 +1,103 @@
+.range__header {
+  color: #fff;
+  background-color: rgb(78, 78, 190);
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 5px;
+  font-weight:600;
+  font-size: 20px;
+}
+
+.range {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgb(78, 78, 190);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.range__container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 20px auto;
+
+  .sliders_control {
+    position: relative;
+    min-height: 30px;
+  }
+
+  .form_control {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+    color: #635a5a;
+    margin-bottom: 20px;
+  }
+  
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    pointer-events: all;
+    width: 24px;
+    height: 24px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px #C6C6C6;
+    cursor: pointer;
+  }
+  
+  input[type=range]::-moz-range-thumb {
+    -webkit-appearance: none;
+    pointer-events: all;
+    width: 24px;
+    height: 24px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px #C6C6C6;
+    cursor: pointer;  
+  }
+  
+  input[type=range]::-webkit-slider-thumb:hover {
+    background: #f7f7f7;
+  }
+  
+  input[type=range]::-webkit-slider-thumb:active {
+    box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+    -webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+  }
+  
+  input[type=number] {
+    color: #333;
+    width: 50px;
+    height: 30px;
+    font-size: 20px;  
+    border: none;
+    outline: none;
+    text-align: center;
+    background: none;
+  }
+  
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button {  
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  input[type=range] {
+    -webkit-appearance: none; 
+    appearance: none;
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    background-color: #C6C6C6;
+    pointer-events: none;
+  }
+  
+  input[type=range]:first-child {
+    height: 0;
+    z-index: 1;
+  }
+}
+

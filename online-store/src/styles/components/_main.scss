@@ -1,0 +1,11 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 20px;
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
