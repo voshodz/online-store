@@ -35,6 +35,14 @@ export class App {
       return;
     }
     this.contentContainer.innerHTML = `<div class="basket__wrapper">
+                                          <div class="modal">
+                                            <div class="modal__content">
+                                              <div class="modal__result">
+                                                <input type="text" class="modal__name">
+                                                </input>
+                                              </div>
+                                            </div>
+                                          </div>
                                           <div class="basket__products">
                                             <div class="basket__header">
                                               Products in Cart

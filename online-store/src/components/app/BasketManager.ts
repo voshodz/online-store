@@ -1,3 +1,4 @@
+import { MODAL_WINDOW } from '../..';
 import { Product } from '../../domain/model';
 import { sourceData } from '../../domain/source';
 
@@ -28,7 +29,7 @@ export class BasketManager {
         this.updateAppliedPromoView();
       });
       this.buyBtn.addEventListener('click', () => {
-        alert('КНОПКА МОДАЛЬНОГО ОКНА');
+        MODAL_WINDOW.showModal();
       });
     }
     this.initLocalstorage();
