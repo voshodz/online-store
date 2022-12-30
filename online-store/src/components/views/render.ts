@@ -7,7 +7,12 @@ import { sourceData } from '../../domain/source';
 
 //после бизнес логики, и манипулировать домом для отрисовки
 export const renderProducts = (products: Product[]) => {
-  draw(products);
+  if (products.length > 0) {
+    draw(products);
+  } else {
+    const containerProducts = document.querySelector('.products-items');
+    if (containerProducts) containerProducts.textContent = 'No products found';
+  }
   renderProductFound(products);
   //какие то дом манипуляции
 };
@@ -70,6 +75,9 @@ export function renderBrandCheckboxes(checkboxes: HTMLInputElement[], filteredDa
       const currentCount: number = filteredData.filter((el) => el.brand.toLowerCase() == brand.toLowerCase()).length;
       const allCount: number = sourceData.filter((el) => el.brand.toLowerCase() == brand.toLowerCase()).length;
       brandNumber.textContent = `(${currentCount}/${allCount})`;
+      if (currentCount === 0) {
+        brandItem.classList.add('empty');
+      }
     }
     const brandContent: HTMLDivElement = document.createElement('div');
     brandContent.classList.add('brand__item');
@@ -100,6 +108,9 @@ export function renderCategoryCheckboxes(checkboxes: HTMLInputElement[], filtere
         .length;
       const allCount: number = sourceData.filter((el) => el.category.toLowerCase() == category.toLowerCase()).length;
       brandNumber.textContent = `(${currentCount}/${allCount})`;
+      if (currentCount === 0) {
+        brandItem.classList.add('empty');
+      }
     }
     const brandContent: HTMLDivElement = document.createElement('div');
     brandContent.classList.add('category__item');
