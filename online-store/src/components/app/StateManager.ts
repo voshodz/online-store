@@ -1,9 +1,9 @@
 import { APP_PAGES } from '../..';
 import { dispatchType, FilterState, PageEnum, SortType } from '../../domain/IState';
 import { sourceData } from '../../domain/source';
-import { BrandFilter } from '../filter/BrandFilter';
 import { filterAllData } from '../util/filterLogic/filterData';
 import { urlGetState, urlUpdateFromState } from '../util/parseLogic/parseUrl';
+import { sortData } from '../util/sortLogic/sortData';
 import { renderProducts } from '../views/render';
 
 type callback = () => void;
@@ -68,7 +68,8 @@ export class StateManager {
   private stateChangedEventHandler() {
     const filteredData = filterAllData(this.state);
     this.state.filteredArray = filteredData;
-    renderProducts(filteredData);
+    const sortedData = sortData(filteredData);
+    renderProducts(sortedData);
     urlUpdateFromState(this.state);
     this.events.forEach((callback: callback) => callback());
     //тут еще вызовем функция обновления фильтров от состояния

@@ -9,12 +9,15 @@ import { CategoryFilter } from './components/filter/CategoryFilter';
 import { PriceFilter } from './components/filter/PriceFilter';
 import { SearchFilter } from './components/filter/SearchFilter';
 import { StockFilter } from './components/filter/StockFilter';
-import { DualSlider } from './components/util/dualSlider';
+import { DualSlider } from './components/util/dualSlider/dualSlider';
 import { urlGetState } from './components/util/parseLogic/parseUrl';
+import { initSortBox } from './components/util/sortLogic/sortData';
 import { renderBrandCheckboxes, renderCategoryCheckboxes } from './components/views/render';
 
 export const APP_PAGES = new App();
 export const STATE_MANAGER = new StateManager();
+
+initSortBox();
 
 const brandHandler = new BrandFilter();
 const categoryHandler = new CategoryFilter();

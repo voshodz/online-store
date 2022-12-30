@@ -21,8 +21,8 @@ export const catalogPageHTML = `
               </div>
             </div>
             <div class="sliders_control">
-                <input id="min-price" type="range" value="10" min="10" max="1749"/>
-                <input id="max-price" type="range" value="1749" min="10" max="1749"/>
+                <input id="min-price" type="range" value="10" step="1" min="10" max="1749"/>
+                <input id="max-price" type="range" value="1749" step="1" min="10" max="1749"/>
             </div>
           </div>  
         </div>
@@ -39,18 +39,26 @@ export const catalogPageHTML = `
               </div>
             </div>
             <div class="sliders_control">
-                <input id="min-stock" type="range" value="2" min="2" max="150"/>
-                <input id="max-stock" type="range" value="150" min="2" max="150"/>
+                <input id="min-stock" type="range" value="2" step="1" min="2" max="150"/>
+                <input id="max-stock" type="range" value="150" step="1" min="2" max="150"/>
             </div>
           </div>  
         </div>
-          <input type="text" placeholder="Search" id="search" />
           <button class="btn">click me</button>
         </aside>
   
         <div class="main">
-
-          
+        <div class="main__header">
+            <select id="sortBox">
+              <option value="" selected>Default</option>
+              <option value="priceasc">Sort by price ASC</option>
+              <option value="pricedesc">Sort by price DESC</option>
+              <option value="ratingasc">Sort by rating ASC</option>
+              <option value="ratingdesc">Sort by rating DESC</option>
+            </select>
+            <span id="foundCount">Found:</span>
+            <input type="text" placeholder="Search" id="search" />
+          </div>
           <div class="products-items"></div>
         </div>
 

@@ -8,8 +8,17 @@ import { sourceData } from '../../domain/source';
 //после бизнес логики, и манипулировать домом для отрисовки
 export const renderProducts = (products: Product[]) => {
   draw(products);
+  renderProductFound(products);
   //какие то дом манипуляции
 };
+
+function renderProductFound(products: Product[]) {
+  const foundElem: HTMLSpanElement | null = document.querySelector('#foundCount');
+  if (foundElem) {
+    const count: number = products.length;
+    foundElem.textContent = `Found: ${count}`;
+  }
+}
 
 function draw(products: Product[]) {
   const template: HTMLTemplateElement | null = document.querySelector('#card-template');
