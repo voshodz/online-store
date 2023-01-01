@@ -2,11 +2,25 @@ import { STATE_MANAGER } from '../../..';
 import { FilterState, SortType } from '../../../domain/IState';
 import { Product } from '../../../domain/model';
 
+export function updateSortBoxFromState(state: FilterState): void {
+  const sortState: SortType | undefined = state.sort;
+  const optionsElem: NodeListOf<HTMLOptionElement> | null = document.querySelectorAll('#sortBox > option');
+  if (sortState && optionsElem && optionsElem.length > 0) {
+    optionsElem.forEach((el) => {
+      if (el.value === sortState.toString()) {
+        el.selected = true;
+      } else {
+        el.selected = false;
+      }
+    });
+  }
+}
+
 export function initSortBox(): void {
   const sortBox: HTMLSelectElement | null = document.querySelector('#sortBox');
-  let options: FilterState = { sort: SortType.default };
   if (sortBox) {
     sortBox.addEventListener('change', () => {
+      let options: FilterState = { sort: SortType.default };
       switch (sortBox.selectedOptions[0].value) {
         case SortType.priceASC: {
           options = { sort: SortType.priceASC };

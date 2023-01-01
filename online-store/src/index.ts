@@ -11,10 +11,11 @@ import { SearchFilter } from './components/filter/SearchFilter';
 import { StockFilter } from './components/filter/StockFilter';
 import { DualSlider } from './components/util/dualSlider/dualSlider';
 import { urlGetState } from './components/util/parseLogic/parseUrl';
-import { initSortBox } from './components/util/sortLogic/sortData';
+import { initSortBox, updateSortBoxFromState } from './components/util/sortLogic/sortData';
 import { renderBrandCheckboxes, renderCategoryCheckboxes } from './components/views/render';
 
 export const APP_PAGES = new App();
+export const BASKET_MANAGER = new BasketManager();
 export const STATE_MANAGER = new StateManager();
 
 initSortBox();
@@ -42,5 +43,3 @@ window.onpopstate = () => {
   console.log('откручивание истории, не будем обрабатывать');
 };
 urlGetState();
-
-const basket = new BasketManager();

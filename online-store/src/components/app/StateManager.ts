@@ -1,9 +1,9 @@
-import { APP_PAGES } from '../..';
+import { APP_PAGES, BASKET_MANAGER } from '../..';
 import { dispatchType, FilterState, PageEnum, SortType } from '../../domain/IState';
 import { sourceData } from '../../domain/source';
 import { filterAllData } from '../util/filterLogic/filterData';
 import { urlGetState, urlUpdateFromState } from '../util/parseLogic/parseUrl';
-import { sortData } from '../util/sortLogic/sortData';
+import { sortData, updateSortBoxFromState } from '../util/sortLogic/sortData';
 import { renderProducts } from '../views/render';
 
 type callback = () => void;
@@ -43,6 +43,8 @@ export class StateManager {
         page: PageEnum.BasketPage,
       });
       APP_PAGES.renderBasket();
+      BASKET_MANAGER.updateDataHandler();
+      BASKET_MANAGER.listenerPromoInput();
       return;
     }
     if (resultFromUrl === 'details') {
@@ -55,8 +57,10 @@ export class StateManager {
     }
     if (typeof resultFromUrl === 'object') {
       this.state = { ...this.state, ...resultFromUrl };
+      updateSortBoxFromState(this.state);
       const filteredData = filterAllData(this.state);
-      renderProducts(filteredData);
+      const sortedData = sortData(filteredData);
+      renderProducts(sortedData);
     }
   }
 
@@ -94,6 +98,9 @@ export class StateManager {
   }
   public getStockState() {
     return this.state.stock;
+  }
+  public getSortState() {
+    return this.state.sort;
   }
   public getStoreState() {
     return this.state;

@@ -121,8 +121,23 @@ const urlParseStock = (query: string): [number, number] => {
 };
 
 const urlParseSort = (query: string): SortType => {
-  //TODO: parse Sort type
-  return SortType.default;
+  switch (query) {
+    case SortType.priceASC: {
+      return SortType.priceASC;
+    }
+    case SortType.priceDESC: {
+      return SortType.priceDESC;
+    }
+    case SortType.ratingASC: {
+      return SortType.ratingASC;
+    }
+    case SortType.ratingDESC: {
+      return SortType.ratingDESC;
+    }
+    default: {
+      return SortType.default;
+    }
+  }
 };
 
 const urlParseBigMode = (query: string): boolean => {
@@ -153,6 +168,7 @@ export const urlUpdateFromState = (state: FilterState) => {
   urlQuery += getQueryParamStock(state.stock);
   urlQuery += getQueryParamSort(state.sort);
   urlQuery += getQueryParamSearch(state.search);
+  console.log(urlQuery);
   if (urlQuery[1] === '&') {
     urlQuery = urlQuery.replace('&', '');
   }
@@ -215,7 +231,11 @@ const getQueryParamStock = (stock: [number, number] | undefined): string => {
 };
 
 const getQueryParamSort = (sort: SortType | undefined): string => {
-  return '';
+  let result = '';
+  if (sort != SortType.default) {
+    result = `&sort=${sort}`;
+  }
+  return result;
 };
 
 const getQueryParamSearch = (search: string | undefined): string => {

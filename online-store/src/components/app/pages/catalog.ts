@@ -69,6 +69,15 @@ export const catalogPageHTML = `
           <a class="card__img" href="#">
             <img src="" alt="" />
           </a>
-          <div class="card__content"></div>
+          <div class="card__content">
+            <div class="card__title">Name</div>
+            <div class="card__rating">⭐<span>4.9</span></div>
+            <div class="card__price">$17.39<span>$25.39</span></div>
+            <div class="card__addit"><span class="card__category">Smartphones</span>-<span class="card__brand">Apple</span></div>
+          </div>
+          <div class="card__buttons">
+            <button class="btn cart">Add to cart</button>
+            <button class="btn details">Details</button>
+          </div>
         </div>
       </template>`;

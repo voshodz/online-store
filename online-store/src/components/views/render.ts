@@ -2,6 +2,7 @@
 //для дом манипуляции в класс, или просто функции
 // будет получать отфильтрованные данные
 
+import { BASKET_MANAGER } from '../..';
 import { Product } from '../../domain/model';
 import { sourceData } from '../../domain/source';
 
@@ -34,20 +35,58 @@ function draw(products: Product[]) {
     const cardImgLink: HTMLLinkElement | null = cardClone.querySelector('.card__img');
     if (cardImgLink !== null) {
       cardImgLink.href = `?details/${item.id}`;
+      cardImgLink.style.backgroundImage = `url('${item.thumbnail}')`;
     }
-    const cardImg: HTMLImageElement | null = cardClone.querySelector('.card__img > img');
-    if (cardImg !== null) {
-      cardImg.src = item.images[0];
-    }
+    // const cardImg: HTMLImageElement | null = cardClone.querySelector('.card__img > img');
+    // if (cardImg !== null) {
+    //   cardImg.src = item.thumbnail;
+    // }
     const cardContent: HTMLElement | null = cardClone.querySelector('.card__content');
     if (cardContent !== null) {
-      cardContent.innerHTML = 'Title: ' + item.title + '<br>';
-      cardContent.innerHTML += 'Category: ' + item.category + '<br>';
-      cardContent.innerHTML += 'Brand: ' + item.brand + '<br>';
-      cardContent.innerHTML += 'Price: ' + item.price + '<br>';
-      cardContent.innerHTML += 'Discount: ' + item.discountPercentage + '%<br>';
-      cardContent.innerHTML += 'Rating: ' + item.rating + '<br>';
-      cardContent.innerHTML += 'Stock: ' + item.stock + '<br>';
+      // cardContent.innerHTML = 'Title: ' + item.title + '<br>';
+      // cardContent.innerHTML += 'Category: ' + item.category + '<br>';
+      // cardContent.innerHTML += 'Brand: ' + item.brand + '<br>';
+      // cardContent.innerHTML += 'Price: ' + item.price + '<br>';
+      // cardContent.innerHTML += 'Discount: ' + item.discountPercentage + '%<br>';
+      // cardContent.innerHTML += 'Rating: ' + item.rating + '<br>';
+    }
+
+    const cardTitle: HTMLElement | null = cardClone.querySelector('.card__title');
+    if (cardTitle) {
+      cardTitle.textContent = item.title;
+    }
+    const cardRating: HTMLElement | null = cardClone.querySelector('.card__rating > span');
+    if (cardRating) {
+      cardRating.textContent = String(item.rating);
+    }
+    const cardPrice: HTMLElement | null = cardClone.querySelector('.card__price');
+    if (cardPrice) {
+      cardPrice.innerHTML =
+        '$' + ((item.price * (100 - item.discountPercentage)) / 100).toFixed(2) + `<span>$${String(item.price)}</span>`;
+    }
+    const cardAddit: NodeListOf<HTMLElement> | null = cardClone.querySelectorAll('.card__addit > span');
+    if (cardAddit.length > 0) {
+      cardAddit[0].textContent = item.category;
+      cardAddit[1].textContent = item.brand;
+    }
+    const cardBtnDetails: HTMLLinkElement | null = cardClone.querySelector('.details');
+    if (cardBtnDetails) {
+      cardBtnDetails.href = `?details/${item.id}`;
+    }
+    const cardBtnCart: HTMLButtonElement | null = cardClone.querySelector('.cart');
+    if (cardBtnCart) {
+      if (BASKET_MANAGER.hasProduct(item.id)) {
+        cardBtnCart.textContent = 'DROP FROM CART';
+      }
+      cardBtnCart.addEventListener('click', () => {
+        if (BASKET_MANAGER.hasProduct(item.id)) {
+          BASKET_MANAGER.removeFromBasket(item.id);
+          cardBtnCart.textContent = 'ADD TO CART';
+        } else {
+          BASKET_MANAGER.addToBasket(item.id);
+          cardBtnCart.textContent = 'DROP FROM CART';
+        }
+      });
     }
 
     fragment.append(cardClone);
