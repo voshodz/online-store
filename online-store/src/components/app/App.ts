@@ -38,8 +38,10 @@ export class App {
                                           <div class="modal">
                                             <div class="modal__content">
                                               <div class="modal__result">
-                                                <input type="text" class="modal__name">
-                                                </input>
+                                                <div><input type="text" class="modal__name"></input></div>
+                                                <div><input type="text" class="modal__phone"></input></div>
+                                                <div><input type="text" class="modal__adress"></input></div>
+                                                <div><input type="text" class="modal__email"></input></div>
                                               </div>
                                             </div>
                                           </div>

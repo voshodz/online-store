@@ -23,3 +23,4 @@ const searchFilter = new SearchFilter();
 
 const basket = new BasketManager();
 export const MODAL_WINDOW = new Modal();
+MODAL_WINDOW.validateEmail('aa1a@mails.ru');
