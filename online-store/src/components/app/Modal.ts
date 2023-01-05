@@ -12,28 +12,35 @@ export default class Modal {
   modalPhone: HTMLElement | null;
   modalAdress: HTMLElement | null;
   modalEmail: HTMLElement | null;
+  modalConfirmBtn: HTMLElement | null;
   stateName: boolean;
   statePhone: boolean;
   stateAddress: boolean;
   stateEmail: boolean;
   constructor() {
-    this.stateName = false;
+    /*this.stateName = false;
     this.statePhone = false;
     this.stateAddress = false;
-    this.stateEmail = false;
+    this.stateEmail = false;*/
+    this.stateName = true;
+    this.statePhone = true;
+    this.stateAddress = true;
+    this.stateEmail = true;
     this.modalWindow = document.querySelector('.modal');
     this.modalContent = document.querySelector('.modal__content');
     this.modalName = document.querySelector('.modal__name');
     this.modalPhone = document.querySelector('.modal__phone');
     this.modalAdress = document.querySelector('.modal__adress');
     this.modalEmail = document.querySelector('.modal__email');
+    this.modalConfirmBtn = document.querySelector('.modal__confirm');
     if (
       !this.modalWindow ||
       !this.modalContent ||
       !this.modalName ||
       !this.modalPhone ||
       !this.modalAdress ||
-      !this.modalEmail
+      !this.modalEmail ||
+      !this.modalConfirmBtn
     ) {
       return;
     }
@@ -60,6 +67,9 @@ export default class Modal {
       const inputElement = e.target as HTMLInputElement;
       this.validateEmail(inputElement.value);
     });
+    this.modalConfirmBtn.addEventListener('click', () => {
+      this.confirmForm();
+    });
   }
   private validateName(input: string) {
     if (!input) {
@@ -69,7 +79,6 @@ export default class Modal {
     const splitName = input.split(' ');
     if (splitName.length !== 2 || !splitName[0] || !splitName[1]) {
       this.stateName = false;
-      this.printstateName();
       return;
     }
     if (splitName[0].length >= 3 && splitName[1].length >= 3) {
@@ -79,7 +88,6 @@ export default class Modal {
         this.stateName = false;
       }
     }
-    this.printstateName();
   }
   public validatePhone(input: string) {
     if (input[0] !== '+' || !input) {
@@ -101,7 +109,7 @@ export default class Modal {
       return;
     }
     const splitAddres = input.split(' ');
-    if (splitAddres.length !== 3 || !splitAddres[0] || !splitAddres[1] || !splitAddres[2]) {
+    if (splitAddres.length < 3 || !splitAddres[0] || !splitAddres[1] || !splitAddres[2]) {
       this.stateAddress = false;
       return;
     }
@@ -122,6 +130,31 @@ export default class Modal {
   }
   printstateName() {
     console.log(this.stateName);
+  }
+  private confirmForm() {
+    console.log('confirmed!!!');
+    console.log(this.stateName);
+    console.log(this.statePhone);
+    console.log(this.stateEmail);
+    console.log(this.stateAddress);
+    const container = document.querySelector('.content');
+    if (this.stateName && this.statePhone && this.modalEmail && this.modalAdress) {
+      setTimeout(() => {
+        this.cleanLocalStorage();
+        if (container) {
+          container.innerHTML = '<h1>Все прошло успешно!!</h1>';
+          const basketCount = document.querySelector('.basket__count') as HTMLDivElement;
+          if (basketCount) {
+            basketCount.innerHTML = `0`;
+          }
+        }
+        //window.location.href = '/';
+      }, 1000);
+    }
+  }
+  private cleanLocalStorage() {
+    console.log('clean storage');
+    localStorage.removeItem('rs-store');
   }
   public showModal() {
     if (!this.modalWindow || !this.modalContent) {
