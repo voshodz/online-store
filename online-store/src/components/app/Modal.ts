@@ -13,6 +13,9 @@ export default class Modal {
   modalAdress: HTMLElement | null;
   modalEmail: HTMLElement | null;
   modalConfirmBtn: HTMLElement | null;
+  modalCardInput: HTMLElement | null;
+  modalCardDueDate: HTMLElement | null;
+  modalCardCVV: HTMLElement | null;
   stateName: boolean;
   statePhone: boolean;
   stateAddress: boolean;
@@ -33,6 +36,9 @@ export default class Modal {
     this.modalAdress = document.querySelector('.modal__adress');
     this.modalEmail = document.querySelector('.modal__email');
     this.modalConfirmBtn = document.querySelector('.modal__confirm');
+    this.modalCardInput = document.querySelector('.modal__cardnumber');
+    this.modalCardDueDate = document.querySelector('.modal__duedate');
+    this.modalCardCVV = document.querySelector('.modal__cvv');
     if (
       !this.modalWindow ||
       !this.modalContent ||
@@ -40,7 +46,10 @@ export default class Modal {
       !this.modalPhone ||
       !this.modalAdress ||
       !this.modalEmail ||
-      !this.modalConfirmBtn
+      !this.modalConfirmBtn ||
+      !this.modalCardInput ||
+      !this.modalCardDueDate ||
+      !this.modalCardCVV
     ) {
       return;
     }
@@ -69,6 +78,39 @@ export default class Modal {
     });
     this.modalConfirmBtn.addEventListener('click', () => {
       this.confirmForm();
+    });
+    this.modalCardInput.addEventListener('input', (e) => {
+      if (!this.modalCardInput) {
+        return;
+      }
+      const inputElement = e.target as HTMLInputElement;
+      const inputString = inputElement.value;
+      if (inputString.length === 17) {
+        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+        return;
+      }
+      this.validateEmail(inputElement.value);
+    });
+    this.modalCardDueDate.addEventListener('input', (e) => {
+      if (!this.modalCardDueDate) {
+        return;
+      }
+      const inputElement = e.target as HTMLInputElement;
+      const inputString = inputElement.value;
+      if (inputString.length === 2) {
+        inputElement.value += '/';
+      }
+    });
+    this.modalCardCVV.addEventListener('input', (e) => {
+      if (!this.modalCardCVV) {
+        return;
+      }
+      const inputElement = e.target as HTMLInputElement;
+      const inputString = inputElement.value;
+      if (inputString.length === 4) {
+        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+        return;
+      }
     });
   }
   private validateName(input: string) {
@@ -127,6 +169,9 @@ export default class Modal {
       this.stateEmail = false;
     }
     //console.log(this.stateEmail);
+  }
+  private validateCardNumber(input: string) {
+    console.log(input);
   }
   printstateName() {
     console.log(this.stateName);

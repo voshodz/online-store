@@ -69,5 +69,15 @@
     cursor: pointer;
     background-color: orange;
   }
+  &__card {
+    font-size: 12px;
+    color: black;
+    width: 450px;
+    height: 350px;
+    border: 2px solid orangered;
+  }
+  &__cardwrapper {
+    display: flex;
+  }
 }
 

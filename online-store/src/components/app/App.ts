@@ -46,6 +46,19 @@ export class App {
                                                 <div><input type="text" class="modal__adress" placeholder="Address"></input></div>
                                                 <div><input type="text" class="modal__email" placeholder="E-mail"></input></div>
                                                 <h4 style="color: black">Card details</h4>
+                                                <div class="modal__card">
+                                                  <div class="modal__cardwrapper">
+                                                    <div class="modal__paysystem">Visa</div>
+                                                    <input type="number" class="modal__cardnumber"></input>
+                                                  </div>
+                                                  <div class="modal__cardwrapper">
+                                                    <span>VALID</span>
+                                                    <input type="text" class="modal__duedate"></input>
+                                  
+                                                    <span>CVV</span>
+                                                    <input type="number" class="modal__cvv"></input>
+                                                    </div>
+                                                </div>
                                                 <div class="modal__confirm">Confirm</div>
                                               </div>
                                             </div>
