@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Online Store</title>
-  </head>
-  <body>
-    <header class="header">
-      <a href="."><h1>Online store</h1></a>
-      <a href="./?details/1"><h1>Карточка с id 1</h1></a>
-      <a href="./?basket"><h1>Корзина</h1></a>
-      <div class="basket__count">0</div>
-      <div class="basket__testbtn">Тест корзины</div>
-    </header>
-    <main class="root">
-
-
-
+export const catalogPageHTML = `
       <div class="wrapper">
         <aside class="aside">
         <div class="brand">
@@ -63,12 +44,11 @@
             </div>
           </div>  
         </div>
-          
           <button class="btn">click me</button>
         </aside>
   
         <div class="main">
-          <div class="main__header">
+        <div class="main__header">
             <select id="sortBox">
               <option value="" selected>Default</option>
               <option value="priceasc">Sort by price ASC</option>
@@ -87,20 +67,17 @@
       <template id="card-template">
         <div class="product-card">
           <a class="card__img" href="#">
+            <img src="" alt="" />
           </a>
           <div class="card__content">
             <div class="card__title">Name</div>
             <div class="card__rating">⭐<span>4.9</span></div>
             <div class="card__price">$17.39<span>$25.39</span></div>
-            <div class="card__addit"><span>Smartphones</span>-<span>Apple</span></div>
+            <div class="card__addit"><span class="card__category">Smartphones</span>-<span class="card__brand">Apple</span></div>
           </div>
           <div class="card__buttons">
             <button class="btn cart">Add to cart</button>
-            <a class="btn details">Details</a>
+            <button class="btn details">Details</button>
           </div>
         </div>
-      </template>
-
-    </main>
-  </body>
-</html>
+      </template>`;

@@ -9,7 +9,7 @@ export class CategoryFilter implements IFilter {
   constructor() {
     this.checkboxArray = createCheckboxes(CategoryArray);
     this.categoriesArray = [];
-    renderCategoryCheckboxes(this.checkboxArray);
+    renderCategoryCheckboxes(this.checkboxArray, STATE_MANAGER.getFilterState());
     this.loadListeners();
     this.updateCheckboxFromState(STATE_MANAGER.getCategoryState());
   }

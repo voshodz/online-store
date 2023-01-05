@@ -12,38 +12,14 @@ enum Operation {
 }
 export class BasketManager {
   private basketData: BasketProducts[];
-  private promoRS: HTMLElement | null;
-  private promoTS: HTMLElement | null;
-  private buyBtn: HTMLElement | null;
   constructor() {
     this.basketData = [];
-    this.promoRS = document.querySelector('.basket__promo-1');
-    this.promoTS = document.querySelector('.basket__promo-2');
-    this.buyBtn = document.querySelector('.basket__buybtn');
-    if (this.promoRS && this.promoTS && this.buyBtn) {
-      this.promoRS.addEventListener('change', () => {
-        this.updateAppliedPromoView();
-      });
-      this.promoTS.addEventListener('change', () => {
-        this.updateAppliedPromoView();
-      });
-      this.buyBtn.addEventListener('click', () => {
-        alert('КНОПКА МОДАЛЬНОГО ОКНА');
-      });
-    }
-    this.initLocalstorage();
     const items = localStorage.getItem('rs-store');
     if (items) {
       this.basketData = JSON.parse(items);
     }
     this.updateDataHandler();
     this.listenerPromoInput();
-  }
-  private initLocalstorage() {
-    this.basketData.push({ id: 1, count: 1, price: 549 });
-    this.basketData.push({ id: 2, count: 1, price: 899 });
-    this.basketData.push({ id: 75, count: 1, price: 68 });
-    localStorage.setItem('rs-store', JSON.stringify(this.basketData));
   }
   updateDataHandler() {
     this.updateLocalStorage();
@@ -54,30 +30,44 @@ export class BasketManager {
   private updateLocalStorage() {
     localStorage.setItem('rs-store', JSON.stringify(this.basketData));
   }
-  private listenerPromoInput() {
+  public listenerPromoInput() {
+    const promoRS = document.querySelector('.basket__promo-1');
+    const promoTS = document.querySelector('.basket__promo-2');
+    const buyBtn = document.querySelector('.basket__buybtn');
+    if (promoRS && promoTS && buyBtn) {
+      promoRS.addEventListener('change', () => {
+        this.updateAppliedPromoView();
+      });
+      promoTS.addEventListener('change', () => {
+        this.updateAppliedPromoView();
+      });
+      buyBtn.addEventListener('click', () => {
+        alert('КНОПКА МОДАЛЬНОГО ОКНА');
+      });
+    }
     const promoInput: HTMLInputElement | null = document.querySelector('.basket__promo-input');
 
     if (!promoInput) {
       return;
     }
     promoInput.addEventListener('input', (e) => {
-      if (this.promoRS && this.promoTS) {
-        this.promoRS.classList.add('hidden');
-        this.promoTS.classList.add('hidden');
+      if (promoRS && promoTS) {
+        promoRS.classList.add('hidden');
+        promoTS.classList.add('hidden');
       }
       const target = e.target as HTMLInputElement;
       const inputValue = target.value.toLowerCase();
       if (inputValue === 'rs' || inputValue === 'ts') {
         switch (inputValue) {
           case 'rs':
-            if (this.promoRS) {
-              this.promoRS.classList.remove('hidden');
+            if (promoRS) {
+              promoRS.classList.remove('hidden');
               this.updateAppliedPromoView();
             }
             break;
           case 'ts':
-            if (this.promoTS) {
-              this.promoTS.classList.remove('hidden');
+            if (promoTS) {
+              promoTS.classList.remove('hidden');
               this.updateAppliedPromoView();
             }
             console.log('tss');
@@ -269,5 +259,15 @@ export class BasketManager {
     const product = sourceData.filter((product) => product.id === id)[0];
     this.basketData.push({ id: product.id, count: 1, price: product.price });
     this.updateLocalStorage();
+  }
+  public removeFromBasket(id: number) {
+    this.basketData = this.basketData.filter((el) => el.id !== id);
+    this.updateLocalStorage();
+  }
+  public hasProduct(id: number): boolean {
+    if (this.basketData.filter((el) => el.id === id).length > 0) {
+      return true;
+    }
+    return false;
   }
 }
