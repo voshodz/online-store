@@ -102,6 +102,9 @@ export class StateManager {
   public getSortState() {
     return this.state.sort;
   }
+  public getBigModeState() {
+    return this.state.big;
+  }
   public getStoreState() {
     return this.state;
   }

@@ -9,6 +9,7 @@ import { CategoryFilter } from './components/filter/CategoryFilter';
 import { PriceFilter } from './components/filter/PriceFilter';
 import { SearchFilter } from './components/filter/SearchFilter';
 import { StockFilter } from './components/filter/StockFilter';
+import { initTypeBtns } from './components/util/cardLogic/cardLogic';
 import { DualSlider } from './components/util/dualSlider/dualSlider';
 import { urlGetState } from './components/util/parseLogic/parseUrl';
 import { initSortBox, updateSortBoxFromState } from './components/util/sortLogic/sortData';
@@ -19,6 +20,7 @@ export const BASKET_MANAGER = new BasketManager();
 export const STATE_MANAGER = new StateManager();
 
 initSortBox();
+initTypeBtns();
 
 const brandHandler = new BrandFilter();
 const categoryHandler = new CategoryFilter();

@@ -32,6 +32,7 @@ function draw(products: Product[]) {
 
   products.forEach((item: Product) => {
     const cardClone: HTMLTemplateElement | null = template?.content.cloneNode(true) as HTMLTemplateElement;
+    const productCard: HTMLLinkElement | null = cardClone.querySelector('.product-card');
     const cardImgLink: HTMLLinkElement | null = cardClone.querySelector('.card__img');
     if (cardImgLink !== null) {
       cardImgLink.href = `?details/${item.id}`;
@@ -74,17 +75,20 @@ function draw(products: Product[]) {
       cardBtnDetails.href = `?details/${item.id}`;
     }
     const cardBtnCart: HTMLButtonElement | null = cardClone.querySelector('.cart');
-    if (cardBtnCart) {
+    if (cardBtnCart && productCard) {
       if (BASKET_MANAGER.hasProduct(item.id)) {
         cardBtnCart.textContent = 'DROP FROM CART';
+        productCard.classList.add('selected');
       }
       cardBtnCart.addEventListener('click', () => {
         if (BASKET_MANAGER.hasProduct(item.id)) {
           BASKET_MANAGER.removeFromBasket(item.id);
           cardBtnCart.textContent = 'ADD TO CART';
+          productCard.classList.remove('selected');
         } else {
           BASKET_MANAGER.addToBasket(item.id);
           cardBtnCart.textContent = 'DROP FROM CART';
+          productCard.classList.add('selected');
         }
       });
     }

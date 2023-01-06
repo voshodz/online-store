@@ -167,8 +167,8 @@ export const urlUpdateFromState = (state: FilterState) => {
   urlQuery += getQueryParamPrice(state.price);
   urlQuery += getQueryParamStock(state.stock);
   urlQuery += getQueryParamSort(state.sort);
+  urlQuery += getQueryParamBig(state.big);
   urlQuery += getQueryParamSearch(state.search);
-  console.log(urlQuery);
   if (urlQuery[1] === '&') {
     urlQuery = urlQuery.replace('&', '');
   }
@@ -234,6 +234,14 @@ const getQueryParamSort = (sort: SortType | undefined): string => {
   let result = '';
   if (sort != SortType.default) {
     result = `&sort=${sort}`;
+  }
+  return result;
+};
+
+const getQueryParamBig = (big: boolean | undefined): string => {
+  let result = '';
+  if (big) {
+    result = `&big=${big}`;
   }
   return result;
 };

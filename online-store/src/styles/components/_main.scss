@@ -10,8 +10,73 @@
   gap: 10px;
 }
 
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
 .main__header {
   display: flex;
   justify-content: space-between;
+  height: 60px;
   padding: 10px;
+}
+
+#foundCount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 1460px) {
+  .wrapper {
+    grid-template-columns: 300px 1fr;
+  }
+}
+
+@media (max-width: 1225px) {
+  .wrapper {
+    display: block;
+    overflow: hidden;
+  }
+
+  .aside {
+    width: 100%;
+    position: fixed;
+    height: calc(100% - 60px);
+    overflow-y: auto;
+    top: 60px;
+    background-color: #e2f2ff;
+    padding: 10px 100px;
+    border: 2px solid rgb(78, 78, 190);
+    left: -100%;
+  }
+}
+
+@media (max-width: 770px) {
+  .aside {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 620px) {
+  .main__header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: auto;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+
+    * {
+      justify-content: center;
+      justify-self: space-between;
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .main__header {
+    grid-template-columns: 1fr;
+  }
 }
