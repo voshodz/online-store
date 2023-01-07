@@ -2,7 +2,7 @@ export const basketPageHTML = `<div class="basket__wrapper">
 <div class="modal">
   <div class="modal__content">
     <div class="modal__result">
-    <h4 style="color: black">Person details</h4>
+    <h4 style="color: orangered;margin-bottom:10px;">Person details</h4>
       <div style="position: relative;">
         <input type="text" class="modal__name" placeholder="Name"></input>
         <span class="error error__name hidden">error</span>
@@ -19,24 +19,24 @@ export const basketPageHTML = `<div class="basket__wrapper">
         <input type="text" class="modal__email" placeholder="E-mail"></input>
         <span class="error error__email hidden">error</span>
       </div>
-      <h4 style="color: black">Card details</h4>
+      <h4 style="color: orangered;">Card details</h4>
       <div class="modal__card">
           <div class="modal__cardwrapper">
-            <div class="modal__paysystem">Visa</div>
+            <div class="modal__paysystem">CARD</div>
             <div style="position: relative;">
-              <input type="text" class="modal__cardnumber"></input>
+              <input type="text" class="modal__cardnumber" placeholder="Card number"></input>
               <span class="error error__cardnumber hidden">error</span>
             </div>
           </div>
           <div class="modal__cardwrapper2">
-            <span>VALID</span>
+            <span>Expiration</span>
             <div style="position: relative;">
-              <input type="text" class="modal__duedate"></input>
+              <input type="text" class="modal__duedate" placeholder="Exp date"></input>
               <span class="error error__duedate hidden">error</span>
             </div>
             <span>CVV</span>
             <div style="position: relative;">
-              <input type="text" class="modal__cvv"></input>
+              <input type="text" class="modal__cvv" placeholder="CVV"></input>
               <span class="error error__cvv hidden">error</span>
             </div>
             

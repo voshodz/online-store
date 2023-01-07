@@ -5,6 +5,9 @@ enum ValidationField {
   Email,
   CreditCard,
 }
+import visaIcon from '../../assets/img/iconpayment/visa.png';
+import masterCardIcon from '../../assets/img/iconpayment/master.png';
+import mirIcon from '../../assets/img/iconpayment/mir2.png';
 export default class Modal {
   modalWindow: HTMLDivElement | null;
   modalContent: HTMLDivElement | null;
@@ -204,6 +207,7 @@ export default class Modal {
     }
   }
   private validateCardNumber(input: string) {
+    this.updatePaymentIcon(+input[0]);
     if (input.length === 16) {
       this.stateCardNumber = true;
     } else {
@@ -231,9 +235,10 @@ export default class Modal {
   }
   private confirmForm() {
     this.showErrors();
-    const container = document.querySelector('.content');
+    const container = document.querySelector('.root');
+    const a = true;
     if (
-      this.modalEmail &&
+      /*this.modalEmail &&
       this.modalAdress &&
       this.stateName &&
       this.statePhone &&
@@ -241,23 +246,53 @@ export default class Modal {
       this.stateAddress &&
       this.stateCardNumber &&
       this.stateExpDate &&
-      this.stateCVV
+      this.stateCVV*/
+      a
     ) {
-      setTimeout(() => {
-        this.cleanLocalStorage();
-        if (container) {
-          container.innerHTML = '<h1>Все прошло успешно!!</h1>';
-          const basketCount = document.querySelector('.basket__count') as HTMLDivElement;
-          if (basketCount) {
-            basketCount.innerHTML = `0`;
-          }
+      this.cleanLocalStorage();
+      if (container) {
+        if (!this.modalWindow || !this.modalContent) {
+          return;
         }
+        this.modalWindow.classList.remove('active');
+        this.modalContent.classList.remove('active');
+        container.innerHTML = '<h1 style="text-align: center;">Все прошло успешно!!</h1>';
+        const basketCount = document.querySelector('.basket__count') as HTMLDivElement;
+        if (basketCount) {
+          basketCount.innerHTML = `0`;
+        }
+      }
+      setTimeout(() => {
         window.location.href = '/';
-      }, 1000);
+      }, 5000);
     }
   }
   private cleanLocalStorage() {
     localStorage.removeItem('rs-store');
+  }
+  private updatePaymentIcon(firstDigit: number) {
+    const paySystem = document.querySelector('.modal__paysystem');
+    const imgIcon = document.createElement('img');
+    if (paySystem) {
+      paySystem.innerHTML = '';
+      switch (firstDigit) {
+        case 4:
+          imgIcon.src = visaIcon;
+          paySystem.append(imgIcon);
+          break;
+        case 5:
+          imgIcon.src = masterCardIcon;
+          paySystem.append(imgIcon);
+          break;
+        case 2:
+          imgIcon.src = mirIcon;
+          paySystem.append(imgIcon);
+          break;
+        default:
+          paySystem.innerHTML = 'CARD';
+          break;
+      }
+    }
   }
   private showErrors() {
     const errorFields = document.querySelectorAll('.error');
