@@ -245,7 +245,7 @@ export class BasketManager {
           if (this.basketData[index].count > 1) {
             this.basketData[index].count -= 1;
           } else {
-            this.basketData.splice(index, index + 1);
+            this.basketData.splice(index, 1);
           }
           this.updateAppliedPromoView();
           break;
