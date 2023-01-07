@@ -117,7 +117,7 @@ export function updateProductInfo(product: Product) {
   const productPrice: HTMLDivElement | null = document.querySelector('.product__price');
   if (productPrice) {
     const discountPrice: number = (product.price * (100 - product.discountPercentage)) / 100;
-    productPrice.innerHTML = `$${discountPrice} <span>$${product.price}</span>`;
+    productPrice.innerHTML = `$${discountPrice.toFixed(2)} <span>$${product.price}</span>`;
   }
   const cartBtn: HTMLButtonElement | null = document.querySelector('.cart');
   if (cartBtn) {
