@@ -9,7 +9,7 @@ export class BrandFilter implements IFilter {
   constructor() {
     this.checkboxArray = createCheckboxes(BrandArray);
     this.brandsArray = [];
-    renderBrandCheckboxes(this.checkboxArray);
+    renderBrandCheckboxes(this.checkboxArray, STATE_MANAGER.getFilterState());
     this.loadListeners();
     this.updateCheckboxFromState(STATE_MANAGER.getBrandState());
   }

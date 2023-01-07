@@ -50,7 +50,7 @@ export const BrandArray: ReadonlyArray<string> = [
   'Fog Scent Xpressio',
   'Al Munakh',
   'Lord - Al-Rehab',
-  'LOreal Paris',
+  `L'Oreal Paris`,
   'Hemani Tea',
   'Dermive',
   'ROREC White Rice',

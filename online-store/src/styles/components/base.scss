@@ -5,11 +5,10 @@ h1, h2, h3, h4 {
   margin: 0;
 }
 body {
-  color: #fff;
-  background: #615d5c;
-  font-family: sans-serif;
+  color: #333;
+  background: #e2f2ff;
+  font-family: "Verdana", sans-serif;
   margin: 0;
-  //background: url(../../assets/img/girl.png); //рабоатет так
 }
 
 h1 {
@@ -26,4 +25,8 @@ h1 {
 
 .hidden {
   display: none;
+}
+
+.root {
+  padding: 0 10px;
 }

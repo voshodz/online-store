@@ -1,15 +1,19 @@
-import { APP_PAGES } from '../..';
+import { APP_PAGES, BASKET_MANAGER } from '../..';
 import { dispatchType, FilterState, PageEnum, SortType } from '../../domain/IState';
 import { sourceData } from '../../domain/source';
 import { filterAllData } from '../util/filterLogic/filterData';
 import { urlGetState, urlUpdateFromState } from '../util/parseLogic/parseUrl';
+import { sortData, updateSortBoxFromState } from '../util/sortLogic/sortData';
 import { renderProducts } from '../views/render';
+
+type callback = () => void;
 
 export class StateManager {
   private state: FilterState;
+  private events: callback[];
   constructor() {
     this.state = {
-      filteredArray: [],
+      filteredArray: sourceData,
       brand: [],
       category: [],
       price: [10, 1749],
@@ -19,9 +23,14 @@ export class StateManager {
       big: false,
       page: PageEnum.MainPage,
     };
-    renderProducts(sourceData); // basic render
+    this.events = [];
     this.loadStateFromUrl();
   }
+
+  public addCallback(callback: callback): void {
+    this.events.push(callback);
+  }
+
   public loadStateFromUrl() {
     const resultFromUrl = urlGetState(); // static method, no need create object of class
     if (resultFromUrl === 'root') {
@@ -34,6 +43,8 @@ export class StateManager {
         page: PageEnum.BasketPage,
       });
       APP_PAGES.renderBasket();
+      BASKET_MANAGER.updateDataHandler();
+      BASKET_MANAGER.listenerPromoInput();
       return;
     }
     if (resultFromUrl === 'details') {
@@ -46,8 +57,10 @@ export class StateManager {
     }
     if (typeof resultFromUrl === 'object') {
       this.state = { ...this.state, ...resultFromUrl };
+      updateSortBoxFromState(this.state);
       const filteredData = filterAllData(this.state);
-      renderProducts(filteredData);
+      const sortedData = sortData(filteredData);
+      renderProducts(sortedData);
     }
   }
 
@@ -58,8 +71,11 @@ export class StateManager {
   }
   private stateChangedEventHandler() {
     const filteredData = filterAllData(this.state);
-    renderProducts(filteredData);
+    this.state.filteredArray = filteredData;
+    const sortedData = sortData(filteredData);
+    renderProducts(sortedData);
     urlUpdateFromState(this.state);
+    this.events.forEach((callback: callback) => callback());
     //тут еще вызовем функция обновления фильтров от состояния
   }
   public dispatchState(dispatchedState: dispatchType) {
@@ -68,11 +84,23 @@ export class StateManager {
     //чистая функция котоаря принимает FilterState, и выдаёт данные в зависимости от массива
     //далее отфильтрованные отдаются Views, там уже дом манипуляции
   }
+  public getFilterState() {
+    return this.state.filteredArray;
+  }
   public getBrandState() {
     return this.state.brand;
   }
   public getCategoryState() {
-    return this.state.brand;
+    return this.state.category;
+  }
+  public getPriceState() {
+    return this.state.price;
+  }
+  public getStockState() {
+    return this.state.stock;
+  }
+  public getSortState() {
+    return this.state.sort;
   }
   public getStoreState() {
     return this.state;

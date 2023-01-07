@@ -1,10 +1,49 @@
 .brand, .category {
-  height: 400px;
-  width: 300px;
-  overflow-y: auto;
-  display: inline-block;
-  margin: 0 10px;
-  border: 1px solid #fff;
+  max-height: 300px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgb(78, 78, 190);
   border-radius: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.brand__header,
+.category__header {
+  color: #fff;
+  background-color: rgb(78, 78, 190);
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 5px;
+  font-weight:600;
+  font-size: 20px;
+}
+
+.brand__content,
+.category__content {
   padding: 10px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.category__item,
+.brand__item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.category__checkbox, 
+.brand__checkbox {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #333;
+}
+
+.category__checkbox.empty, 
+.brand__checkbox.empty {
+  font-size: 16px;
+  font-weight: 400;
+  color: #555;
 }
