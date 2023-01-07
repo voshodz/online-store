@@ -18,8 +18,6 @@ export class BasketManager {
   constructor() {
     this.basketData = [];
     [this.limit, this.page] = this.getPageAndLimitFromUrl();
-    console.log(this.limit);
-    console.log(this.page);
     const items = localStorage.getItem('rs-store');
     if (items) {
       this.basketData = JSON.parse(items);
@@ -284,12 +282,13 @@ export class BasketManager {
     }
     itemsWrapper.innerHTML = '';
     data.forEach((item) => {
-      const basketProduct = document.createElement('a');
-      basketProduct.href = `${window.location.origin}/?details/${item.id}`;
+      const basketProduct = document.createElement('div');
+      //basketProduct.href = `${window.location.origin}/?details/${item.id}`;
       basketProduct.className = `basket__product`;
       const currentProduct = this.getProductFromId(item.id);
 
-      const basketImg = document.createElement('div');
+      const basketImg = document.createElement('a');
+      basketImg.href = `${window.location.origin}/?details/${item.id}`;
       basketImg.innerHTML = `<img src="${currentProduct.images[0]}">`;
       basketImg.className = 'basket__img';
       const productTitle = document.createElement('div');
@@ -343,7 +342,8 @@ export class BasketManager {
     pageField.innerHTML = this.page.toString();
   }
   private listenerToControlBtn(btn: HTMLElement, id: number, operation: Operation, totalStock: number) {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e: Event) => {
+      e.stopPropagation();
       let index = 0;
       this.basketData.forEach((data, ind) => {
         if (data.id === id) {
