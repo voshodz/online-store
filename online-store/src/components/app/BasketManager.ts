@@ -29,7 +29,9 @@ export class BasketManager {
     this.renderBasketItems();
   }
   private updateLocalStorage() {
-    localStorage.setItem('rs-store', JSON.stringify(this.basketData));
+    if (this.basketData.length > 0) {
+      localStorage.setItem('rs-store', JSON.stringify(this.basketData));
+    }
   }
   public listenerPromoInput() {
     const promoRS = document.querySelector('.basket__promo-1');
