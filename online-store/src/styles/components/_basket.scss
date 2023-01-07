@@ -40,6 +40,8 @@
   }
   &__product {
     user-select: none;
+    text-decoration: none;
+    color: black;
     padding: 10px;
     display: flex;
     justify-content: space-between;

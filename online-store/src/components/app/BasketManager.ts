@@ -83,7 +83,7 @@ export class BasketManager {
     }
     return result;
   }
-  private listenerPromoInput() {
+  public listenerPromoInput() {
     const promoRS = document.querySelector('.basket__promo-1');
     const promoTS = document.querySelector('.basket__promo-2');
     const buyBtn = document.querySelector('.basket__buybtn');
@@ -247,7 +247,8 @@ export class BasketManager {
     }
     itemsWrapper.innerHTML = '';
     data.forEach((item) => {
-      const basketProduct = document.createElement('div');
+      const basketProduct = document.createElement('a');
+      basketProduct.href = `${window.location.origin}/?details/${item.id}`;
       basketProduct.className = `basket__product`;
       const currentProduct = this.getProductFromId(item.id);
 
