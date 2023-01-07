@@ -41,12 +41,11 @@ export class StockFilter implements IFilter {
     }
   }
   dispatchState(stocks: [number, number]) {
-    console.log('отправили данные в State Maanger');
     STATE_MANAGER.dispatchState({
       stock: stocks,
     });
   }
   resetFilter() {
-    console.log('resetted filter by brands');
+    console.log('сброс фильтра');
   }
 }

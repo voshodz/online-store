@@ -19,6 +19,10 @@
               color 0.1s ease-in;
 }
 
+#filter-btn {
+  display: none;
+}
+
 .btn:hover {
   background-color: rgb(78, 78, 190);
   color: #fff;
@@ -90,5 +94,39 @@
   background-color: rgb(255, 149, 27);
   span {
     background-color: #fff;
+  }
+}
+
+#close {
+  display: none;
+  font-size: 30px;
+  justify-self: flex-end;
+  align-self: end;
+  outline: none;
+  background: none;
+  border: none;
+  color: rgb(78, 78, 190);
+  font-weight: bold;
+  width: 50px;
+  padding: 5px;
+  transition: .2s;
+}
+
+#close:hover {
+  color: rgb(255, 149, 27);
+}
+
+@media (max-width: 1225px) {
+  #filter-btn {
+    display: flex;
+  }
+  #close {
+    display: block;
+  }
+}
+
+@media (max-width: 660px) {
+  .card-type {
+    display: none;
   }
 }

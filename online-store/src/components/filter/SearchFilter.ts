@@ -1,5 +1,6 @@
 import { STATE_MANAGER } from '../..';
 import { IFilter } from '../../domain/iFilter';
+import { DualSlider } from '../util/dualSlider/dualSlider';
 
 export class SearchFilter implements IFilter {
   searchInput: HTMLInputElement | null;
@@ -8,23 +9,38 @@ export class SearchFilter implements IFilter {
     this.searchInput = document.querySelector('#search');
     this.search = '';
     this.loadListeners();
+    this.updateSearchFromState(STATE_MANAGER.getSearchState());
   }
 
   private loadListeners() {
     if (this.searchInput) {
       this.searchInput.addEventListener('input', () => {
+        DualSlider.priceChange = true;
+        DualSlider.stockChange = true;
         this.search = this.searchInput?.value;
         this.dispatchState(this.search);
       });
     }
   }
+
+  private updateSearchFromState(search?: string) {
+    if (this.searchInput) {
+      if (search) {
+        this.search = search;
+        this.searchInput.value = search;
+      } else {
+        this.search = '';
+        this.searchInput.value = '';
+      }
+    }
+  }
+
   dispatchState(search?: string) {
-    console.log('отправили данные в State Maanger');
     STATE_MANAGER.dispatchState({
       search: search,
     });
   }
   resetFilter() {
-    console.log('resetted filter by brands');
+    console.log('сброс фильтра');
   }
 }

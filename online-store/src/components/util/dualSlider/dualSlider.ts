@@ -1,13 +1,32 @@
+import { STATE_MANAGER } from '../../..';
+import { FilterState } from '../../../domain/IState';
 import { Product } from '../../../domain/model';
 
 export class DualSlider {
-  priceChange: boolean;
-  stockChange: boolean;
+  static priceChange: boolean;
+  static stockChange: boolean;
   constructor() {
-    this.priceChange = true;
-    this.stockChange = true;
+    DualSlider.priceChange = true;
+    DualSlider.stockChange = true;
     this.addListeners();
     this.setPriceValue();
+  }
+
+  static getStateFromSliders(): FilterState {
+    const fromSliderPrice: HTMLInputElement | null = document.querySelector('#min-price');
+    const toSliderPrice: HTMLInputElement | null = document.querySelector('#max-price');
+    const fromSliderStock: HTMLInputElement | null = document.querySelector('#min-stock');
+    const toSliderStock: HTMLInputElement | null = document.querySelector('#max-stock');
+    if (fromSliderPrice && toSliderPrice && fromSliderStock && toSliderStock) {
+      return {
+        price: DualSlider.getParsed(fromSliderPrice, toSliderPrice),
+        stock: DualSlider.getParsed(fromSliderStock, toSliderStock),
+      };
+    }
+    return {
+      price: [0, 1749],
+      stock: [0, 150],
+    };
   }
 
   addListeners() {
@@ -21,19 +40,19 @@ export class DualSlider {
 
       fromSliderPrice.oninput = () => {
         this.controlFromSlider(fromSliderPrice, toSliderPrice, fromInputPrice);
-        this.priceChange = false;
+        DualSlider.priceChange = false;
       };
       toSliderPrice.oninput = () => {
         this.controlToSlider(fromSliderPrice, toSliderPrice, toInputPrice);
-        this.priceChange = false;
+        DualSlider.priceChange = false;
       };
       fromInputPrice.oninput = () => {
         this.controlFromInput(fromSliderPrice, fromInputPrice, toInputPrice, toSliderPrice);
-        this.priceChange = false;
+        DualSlider.priceChange = false;
       };
       toInputPrice.oninput = () => {
         this.controlToInput(toSliderPrice, fromInputPrice, toInputPrice, toSliderPrice);
-        this.priceChange = false;
+        DualSlider.priceChange = false;
       };
     }
 
@@ -47,19 +66,19 @@ export class DualSlider {
 
       fromSliderStock.oninput = () => {
         this.controlFromSlider(fromSliderStock, toSliderStock, fromInputStock);
-        this.stockChange = false;
+        DualSlider.stockChange = false;
       };
       toSliderStock.oninput = () => {
         this.controlToSlider(fromSliderStock, toSliderStock, toInputStock);
-        this.stockChange = false;
+        DualSlider.stockChange = false;
       };
       fromInputStock.oninput = () => {
         this.controlFromInput(fromSliderStock, fromInputStock, toInputStock, toSliderStock);
-        this.stockChange = false;
+        DualSlider.stockChange = false;
       };
       toInputStock.oninput = () => {
         this.controlToInput(toSliderStock, fromInputStock, toInputStock, toSliderStock);
-        this.stockChange = false;
+        DualSlider.stockChange = false;
       };
     }
   }
@@ -69,20 +88,28 @@ export class DualSlider {
     const toSliderPrice: HTMLInputElement | null = document.querySelector('#max-price');
     const fromInputPrice: HTMLInputElement | null = document.querySelector('#priceFromInput');
     const toInputPrice: HTMLInputElement | null = document.querySelector('#priceToInput');
-    if (fromSliderPrice && toSliderPrice && fromInputPrice && toInputPrice && filteredData && filteredData.length > 0) {
-      let min = filteredData[0].price;
-      let max = filteredData[0].price;
-      filteredData.forEach((prod) => {
-        if (min > prod.price) min = prod.price;
-        if (max < prod.price) max = prod.price;
-      });
-      if (this.priceChange) {
-        fromSliderPrice.value = String(min);
-        fromInputPrice.value = String(min);
-        toSliderPrice.value = String(max);
-        toInputPrice.value = String(max);
+    if (fromSliderPrice && toSliderPrice && fromInputPrice && toInputPrice && filteredData) {
+      if (filteredData.length > 0) {
+        let min = filteredData[0].price;
+        let max = filteredData[0].price;
+        filteredData.forEach((prod) => {
+          if (min > prod.price) min = prod.price;
+          if (max < prod.price) max = prod.price;
+        });
+        if (DualSlider.priceChange) {
+          fromSliderPrice.value = String(min);
+          fromInputPrice.value = String(min);
+          toSliderPrice.value = String(max);
+          toInputPrice.value = String(max);
+        }
+      } else {
+        if (DualSlider.priceChange) {
+          fromSliderPrice.value = String(10);
+          fromInputPrice.value = String(10);
+          toSliderPrice.value = String(1749);
+          toInputPrice.value = String(1749);
+        }
       }
-      this.priceChange = true;
       this.controlToSlider(fromSliderPrice, toSliderPrice, toInputPrice);
       this.controlFromSlider(fromSliderPrice, toSliderPrice, fromInputPrice);
     }
@@ -93,20 +120,28 @@ export class DualSlider {
     const toSliderStock: HTMLInputElement | null = document.querySelector('#max-stock');
     const fromInputStock: HTMLInputElement | null = document.querySelector('#stockFromInput');
     const toInputStock: HTMLInputElement | null = document.querySelector('#stockToInput');
-    if (fromSliderStock && toSliderStock && fromInputStock && toInputStock && filteredData && filteredData.length > 0) {
-      let min = filteredData[0].stock;
-      let max = filteredData[0].stock;
-      filteredData.forEach((prod) => {
-        if (min > prod.stock) min = prod.stock;
-        if (max < prod.stock) max = prod.stock;
-      });
-      if (this.stockChange) {
-        fromSliderStock.value = String(min);
-        toSliderStock.value = String(max);
-        fromInputStock.value = String(min);
-        toInputStock.value = String(max);
+    if (fromSliderStock && toSliderStock && fromInputStock && toInputStock && filteredData) {
+      if (filteredData.length > 0) {
+        let min = filteredData[0].stock;
+        let max = filteredData[0].stock;
+        filteredData.forEach((prod) => {
+          if (min > prod.stock) min = prod.stock;
+          if (max < prod.stock) max = prod.stock;
+        });
+        if (DualSlider.stockChange) {
+          fromSliderStock.value = String(min);
+          toSliderStock.value = String(max);
+          fromInputStock.value = String(min);
+          toInputStock.value = String(max);
+        }
+      } else {
+        if (DualSlider.stockChange) {
+          fromSliderStock.value = String(2);
+          toSliderStock.value = String(150);
+          fromInputStock.value = String(2);
+          toInputStock.value = String(150);
+        }
       }
-      this.stockChange = true;
       this.controlFromSlider(fromSliderStock, toSliderStock, fromInputStock);
       this.controlToSlider(fromSliderStock, toSliderStock, toInputStock);
     }
@@ -118,7 +153,7 @@ export class DualSlider {
     toInput: HTMLInputElement,
     controlSlider: HTMLInputElement
   ) {
-    const [from, to] = this.getParsed(fromInput, toInput);
+    const [from, to] = DualSlider.getParsed(fromInput, toInput);
     this.fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
     if (from > to) {
       fromSlider.value = String(to);
@@ -134,7 +169,7 @@ export class DualSlider {
     toInput: HTMLInputElement,
     controlSlider: HTMLInputElement
   ) {
-    const [from, to] = this.getParsed(fromInput, toInput);
+    const [from, to] = DualSlider.getParsed(fromInput, toInput);
     this.fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
     this.setToggleAccessible(toInput);
     if (from <= to) {
@@ -146,7 +181,7 @@ export class DualSlider {
   }
 
   controlFromSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement, fromInput: HTMLInputElement) {
-    const [from, to] = this.getParsed(fromSlider, toSlider);
+    const [from, to] = DualSlider.getParsed(fromSlider, toSlider);
     this.fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
     if (from > to) {
       fromSlider.value = String(to);
@@ -157,7 +192,7 @@ export class DualSlider {
   }
 
   controlToSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement, toInput: HTMLInputElement) {
-    const [from, to] = this.getParsed(fromSlider, toSlider);
+    const [from, to] = DualSlider.getParsed(fromSlider, toSlider);
     this.fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
     this.setToggleAccessible(toSlider);
     if (from <= to) {
@@ -169,7 +204,7 @@ export class DualSlider {
     }
   }
 
-  getParsed(currentFrom: HTMLInputElement, currentTo: HTMLInputElement) {
+  static getParsed(currentFrom: HTMLInputElement, currentTo: HTMLInputElement): [number, number] {
     const from = parseInt(currentFrom.value, 10);
     const to = parseInt(currentTo.value, 10);
     return [from, to];

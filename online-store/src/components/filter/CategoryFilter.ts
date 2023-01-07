@@ -1,6 +1,7 @@
 import { STATE_MANAGER } from '../..';
 import { IFilter } from '../../domain/iFilter';
 import { CategoryArray, CategoriesType } from '../../domain/model';
+import { DualSlider } from '../util/dualSlider/dualSlider';
 import { createCheckboxes, renderCategoryCheckboxes } from '../views/render';
 
 export class CategoryFilter implements IFilter {
@@ -19,6 +20,8 @@ export class CategoryFilter implements IFilter {
     });
   }
   private checkboxListener(e: Event): void {
+    DualSlider.priceChange = true;
+    DualSlider.stockChange = true;
     const checkInput = e.target as HTMLInputElement;
     this.updateCategoriesArray(checkInput.checked, checkInput.value as CategoriesType);
   }
@@ -44,12 +47,11 @@ export class CategoryFilter implements IFilter {
   }
 
   public dispatchState(categories: CategoriesType[]) {
-    console.log('отправили данные в State Maanger');
     STATE_MANAGER.dispatchState({
       category: categories,
     });
   }
   resetFilter() {
-    console.log('resetted filter by brands');
+    console.log('сброс фильтра');
   }
 }

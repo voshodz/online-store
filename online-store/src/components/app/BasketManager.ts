@@ -88,10 +88,12 @@ export class BasketManager {
     return [totalProducts, price];
   }
   private updateHeaderView() {
-    const basketCount = document.querySelector('.basket__count') as HTMLDivElement;
-    if (basketCount) {
-      const products = this.getTotalProductsAndPrice()[0].toString();
-      basketCount.innerHTML = products;
+    const basketSum = document.querySelector('.basket__count > span') as HTMLSpanElement;
+    const basketCount = document.querySelector('.header__cart > span') as HTMLSpanElement;
+    if (basketCount && basketSum) {
+      const [count, sum] = this.getTotalProductsAndPrice();
+      basketCount.textContent = String(count);
+      basketSum.textContent = sum.toFixed(2);
     }
   }
   private updateSummaryView() {
@@ -257,12 +259,15 @@ export class BasketManager {
   }
   public addToBasket(id: number) {
     const product = sourceData.filter((product) => product.id === id)[0];
-    this.basketData.push({ id: product.id, count: 1, price: product.price });
+    const productPrice = ((product.price * (100 - product.discountPercentage)) / 100).toFixed(2);
+    this.basketData.push({ id: product.id, count: 1, price: parseFloat(productPrice) });
     this.updateLocalStorage();
+    this.updateHeaderView();
   }
   public removeFromBasket(id: number) {
     this.basketData = this.basketData.filter((el) => el.id !== id);
     this.updateLocalStorage();
+    this.updateHeaderView();
   }
   public hasProduct(id: number): boolean {
     if (this.basketData.filter((el) => el.id === id).length > 0) {
