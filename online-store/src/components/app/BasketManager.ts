@@ -17,8 +17,9 @@ export class BasketManager {
   private page: number;
   constructor() {
     this.basketData = [];
-    this.limit = 0;
-    this.page = 1;
+    [this.limit, this.page] = this.getPageAndLimitFromUrl();
+    console.log(this.limit);
+    console.log(this.page);
     const items = localStorage.getItem('rs-store');
     if (items) {
       this.basketData = JSON.parse(items);
@@ -41,7 +42,8 @@ export class BasketManager {
   private listenerInputLimit() {
     const limitInput: HTMLInputElement | null = document.querySelector('.basket__limit');
     if (!limitInput) return;
-    this.limit = parseInt(limitInput.value);
+    limitInput.value = this.limit.toString();
+    //this.limit = parseInt(limitInput.value);
     limitInput.addEventListener('input', (e) => {
       const currentInput = e.target as HTMLInputElement;
       const limitValue = parseInt(currentInput.value);
@@ -53,17 +55,21 @@ export class BasketManager {
       }
       this.limit = parseInt(limitInput.value);
       this.renderBasketItems();
+      this.changeUrl();
     });
     const prevPage: HTMLInputElement | null = document.querySelector('.basket__prevpage');
     const nextPage: HTMLInputElement | null = document.querySelector('.basket__nextpage');
     const pageField: HTMLInputElement | null = document.querySelector('.basket__page');
     if (!prevPage || !nextPage || !pageField) return;
+    pageField.innerHTML = '';
+    pageField.innerHTML = this.page.toString();
     prevPage.addEventListener('click', () => {
       if (this.page > 1) {
         pageField.innerHTML = '';
         this.page -= 1;
         pageField.innerHTML += this.page;
         this.renderBasketItems();
+        this.changeUrl();
       }
     });
     nextPage.addEventListener('click', () => {
@@ -73,8 +79,39 @@ export class BasketManager {
         this.page += 1;
         pageField.innerHTML += this.page;
         this.renderBasketItems();
+        this.changeUrl();
       }
     });
+  }
+  private getPageAndLimitFromUrl(): [number, number] {
+    const paramsString = window.location.href.slice(window.location.origin.length + 1);
+    const query = paramsString.split('+')[1];
+    let resultLimit = 3;
+    let resultPage = 1;
+    if (!query) {
+      return [resultLimit, resultPage];
+    }
+    const params = new URLSearchParams(query);
+    const arr: Array<string[]> = [];
+    for (const p of params) {
+      arr.push(p);
+    }
+    arr.forEach((item) => {
+      switch (item[0]) {
+        case 'limit':
+          resultLimit = parseInt(item[1]);
+          break;
+        case 'page':
+          resultPage = parseInt(item[1]);
+          break;
+        default:
+          break;
+      }
+    });
+    return [resultLimit, resultPage];
+  }
+  private changeUrl() {
+    window.history.replaceState({}, '', `/?basket+limit=${this.limit}&page=${this.page}`);
   }
   private getTotalPages(totalItems: number, limit: number): number {
     let result = Math.floor(totalItems / limit);
