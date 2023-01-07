@@ -43,7 +43,7 @@ export class BasketManager {
         this.updateAppliedPromoView();
       });
       buyBtn.addEventListener('click', () => {
-        alert('КНОПКА МОДАЛЬНОГО ОКНА');
+        MODAL_WINDOW.showModal();
       });
     }
     const promoInput: HTMLInputElement | null = document.querySelector('.basket__promo-input');

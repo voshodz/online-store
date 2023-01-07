@@ -46,4 +46,3 @@ urlGetState();
 
 const basket = new BasketManager();
 export const MODAL_WINDOW = new Modal();
-
