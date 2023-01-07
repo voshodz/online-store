@@ -20,15 +20,19 @@ export default class Modal {
   statePhone: boolean;
   stateAddress: boolean;
   stateEmail: boolean;
+  stateCardNumber: boolean;
+  stateExpDate: boolean;
+  stateCVV: boolean;
+  stateDueDateField: string;
   constructor() {
-    /*this.stateName = false;
+    this.stateName = false;
     this.statePhone = false;
     this.stateAddress = false;
-    this.stateEmail = false;*/
-    this.stateName = true;
-    this.statePhone = true;
-    this.stateAddress = true;
-    this.stateEmail = true;
+    this.stateEmail = false;
+    this.stateCardNumber = false;
+    this.stateExpDate = false;
+    this.stateCVV = false;
+    this.stateDueDateField = '';
     this.modalWindow = document.querySelector('.modal');
     this.modalContent = document.querySelector('.modal__content');
     this.modalName = document.querySelector('.modal__name');
@@ -59,7 +63,6 @@ export default class Modal {
       }
       this.modalWindow.classList.remove('active');
       this.modalContent.classList.remove('active');
-      //this.modalContent.innerHTML = '';
     });
     this.modalContent.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -74,6 +77,10 @@ export default class Modal {
     });
     this.modalAdress.addEventListener('input', (e) => {
       const inputElement = e.target as HTMLInputElement;
+      this.validateAddress(inputElement.value);
+    });
+    this.modalEmail.addEventListener('input', (e) => {
+      const inputElement = e.target as HTMLInputElement;
       this.validateEmail(inputElement.value);
     });
     this.modalConfirmBtn.addEventListener('click', () => {
@@ -85,11 +92,19 @@ export default class Modal {
       }
       const inputElement = e.target as HTMLInputElement;
       const inputString = inputElement.value;
-      if (inputString.length === 17) {
+      this.validateCardNumber(inputString);
+      const lastChar = inputString.length - 1;
+      if (inputString[lastChar] && !inputString[lastChar].match('^[0-9]+$')) {
         inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+        this.validateCardNumber(inputElement.value);
         return;
       }
-      this.validateEmail(inputElement.value);
+      if (inputString.length === 17) {
+        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+        this.validateCardNumber(inputElement.value);
+        return;
+      }
+      this.validateCardNumber(inputElement.value);
     });
     this.modalCardDueDate.addEventListener('input', (e) => {
       if (!this.modalCardDueDate) {
@@ -97,9 +112,23 @@ export default class Modal {
       }
       const inputElement = e.target as HTMLInputElement;
       const inputString = inputElement.value;
-      if (inputString.length === 2) {
+      this.stateDueDateField = inputString;
+      this.validateExpirationDate(inputString);
+      if (inputString.length === 6) {
+        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+        this.validateExpirationDate(inputElement.value);
+        return;
+      }
+      const lastChar = this.stateDueDateField.length - 1;
+      if (inputString[lastChar] && !inputString[lastChar].match('^[0-9]+$')) {
+        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+        this.validateExpirationDate(inputElement.value);
+        return;
+      }
+      if (inputString.length === 2 && !inputString.includes('/')) {
         inputElement.value += '/';
       }
+      this.validateExpirationDate(inputElement.value);
     });
     this.modalCardCVV.addEventListener('input', (e) => {
       if (!this.modalCardCVV) {
@@ -107,8 +136,15 @@ export default class Modal {
       }
       const inputElement = e.target as HTMLInputElement;
       const inputString = inputElement.value;
+      this.validateCVV(inputElement.value);
+      if (inputString[inputString.length - 1] && !inputString[inputString.length - 1].match('^[0-9]+$')) {
+        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+        this.validateCVV(inputElement.value);
+        return;
+      }
       if (inputString.length === 4) {
         inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+        this.validateCVV(inputElement.value);
         return;
       }
     });
@@ -134,7 +170,6 @@ export default class Modal {
   public validatePhone(input: string) {
     if (input[0] !== '+' || !input) {
       this.statePhone = false;
-      console.log(this.statePhone);
       return;
     }
     const numbers = input.slice(1);
@@ -143,7 +178,6 @@ export default class Modal {
     } else {
       this.statePhone = false;
     }
-    console.log(this.statePhone);
   }
   public validateAddress(input: string) {
     if (!input) {
@@ -168,22 +202,47 @@ export default class Modal {
     } else {
       this.stateEmail = false;
     }
-    //console.log(this.stateEmail);
   }
   private validateCardNumber(input: string) {
-    console.log(input);
+    if (input.length === 16) {
+      this.stateCardNumber = true;
+    } else {
+      this.stateCardNumber = false;
+    }
+  }
+  private validateCVV(input: string) {
+    if (input.length === 3) {
+      this.stateCVV = true;
+    } else {
+      this.stateCVV = false;
+    }
+  }
+  private validateExpirationDate(input: string) {
+    if (input.length === 5) {
+      const dateString = input.split('/');
+      dateString[0] = dateString[0].replace('', '0');
+      if (dateString[0] && dateString[1] && +dateString[0] >= 1 && +dateString[0] <= 12) this.stateExpDate = true;
+    } else {
+      this.stateExpDate = false;
+    }
   }
   printstateName() {
     console.log(this.stateName);
   }
   private confirmForm() {
-    console.log('confirmed!!!');
-    console.log(this.stateName);
-    console.log(this.statePhone);
-    console.log(this.stateEmail);
-    console.log(this.stateAddress);
+    this.showErrors();
     const container = document.querySelector('.content');
-    if (this.stateName && this.statePhone && this.modalEmail && this.modalAdress) {
+    if (
+      this.modalEmail &&
+      this.modalAdress &&
+      this.stateName &&
+      this.statePhone &&
+      this.stateEmail &&
+      this.stateAddress &&
+      this.stateCardNumber &&
+      this.stateExpDate &&
+      this.stateCVV
+    ) {
       setTimeout(() => {
         this.cleanLocalStorage();
         if (container) {
@@ -193,13 +252,60 @@ export default class Modal {
             basketCount.innerHTML = `0`;
           }
         }
-        //window.location.href = '/';
+        window.location.href = '/';
       }, 1000);
     }
   }
   private cleanLocalStorage() {
-    console.log('clean storage');
     localStorage.removeItem('rs-store');
+  }
+  private showErrors() {
+    const errorFields = document.querySelectorAll('.error');
+    errorFields.forEach((item) => {
+      item.classList.add('hidden');
+    });
+    if (!this.stateName) {
+      const nameError = document.querySelector('.error__name');
+      if (nameError) {
+        nameError.classList.remove('hidden');
+      }
+    }
+    if (!this.statePhone) {
+      const phoneError = document.querySelector('.error__phone');
+      if (phoneError) {
+        phoneError.classList.remove('hidden');
+      }
+    }
+    if (!this.stateAddress) {
+      const addressError = document.querySelector('.error__adress');
+      if (addressError) {
+        addressError.classList.remove('hidden');
+      }
+    }
+    if (!this.stateEmail) {
+      const emailError = document.querySelector('.error__email');
+      if (emailError) {
+        emailError.classList.remove('hidden');
+      }
+    }
+    if (!this.stateCardNumber) {
+      const cardNumberError = document.querySelector('.error__cardnumber');
+      if (cardNumberError) {
+        cardNumberError.classList.remove('hidden');
+      }
+    }
+    if (!this.stateExpDate) {
+      const expirationError = document.querySelector('.error__duedate');
+      if (expirationError) {
+        expirationError.classList.remove('hidden');
+      }
+    }
+    if (!this.stateCVV) {
+      const cvvError = document.querySelector('.error__cvv');
+      if (cvvError) {
+        cvvError.classList.remove('hidden');
+      }
+    }
   }
   public showModal() {
     if (!this.modalWindow || !this.modalContent) {
