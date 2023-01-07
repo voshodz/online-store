@@ -6,6 +6,8 @@ body {
   background: #e2f2ff;
   font-family: "Verdana", sans-serif;
   margin: 0;
+  height: 100%;
+  min-height: 100vh;
 }
 
 h1 {
@@ -17,5 +19,8 @@ h1 {
 }
 
 .root {
+  display: flex;
+  flex-direction: column;
   padding: 0 10px;
+  padding-bottom: 20px;
 }

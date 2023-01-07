@@ -53,10 +53,19 @@ export class StateManager {
         page: PageEnum.ProductDetailPage,
       });
       const query = window.location.href.slice(window.location.origin.length + 1);
-      APP_PAGES.renderProductDetails(query);
+      const temp = query.split('/');
+      APP_PAGES.renderProductDetails(temp.pop());
+      return;
+    }
+    if (resultFromUrl === '404') {
+      this.setState({
+        page: PageEnum.NotFound,
+      });
+      APP_PAGES.renderPage404();
       return;
     }
     if (typeof resultFromUrl === 'object') {
+      APP_PAGES.renderMain();
       this.state = { ...this.state, ...resultFromUrl };
       updateSortBoxFromState(this.state);
       const filteredData = filterAllData(this.state);

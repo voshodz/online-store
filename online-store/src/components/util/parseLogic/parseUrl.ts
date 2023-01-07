@@ -8,10 +8,15 @@ export const urlGetState = (): FilterState | string => {
   if (paramsString === '') {
     return 'root';
   }
-  if (paramsString.includes('basket')) {
+  if (paramsString === '?basket') {
     return 'basket';
   }
-  if (paramsString.includes('details')) {
+  if (paramsString.includes('basket')) {
+    return '404';
+  }
+  const reg = /^\?details\/\d+$/i;
+  console.log(reg.test(paramsString));
+  if (reg.test(paramsString)) {
     return 'details';
   }
   const params = new URLSearchParams(paramsString);

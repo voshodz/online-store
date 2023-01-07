@@ -16,7 +16,7 @@
 
 
 
-      <div class="wrapper">
+      <!-- <div class="wrapper">
         <aside class="aside">
           <button id="close">X</button>
           <button class="btn" id="reset-filter">Reset FIlter</button>
@@ -102,8 +102,55 @@
             <a class="btn details">Details</a>
           </div>
         </div>
-      </template>
+      </template> -->
+
+      <div class="details">
+        <div class="bread-crumbs">
+          <a class="bread-crumbs__item" href="/">STORE</a>
+          <div class="bread-crumbs__separator">/</div>
+          <a class="bread-crumbs__item">CATEGORY</a>
+          <div class="bread-crumbs__separator">/</div>
+          <a class="bread-crumbs__item">BRAND</a>
+          <div class="bread-crumbs__separator">/</div>
+          <a class="bread-crumbs__item">NAME</a>
+        </div>
+  
+        <div class="product">
+          <div class="product__title">
+            <div class="product__name">Name</div>
+            <div class="product__rating">⭐<span>4.9</span></div>
+          </div>
+          <div class="product__content">
+            <div class="product__images">
+              <div class="product__images-list">
+                <template id="product__images-item">
+                  <div class="product__images-item">
+                    <img src="" alt="">
+                  </div>
+                </template>
+              </div>
+              <div class="product__current-image">
+                <img src="" alt="">
+              </div>
+              <div class="product__details">
+                
+                <div class="product__description"></div>
+                <div class="product__category">Category: Category</div>
+                <div class="product__brand">Brand: Brand</div>
+                <div class="product__stock">Stock: Number</div>
+                
+              </div>
+              <div class="product__column">
+                <div class="product__price">$15.35<span>$17.39</span></div>
+                <button class="btn">ADD TO CART</button>
+                <button class="btn buy">Buy Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </main>
+    
   </body>
 </html>

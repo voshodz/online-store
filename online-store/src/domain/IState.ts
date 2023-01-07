@@ -11,6 +11,7 @@ export enum PageEnum {
   MainPage = 'main',
   BasketPage = 'basket',
   ProductDetailPage = 'details',
+  NotFound = '404',
 }
 export interface FilterState {
   filteredArray?: Product[];

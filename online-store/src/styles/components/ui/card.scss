@@ -8,7 +8,8 @@
   align-items: center;
   overflow: hidden;
   border-radius: 10px;
-  border: 2px solid rgb(78, 78, 190);
+  box-shadow: 0 4px 8px #333;
+  padding-bottom: 10px;
 }
 
 .card__img {
@@ -16,7 +17,7 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
-  border-bottom: 2px solid rgb(78, 78, 190);
+  box-shadow: 0 2px 4px #333;
   width: 100%;
   background-color: #fff;
   border-radius: 5px;
@@ -84,11 +85,11 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  padding: 10px 5px 3px;
+  padding: 10px 15px 3px;
 }
 
 .product-card.selected {
-  border-color: rgb(255, 149, 27);
+  box-shadow: 0 4px 10px rgb(255, 149, 27);
 
   .btn {
     border-color: rgb(255, 149, 27);
@@ -96,10 +97,6 @@
 
   .btn:hover {
     background-color: rgb(255, 149, 27);
-  }
-
-  .card__img {
-    border-color: rgb(255, 149, 27);
   }
 }
 
