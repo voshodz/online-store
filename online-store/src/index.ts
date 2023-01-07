@@ -3,6 +3,7 @@
 import '../src/styles/index.scss';
 import { App } from './components/app/App';
 import { BasketManager } from './components/app/BasketManager';
+import Modal from './components/app/Modal';
 import { StateManager } from './components/app/StateManager';
 import { BrandFilter } from './components/filter/BrandFilter';
 import { CategoryFilter } from './components/filter/CategoryFilter';
@@ -25,7 +26,6 @@ const categoryHandler = new CategoryFilter();
 const priceFilter = new PriceFilter();
 const stockFilter = new StockFilter();
 const searchFilter = new SearchFilter();
-
 const sliders = new DualSlider();
 
 STATE_MANAGER.addCallback(() => {
@@ -43,3 +43,7 @@ window.onpopstate = () => {
   console.log('откручивание истории, не будем обрабатывать');
 };
 urlGetState();
+
+const basket = new BasketManager();
+export const MODAL_WINDOW = new Modal();
+
