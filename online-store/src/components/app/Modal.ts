@@ -236,9 +236,8 @@ export default class Modal {
   private confirmForm() {
     this.showErrors();
     const container = document.querySelector('.root');
-    const a = true;
     if (
-      /*this.modalEmail &&
+      this.modalEmail &&
       this.modalAdress &&
       this.stateName &&
       this.statePhone &&
@@ -246,8 +245,7 @@ export default class Modal {
       this.stateAddress &&
       this.stateCardNumber &&
       this.stateExpDate &&
-      this.stateCVV*/
-      a
+      this.stateCVV
     ) {
       this.cleanLocalStorage();
       if (container) {
@@ -264,7 +262,7 @@ export default class Modal {
       }
       setTimeout(() => {
         window.location.href = '/';
-      }, 5000);
+      }, 3500);
     }
   }
   private cleanLocalStorage() {
