@@ -8,12 +8,12 @@ export const urlGetState = (): FilterState | string => {
   if (paramsString === '') {
     return 'root';
   }
-  if (paramsString === '?basket') {
+  if (paramsString.includes('?basket')) {
     return 'basket';
   }
-  if (paramsString.includes('basket')) {
+  /*if (paramsString.includes('basket')) {
     return '404';
-  }
+  }*/
   const reg = /^\?details\/\d+$/i;
   console.log(reg.test(paramsString));
   if (reg.test(paramsString)) {

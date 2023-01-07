@@ -105,7 +105,7 @@ export class BasketManager {
     if (basketTotalPrice && basketTotalProducs) {
       const totalData = this.getTotalProductsAndPrice();
       basketTotalProducs.innerHTML = `Products: ${totalData[0]}`;
-      basketTotalPrice.innerHTML = `Total price: ${totalData[1]}$`;
+      basketTotalPrice.innerHTML = `Total price: ${totalData[1].toFixed(2)}$`;
     }
   }
   private getDiscount(): number {
@@ -185,7 +185,7 @@ export class BasketManager {
     }
     itemsWrapper.innerHTML = '';
 
-    this.basketData.forEach((item) => {
+    this.getPaginationData(this.basketData).forEach((item) => {
       const basketProduct = document.createElement('div');
       basketProduct.className = `basket__product`;
       const currentProduct = this.getProductFromId(item.id);
@@ -229,6 +229,12 @@ export class BasketManager {
 
       itemsWrapper.appendChild(basketProduct);
     });
+  }
+  private getPaginationData(items: BasketProducts[]): BasketProducts[] {
+    const limit = 2;
+    const page = 1;
+    const offset = limit * (page - 1);
+    return items.slice(offset, limit + offset);
   }
   private listenerToControlBtn(btn: HTMLElement, id: number, operation: Operation, totalStock: number) {
     btn.addEventListener('click', () => {

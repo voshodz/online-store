@@ -48,7 +48,8 @@ export const basketPageHTML = `<div class="basket__wrapper">
 </div>
 <div class="basket__products">
   <div class="basket__header">
-    Products in Cart
+    <span>Products in Cart</span>
+    <input type="number" value="3" class="basket__limit"></input>
   </div>
   <div class="basket__items">
     <div class="basket__product">
