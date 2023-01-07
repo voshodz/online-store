@@ -1,5 +1,8 @@
+import { Product } from '../../domain/model';
+import { sourceData } from '../../domain/source';
 import { basketPageHTML } from './pages/basket';
 import { catalogPageHTML } from './pages/catalog';
+import { DetailsPage, updateProductInfo } from './pages/details';
 
 export class App {
   contentContainer: HTMLDivElement | null;
@@ -11,7 +14,6 @@ export class App {
     if (!this.contentContainer) {
       return;
     }
-    this.contentContainer.innerHTML = '';
     this.contentContainer.innerHTML = catalogPageHTML;
   }
 
@@ -22,12 +24,25 @@ export class App {
     this.contentContainer.innerHTML = basketPageHTML;
   }
 
-  public renderProductDetails(/**id of product */ id: string) {
-    console.log('product details');
+  public renderProductDetails(id?: string) {
     if (!this.contentContainer) {
       return;
     }
     this.contentContainer.innerHTML = '';
-    this.contentContainer.innerHTML = `<h1>страница для карточки ${id}</h1>`;
+    console.log(id);
+    const product: Product | undefined = sourceData.find((el) => el.id === Number(id));
+    if (product) {
+      this.contentContainer.innerHTML = DetailsPage;
+      updateProductInfo(product);
+    } else {
+      this.renderPage404();
+    }
+  }
+
+  public renderPage404() {
+    if (!this.contentContainer) {
+      return;
+    }
+    this.contentContainer.innerHTML = '404';
   }
 }

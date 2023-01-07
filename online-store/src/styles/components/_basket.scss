@@ -73,8 +73,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 48px;
-    color: orangered;
+    font-size: 26px;
+    color: rgb(78, 78, 190);
     font-weight: 700;
   }
   &__summary {
@@ -182,5 +182,12 @@
   }
   &__textline {
     text-decoration: line-through;
+  }
+}
+
+
+@media (max-width: 720px) {
+  .basket__count {
+    font-size: 16px;
   }
 }

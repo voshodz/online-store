@@ -41,12 +41,11 @@ export class PriceFilter implements IFilter {
     }
   }
   dispatchState(prices: [number, number]) {
-    console.log('отправили данные в State Maanger');
     STATE_MANAGER.dispatchState({
       price: prices,
     });
   }
   resetFilter() {
-    console.log('resetted filter by brands');
+    console.log('сброс фильтра');
   }
 }

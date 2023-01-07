@@ -9,18 +9,12 @@ body {
   background: #e2f2ff;
   font-family: "Verdana", sans-serif;
   margin: 0;
+  height: 100%;
+  min-height: 100vh;
 }
 
 h1 {
   color: red;
-}
-
-.products-items {
-  display: grid;
-  justify-content: center;
-  gap: 10px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  width: 100%;
 }
 
 .hidden {
@@ -28,5 +22,8 @@ h1 {
 }
 
 .root {
+  display: flex;
+  flex-direction: column;
   padding: 0 10px;
+  padding-bottom: 20px;
 }

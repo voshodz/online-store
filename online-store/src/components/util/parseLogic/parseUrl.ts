@@ -8,10 +8,15 @@ export const urlGetState = (): FilterState | string => {
   if (paramsString === '') {
     return 'root';
   }
-  if (paramsString.includes('basket')) {
+  if (paramsString === '?basket') {
     return 'basket';
   }
-  if (paramsString.includes('details')) {
+  if (paramsString.includes('basket')) {
+    return '404';
+  }
+  const reg = /^\?details\/\d+$/i;
+  console.log(reg.test(paramsString));
+  if (reg.test(paramsString)) {
     return 'details';
   }
   const params = new URLSearchParams(paramsString);
@@ -167,8 +172,8 @@ export const urlUpdateFromState = (state: FilterState) => {
   urlQuery += getQueryParamPrice(state.price);
   urlQuery += getQueryParamStock(state.stock);
   urlQuery += getQueryParamSort(state.sort);
+  urlQuery += getQueryParamBig(state.big);
   urlQuery += getQueryParamSearch(state.search);
-  console.log(urlQuery);
   if (urlQuery[1] === '&') {
     urlQuery = urlQuery.replace('&', '');
   }
@@ -234,6 +239,14 @@ const getQueryParamSort = (sort: SortType | undefined): string => {
   let result = '';
   if (sort != SortType.default) {
     result = `&sort=${sort}`;
+  }
+  return result;
+};
+
+const getQueryParamBig = (big: boolean | undefined): string => {
+  let result = '';
+  if (big) {
+    result = `&big=${big}`;
   }
   return result;
 };

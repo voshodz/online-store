@@ -1,6 +1,9 @@
 export const catalogPageHTML = `
       <div class="wrapper">
         <aside class="aside">
+        <button id="close">X</button>
+        <button class="btn" id="reset-filter">Reset FIlter</button>
+          <button class="btn" id="copy-link">Copy Link</button>
         <div class="brand">
           <div class="brand__header">Brands</div>
           <div class="brand__content"></div>
@@ -44,11 +47,10 @@ export const catalogPageHTML = `
             </div>
           </div>  
         </div>
-          <button class="btn">click me</button>
         </aside>
   
         <div class="main">
-        <div class="main__header">
+          <div class="main__header">
             <select id="sortBox">
               <option value="" selected>Default</option>
               <option value="priceasc">Sort by price ASC</option>
@@ -58,7 +60,12 @@ export const catalogPageHTML = `
             </select>
             <span id="foundCount">Found:</span>
             <input type="text" placeholder="Search" id="search" />
+            <div class="card-type">
+              <button class="card-type__btn-list"><span></span><span></span><span></span><span></span></button>
+              <button class="card-type__btn-blocks active"><span></span><span></span><span></span><span></span></button>
+            </div>
           </div>
+          <button class="btn" id="filter-btn">Фильтрация</button>
           <div class="products-items"></div>
         </div>
 
