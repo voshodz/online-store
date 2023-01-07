@@ -22,7 +22,7 @@
     justify-content: flex-start;
     gap: 10px;
     align-items: center;
-    font-size: 24px;
+    font-size: 18px;
     color: orange;
     background-color: #181a1c;
     border: 1px solid orange;
@@ -32,6 +32,10 @@
     width: 50px;
     height: 30px;
     font-size: 18px;
+  }
+  &__prevpage, &__nextpage {
+    border: 1px solid orangered;
+    user-select: none;
   }
   &__product {
     padding: 10px;

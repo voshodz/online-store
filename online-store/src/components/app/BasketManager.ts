@@ -13,12 +13,17 @@ enum Operation {
 }
 export class BasketManager {
   private basketData: BasketProducts[];
+  private limit: number;
+  private page: number;
   constructor() {
     this.basketData = [];
+    this.limit = 0;
+    this.page = 1;
     const items = localStorage.getItem('rs-store');
     if (items) {
       this.basketData = JSON.parse(items);
     }
+    this.listenerInputLimit();
     this.updateDataHandler();
     this.listenerPromoInput();
   }
@@ -33,7 +38,52 @@ export class BasketManager {
       localStorage.setItem('rs-store', JSON.stringify(this.basketData));
     }
   }
-  public listenerPromoInput() {
+  private listenerInputLimit() {
+    const limitInput: HTMLInputElement | null = document.querySelector('.basket__limit');
+    if (!limitInput) return;
+    this.limit = parseInt(limitInput.value);
+    limitInput.addEventListener('input', (e) => {
+      const currentInput = e.target as HTMLInputElement;
+      const limitValue = parseInt(currentInput.value);
+      if (limitValue < 1) {
+        limitInput.value = '1';
+      }
+      if (limitValue > this.basketData.length) {
+        limitInput.value = `${this.basketData.length}`;
+      }
+      this.limit = parseInt(limitInput.value);
+      this.renderBasketItems();
+    });
+    const prevPage: HTMLInputElement | null = document.querySelector('.basket__prevpage');
+    const nextPage: HTMLInputElement | null = document.querySelector('.basket__nextpage');
+    const pageField: HTMLInputElement | null = document.querySelector('.basket__page');
+    if (!prevPage || !nextPage || !pageField) return;
+    prevPage.addEventListener('click', () => {
+      if (this.page > 1) {
+        pageField.innerHTML = '';
+        this.page -= 1;
+        pageField.innerHTML += this.page;
+        this.renderBasketItems();
+      }
+    });
+    nextPage.addEventListener('click', () => {
+      const totalPages = this.getTotalPages(this.basketData.length, this.limit);
+      if (this.page < totalPages) {
+        pageField.innerHTML = '';
+        this.page += 1;
+        pageField.innerHTML += this.page;
+        this.renderBasketItems();
+      }
+    });
+  }
+  private getTotalPages(totalItems: number, limit: number): number {
+    let result = Math.floor(totalItems / limit);
+    if (totalItems % limit > 0) {
+      result += 1;
+    }
+    return result;
+  }
+  private listenerPromoInput() {
     const promoRS = document.querySelector('.basket__promo-1');
     const promoTS = document.querySelector('.basket__promo-2');
     const buyBtn = document.querySelector('.basket__buybtn');
@@ -179,13 +229,24 @@ export class BasketManager {
     }
   }
   private renderBasketItems() {
+    const dataCurrentPage = this.getPaginatedData(this.basketData);
+    if (dataCurrentPage.length === 0) {
+      if (this.page > 1) {
+        this.page -= 1;
+      }
+      this.updatePageField();
+      this.drawData(this.getPaginatedData(this.basketData));
+      return;
+    }
+    this.drawData(dataCurrentPage);
+  }
+  private drawData(data: BasketProducts[]) {
     const itemsWrapper: HTMLElement | null = document.querySelector('.basket__items');
     if (!itemsWrapper) {
       return;
     }
     itemsWrapper.innerHTML = '';
-
-    this.getPaginationData(this.basketData).forEach((item) => {
+    data.forEach((item) => {
       const basketProduct = document.createElement('div');
       basketProduct.className = `basket__product`;
       const currentProduct = this.getProductFromId(item.id);
@@ -230,11 +291,18 @@ export class BasketManager {
       itemsWrapper.appendChild(basketProduct);
     });
   }
-  private getPaginationData(items: BasketProducts[]): BasketProducts[] {
-    const limit = 2;
-    const page = 1;
+  private getPaginatedData(items: BasketProducts[]): BasketProducts[] {
+    const limit = this.limit;
+    const page = this.page;
     const offset = limit * (page - 1);
-    return items.slice(offset, limit + offset);
+    const result = items.slice(offset, limit + offset);
+    return result;
+  }
+  private updatePageField() {
+    const pageField = document.querySelector('.basket__page');
+    if (!pageField) return;
+    pageField.innerHTML = ``;
+    pageField.innerHTML = this.page.toString();
   }
   private listenerToControlBtn(btn: HTMLElement, id: number, operation: Operation, totalStock: number) {
     btn.addEventListener('click', () => {
