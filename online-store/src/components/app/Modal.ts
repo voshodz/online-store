@@ -258,14 +258,15 @@ export default class Modal {
         this.modalWindow.classList.remove('active');
         this.modalContent.classList.remove('active');
         container.innerHTML = `<div style="margin-top: 100px;font-size: 48px;text-align: center;">Покупка прошла успешно</div>`;
-        const basketCount = document.querySelector('.basket__count') as HTMLDivElement;
-        if (basketCount) {
-          basketCount.innerHTML = `0`;
+        const basketCount: HTMLDivElement | null = document.querySelector('.basket__count');
+        const headerCart: HTMLDivElement | null = document.querySelector('.header__cart > span');
+        if (basketCount && headerCart) {
+          basketCount.innerHTML = `$0.00`;
+          headerCart.textContent = '0';
         }
       }
       setTimeout(() => {
-        //window.location.href = '/';
-        console.log('asdf');
+        window.location.assign('/');
       }, 3500);
     }
   }

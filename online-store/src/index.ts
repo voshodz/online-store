@@ -13,7 +13,7 @@ import { StockFilter } from './components/filter/StockFilter';
 import { initTypeBtns } from './components/util/cardLogic/cardLogic';
 import { DualSlider } from './components/util/dualSlider/dualSlider';
 import { urlGetState } from './components/util/parseLogic/parseUrl';
-import { initSortBox, updateSortBoxFromState } from './components/util/sortLogic/sortData';
+import { initSortBox } from './components/util/sortLogic/sortData';
 import { renderBrandCheckboxes, renderCategoryCheckboxes } from './components/views/render';
 import { sourceData } from './domain/source';
 
