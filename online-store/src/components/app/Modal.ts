@@ -254,14 +254,15 @@ export default class Modal {
         }
         this.modalWindow.classList.remove('active');
         this.modalContent.classList.remove('active');
-        container.innerHTML = '<h1 style="text-align: center;">Все прошло успешно!!</h1>';
+        container.innerHTML = `<div style="margin-top: 100px;font-size: 48px;text-align: center;">Покупка прошла успешно</div>`;
         const basketCount = document.querySelector('.basket__count') as HTMLDivElement;
         if (basketCount) {
           basketCount.innerHTML = `0`;
         }
       }
       setTimeout(() => {
-        window.location.href = '/';
+        //window.location.href = '/';
+        console.log('asdf');
       }, 3500);
     }
   }
