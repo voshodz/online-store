@@ -49,11 +49,11 @@ export const basketPageHTML = `<div class="basket__wrapper">
 <div class="basket__products">
   <div class="basket__header">
     <span>Products in Cart</span>
-    <span>
+    <span style="display: flex;gap: 5px;">
       <span >Limit: </span>
       <input type="number" value="3" class="basket__limit"></input>
     </span>
-    <span>
+    <span style="display: flex;align-items:center;gap:5px;">
       <span>Page: </span>
       <span class="basket__prevpage"> << </span>
       <span class="basket__page">1</span>
