@@ -40,9 +40,9 @@ export class StateManager {
       return;
     }
     if (resultFromUrl === 'basket') {
-      this.setState({
+      /*this.setState({
         page: PageEnum.BasketPage,
-      });
+      });*/
       APP_PAGES.renderBasket();
       BASKET_MANAGER.updateDataHandler();
       BASKET_MANAGER.listenerPromoInput();

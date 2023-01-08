@@ -13,12 +13,16 @@ enum Operation {
 }
 export class BasketManager {
   private basketData: BasketProducts[];
+  private limit: number;
+  private page: number;
   constructor() {
     this.basketData = [];
+    [this.limit, this.page] = this.getPageAndLimitFromUrl();
     const items = localStorage.getItem('rs-store');
     if (items) {
       this.basketData = JSON.parse(items);
     }
+    this.listenerInputLimit();
     this.updateDataHandler();
     this.listenerPromoInput();
   }
@@ -29,9 +33,94 @@ export class BasketManager {
     this.renderBasketItems();
   }
   private updateLocalStorage() {
+    if (this.basketData.length === 0) {
+      localStorage.removeItem('rs-store');
+      return;
+    }
     if (this.basketData.length > 0) {
       localStorage.setItem('rs-store', JSON.stringify(this.basketData));
     }
+  }
+  private listenerInputLimit() {
+    const limitInput: HTMLInputElement | null = document.querySelector('.basket__limit');
+    if (!limitInput) return;
+    limitInput.value = this.limit.toString();
+    //this.limit = parseInt(limitInput.value);
+    limitInput.addEventListener('input', (e) => {
+      const currentInput = e.target as HTMLInputElement;
+      const limitValue = parseInt(currentInput.value);
+      if (limitValue < 1) {
+        limitInput.value = '1';
+      }
+      if (limitValue > this.basketData.length) {
+        limitInput.value = `${this.basketData.length}`;
+      }
+      this.limit = parseInt(limitInput.value);
+      this.renderBasketItems();
+      this.changeUrl();
+    });
+    const prevPage: HTMLInputElement | null = document.querySelector('.basket__prevpage');
+    const nextPage: HTMLInputElement | null = document.querySelector('.basket__nextpage');
+    const pageField: HTMLInputElement | null = document.querySelector('.basket__page');
+    if (!prevPage || !nextPage || !pageField) return;
+    pageField.innerHTML = '';
+    pageField.innerHTML = this.page.toString();
+    prevPage.addEventListener('click', () => {
+      if (this.page > 1) {
+        pageField.innerHTML = '';
+        this.page -= 1;
+        pageField.innerHTML += this.page;
+        this.renderBasketItems();
+        this.changeUrl();
+      }
+    });
+    nextPage.addEventListener('click', () => {
+      const totalPages = this.getTotalPages(this.basketData.length, this.limit);
+      if (this.page < totalPages) {
+        pageField.innerHTML = '';
+        this.page += 1;
+        pageField.innerHTML += this.page;
+        this.renderBasketItems();
+        this.changeUrl();
+      }
+    });
+  }
+  private getPageAndLimitFromUrl(): [number, number] {
+    const paramsString = window.location.href.slice(window.location.origin.length + 1);
+    const query = paramsString.split('+')[1];
+    let resultLimit = 3;
+    let resultPage = 1;
+    if (!query) {
+      return [resultLimit, resultPage];
+    }
+    const params = new URLSearchParams(query);
+    const arr: Array<string[]> = [];
+    for (const p of params) {
+      arr.push(p);
+    }
+    arr.forEach((item) => {
+      switch (item[0]) {
+        case 'limit':
+          resultLimit = parseInt(item[1]);
+          break;
+        case 'page':
+          resultPage = parseInt(item[1]);
+          break;
+        default:
+          break;
+      }
+    });
+    return [resultLimit, resultPage];
+  }
+  private changeUrl() {
+    window.history.replaceState({}, '', `/?basket+limit=${this.limit}&page=${this.page}`);
+  }
+  private getTotalPages(totalItems: number, limit: number): number {
+    let result = Math.floor(totalItems / limit);
+    if (totalItems % limit > 0) {
+      result += 1;
+    }
+    return result;
   }
   public listenerPromoInput() {
     const promoRS = document.querySelector('.basket__promo-1');
@@ -179,23 +268,60 @@ export class BasketManager {
     }
   }
   private renderBasketItems() {
+    if (this.basketData.length === 0) {
+      const basketWrapper = document.querySelector('.basket__wrapper');
+      if (!basketWrapper) return;
+      basketWrapper.innerHTML = `<div style="margin-top: 100px;font-size: 48px;">Корзина пуста</div>`;
+      return;
+    }
+
+    const dataCurrentPage = this.getPaginatedData(this.basketData);
+    if (dataCurrentPage.length === 0) {
+      if (this.page > 1) {
+        this.page -= 1;
+      }
+      this.updatePageField();
+      this.drawData(this.getPaginatedData(this.basketData));
+      return;
+    }
+    this.drawData(dataCurrentPage);
+  }
+  private drawData(data: BasketProducts[]) {
     const itemsWrapper: HTMLElement | null = document.querySelector('.basket__items');
     if (!itemsWrapper) {
       return;
     }
     itemsWrapper.innerHTML = '';
-
-    this.basketData.forEach((item) => {
+    data.forEach((item) => {
       const basketProduct = document.createElement('div');
+      //basketProduct.href = `${window.location.origin}/?details/${item.id}`;
       basketProduct.className = `basket__product`;
       const currentProduct = this.getProductFromId(item.id);
 
-      const basketImg = document.createElement('div');
+      const basketOrderItem = document.createElement('div');
+      basketOrderItem.innerHTML = `${this.getOrderIndexFromId(item.id) + 1}`;
+
+      const basketImg = document.createElement('a');
+      basketImg.href = `${window.location.origin}/?details/${item.id}`;
       basketImg.innerHTML = `<img src="${currentProduct.images[0]}">`;
       basketImg.className = 'basket__img';
       const productTitle = document.createElement('div');
       productTitle.className = 'basket__title';
-      productTitle.innerHTML = currentProduct.title + ' ' + 'stock: ' + currentProduct.stock;
+      const productName = document.createElement('span');
+      productName.className = 'basket__name';
+      productName.innerHTML = currentProduct.title + `<hr>`;
+      const productDescription = document.createElement('span');
+      productDescription.className = 'basket__desc';
+      productDescription.innerHTML = currentProduct.description.slice(0, 25) + `...`;
+
+      const productRating = document.createElement('span');
+      productRating.className = 'basket__rate';
+      productRating.innerHTML = `Rating: ${currentProduct.rating}     Discount: ${currentProduct.discountPercentage}`;
+
+      productTitle.append(productName);
+      productTitle.append(productDescription);
+      productTitle.append(productRating);
+      //productTitle.innerHTML = currentProduct.title + ' ' + 'stock: ' + currentProduct.stock;
 
       const addBtn = document.createElement('div');
       addBtn.className = 'basket__btn';
@@ -205,6 +331,7 @@ export class BasketManager {
       subBtn.innerHTML = '-';
       const totalOfPRoduct = document.createElement('span');
       totalOfPRoduct.innerHTML = item.count.toString();
+      totalOfPRoduct.className = 'basket__totalcount';
       const controlWrapper = document.createElement('div');
       controlWrapper.className = 'basket__control-wrapper';
 
@@ -223,6 +350,7 @@ export class BasketManager {
 
       this.listenerToControlBtn(addBtn, item.id, Operation.Add, currentProduct.stock);
       this.listenerToControlBtn(subBtn, item.id, Operation.Sub, currentProduct.stock);
+      basketProduct.append(basketOrderItem);
       basketProduct.append(basketImg);
       basketProduct.append(productTitle);
       basketProduct.append(controlWrapper);
@@ -230,8 +358,22 @@ export class BasketManager {
       itemsWrapper.appendChild(basketProduct);
     });
   }
+  private getPaginatedData(items: BasketProducts[]): BasketProducts[] {
+    const limit = this.limit;
+    const page = this.page;
+    const offset = limit * (page - 1);
+    const result = items.slice(offset, limit + offset);
+    return result;
+  }
+  private updatePageField() {
+    const pageField = document.querySelector('.basket__page');
+    if (!pageField) return;
+    pageField.innerHTML = ``;
+    pageField.innerHTML = this.page.toString();
+  }
   private listenerToControlBtn(btn: HTMLElement, id: number, operation: Operation, totalStock: number) {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e: Event) => {
+      e.stopPropagation();
       let index = 0;
       this.basketData.forEach((data, ind) => {
         if (data.id === id) {
@@ -259,6 +401,13 @@ export class BasketManager {
   }
   private getProductFromId(id: number): Product {
     return sourceData.filter((product) => product.id === id)[0];
+  }
+  private getOrderIndexFromId(id: number): number {
+    let result = 0;
+    this.basketData.forEach((item, index) => {
+      if (item.id === id) result = index;
+    });
+    return result;
   }
   public addToBasket(id: number) {
     const product = sourceData.filter((product) => product.id === id)[0];
