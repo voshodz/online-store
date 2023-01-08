@@ -1,4 +1,4 @@
-import { APP_PAGES, BASKET_MANAGER } from '../..';
+import { APP_PAGES, BASKET_MANAGER, MODAL_WINDOW } from '../..';
 import { dispatchType, FilterState, PageEnum, SortType } from '../../domain/IState';
 import { sourceData } from '../../domain/source';
 import { DualSlider } from '../util/dualSlider/dualSlider';

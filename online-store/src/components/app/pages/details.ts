@@ -137,8 +137,11 @@ export function updateProductInfo(product: Product) {
   const buyBtn: HTMLButtonElement | null = document.querySelector('.buy');
   if (buyBtn) {
     buyBtn.addEventListener('click', () => {
-      // TODO - добавление в корзину => открытие страницы корзины => открытие модального окна
-      console.log('Покупка');
+      if (!BASKET_MANAGER.hasProduct(product.id)) {
+        BASKET_MANAGER.addToBasket(product.id);
+      }
+      localStorage.setItem('modal', 'on');
+      window.location.assign('/?basket');
     });
   }
 }

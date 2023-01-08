@@ -1,3 +1,4 @@
+import { MODAL_WINDOW } from '../..';
 import { Product } from '../../domain/model';
 import { sourceData } from '../../domain/source';
 import { basketPageHTML } from './pages/basket';

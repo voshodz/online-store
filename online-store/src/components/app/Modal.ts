@@ -102,10 +102,13 @@ export default class Modal {
         this.validateCardNumber(inputElement.value);
         return;
       }
-      if (inputString.length === 17) {
+      if (inputString.length === 20) {
         inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
         this.validateCardNumber(inputElement.value);
         return;
+      }
+      if (inputString.length == 4 || inputString.length == 9 || inputString.length == 14) {
+        inputElement.value += ' ';
       }
       this.validateCardNumber(inputElement.value);
     });
@@ -208,7 +211,7 @@ export default class Modal {
   }
   private validateCardNumber(input: string) {
     this.updatePaymentIcon(+input[0]);
-    if (input.length === 16) {
+    if (input.length === 19) {
       this.stateCardNumber = true;
     } else {
       this.stateCardNumber = false;

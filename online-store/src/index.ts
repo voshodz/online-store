@@ -21,6 +21,14 @@ export const APP_PAGES = new App();
 export const BASKET_MANAGER = new BasketManager();
 export const STATE_MANAGER = new StateManager();
 
+export const MODAL_WINDOW = new Modal();
+
+if (localStorage.getItem('modal') === 'on') {
+  console.log(MODAL_WINDOW);
+  MODAL_WINDOW.showModal();
+  localStorage.setItem('modal', 'off');
+}
+
 initSortBox();
 initTypeBtns();
 
@@ -79,6 +87,3 @@ window.onpopstate = () => {
   console.log('откручивание истории, не будем обрабатывать');
 };
 urlGetState();
-
-const basket = new BasketManager();
-export const MODAL_WINDOW = new Modal();

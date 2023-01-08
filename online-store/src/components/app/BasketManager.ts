@@ -105,7 +105,7 @@ export class BasketManager {
     if (basketTotalPrice && basketTotalProducs) {
       const totalData = this.getTotalProductsAndPrice();
       basketTotalProducs.innerHTML = `Products: ${totalData[0]}`;
-      basketTotalPrice.innerHTML = `Total price: ${totalData[1]}$`;
+      basketTotalPrice.innerHTML = `Total price: ${totalData[1].toFixed(2)}$`;
     }
   }
   private getDiscount(): number {
