@@ -264,8 +264,7 @@ export default class Modal {
         }
       }
       setTimeout(() => {
-        //window.location.href = '/';
-        console.log('asdf');
+        window.location.href = '/';
       }, 3500);
     }
   }
