@@ -266,7 +266,7 @@ export default class Modal {
         }
       }
       setTimeout(() => {
-        window.location.assign('/');
+        window.location.href = '/';
       }, 3500);
     }
   }

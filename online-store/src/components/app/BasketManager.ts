@@ -22,11 +22,11 @@ export class BasketManager {
     if (items) {
       this.basketData = JSON.parse(items);
     }
-    this.listenerInputLimit();
     this.updateDataHandler();
     this.listenerPromoInput();
   }
   updateDataHandler() {
+    this.listenerInputLimit();
     this.updateLocalStorage();
     this.updateHeaderView();
     this.updateSummaryView();
@@ -42,8 +42,10 @@ export class BasketManager {
     }
   }
   private listenerInputLimit() {
+    console.log('started');
     const limitInput: HTMLInputElement | null = document.querySelector('.basket__limit');
     if (!limitInput) return;
+    console.log('alert is working');
     limitInput.value = this.limit.toString();
     //this.limit = parseInt(limitInput.value);
     limitInput.addEventListener('input', (e) => {

@@ -9,8 +9,11 @@ body {
   background: #e2f2ff;
   font-family: "Verdana", sans-serif;
   margin: 0;
-  height: 100%;
+  height: calc(100vh - 85px);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 h1 {
@@ -26,4 +29,5 @@ h1 {
   flex-direction: column;
   padding: 0 10px;
   padding-bottom: 20px;
+  justify-self: start;
 }
