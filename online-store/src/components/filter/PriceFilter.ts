@@ -1,7 +1,6 @@
 import { STATE_MANAGER } from '../..';
-import { IFilter } from '../../domain/iFilter';
 
-export class PriceFilter implements IFilter {
+export class PriceFilter {
   minPriceInput: HTMLInputElement | null;
   maxPriceInput: HTMLInputElement | null;
   minPriceNumber: HTMLInputElement | null;
@@ -44,8 +43,5 @@ export class PriceFilter implements IFilter {
     STATE_MANAGER.dispatchState({
       price: prices,
     });
-  }
-  resetFilter() {
-    console.log('сброс фильтра');
   }
 }
