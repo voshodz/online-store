@@ -1,10 +1,9 @@
 import { STATE_MANAGER } from '../..';
-import { IFilter } from '../../domain/iFilter';
 import { BrandArray, BrandType } from '../../domain/model';
 import { DualSlider } from '../util/dualSlider/dualSlider';
 import { createCheckboxes, renderBrandCheckboxes } from '../views/render';
 
-export class BrandFilter implements IFilter {
+export class BrandFilter {
   checkboxArray: HTMLInputElement[];
   brandsArray: BrandType[];
   constructor() {

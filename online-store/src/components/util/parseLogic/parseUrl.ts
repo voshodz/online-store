@@ -181,13 +181,6 @@ export const urlUpdateFromState = (state: FilterState) => {
   window.history.replaceState({}, '', '?' + urlQuery.slice(1, urlQuery.length));
 };
 
-const checkDefaultState = (state: FilterState): boolean => {
-  if (state.brand?.length === 0 && state.price && state.price[0] <= 10 && state.price[1] === 1749) {
-    return true;
-  }
-  return false;
-};
-
 const getQueryParamSort = (sort: SortType | undefined): string => {
   let result = '';
   if (sort != SortType.default) {
