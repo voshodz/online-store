@@ -33,7 +33,7 @@ export const CategoryArray: ReadonlyArray<string> = [
   'automotive',
   'motorcycle',
   'lighting',
-] as const;
+]; //as const;
 
 export type CategoriesType = typeof CategoryArray[number];
 
@@ -117,6 +117,6 @@ export const BrandArray: ReadonlyArray<string> = [
   'Fashion Jewellery',
   'Car Aux',
   'YIOSI',
-] as const;
+]; // as const;
 
 export type BrandType = typeof BrandArray[number];

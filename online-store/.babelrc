@@ -1,0 +1,11 @@
+{
+  "env": {
+    "test": {
+      "plugins": ["@babel/plugin-transform-modules-commonjs", 
+                  "@babel/plugin-syntax-flow", 
+                  "@babel/plugin-transform-flow-strip-types",
+                  "babel-plugin-transform-flow-enums"
+                ]
+    }
+  }
+}

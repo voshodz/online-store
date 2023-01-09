@@ -1,5 +1,10 @@
 import { FilterState, PageEnum, SortType } from '../../../domain/IState';
 import { BrandArray, BrandType, CategoriesType, CategoryArray } from '../../../domain/model';
+import { getQueryParamBig } from './queryByBIg';
+import { getQueryParamBrand } from './queryByBrand';
+import { getQueryParamCategory } from './queryByCategory';
+import { getQueryParamPrice } from './queryByPrice';
+import { getQueryParamStock } from './queryByStock';
 
 export const urlGetState = (): FilterState | string => {
   const state: FilterState = {};
@@ -184,62 +189,10 @@ const checkDefaultState = (state: FilterState): boolean => {
   return false;
 };
 
-const getQueryParamBrand = (brand: BrandType[] | undefined): string => {
-  let result = '';
-  if (brand?.length !== 0 && brand) {
-    result += '&brand=';
-    brand?.forEach((brandValue) => {
-      result += brandValue.split(' ').join('').toLowerCase() + '+';
-    });
-    result = result.slice(0, -1);
-  }
-  return result;
-};
-
-const getQueryParamCategory = (categories: CategoriesType[] | undefined): string => {
-  let result = '';
-  if (categories?.length !== 0 && categories) {
-    result += '&category=';
-    categories?.forEach((category) => {
-      result += category.split(' ').join('').toLowerCase() + '+';
-    });
-    result = result.slice(0, -1);
-  }
-  return result;
-};
-
-const getQueryParamPrice = (price: [number, number] | undefined): string => {
-  let result = '';
-  if (price && (price[0] > 10 || price[1] < 1749)) {
-    //это нужно чтобы хотя бы один ползунок был сдвигнут
-    result += '&price=';
-    result += price[0] + '+' + price[1];
-  }
-  return result;
-};
-
-const getQueryParamStock = (stock: [number, number] | undefined): string => {
-  let result = '';
-  if (stock && (stock[0] > 2 || stock[1] < 150)) {
-    //это нужно чтобы хотя бы один ползунок был сдвигнут
-    result += '&stock=';
-    result += stock[0] + '+' + stock[1];
-  }
-  return result;
-};
-
 const getQueryParamSort = (sort: SortType | undefined): string => {
   let result = '';
   if (sort != SortType.default) {
     result = `&sort=${sort}`;
-  }
-  return result;
-};
-
-const getQueryParamBig = (big: boolean | undefined): string => {
-  let result = '';
-  if (big) {
-    result = `&big=${big}`;
   }
   return result;
 };
