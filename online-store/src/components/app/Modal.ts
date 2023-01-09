@@ -1,10 +1,3 @@
-enum ValidationField {
-  Name,
-  Phone,
-  Address,
-  Email,
-  CreditCard,
-}
 import visaIcon from '../../assets/img/iconpayment/visa.png';
 import masterCardIcon from '../../assets/img/iconpayment/master.png';
 import mirIcon from '../../assets/img/iconpayment/mir2.png';
@@ -176,7 +169,7 @@ export default class Modal {
       }
     }
   }
-  public validatePhone(input: string) {
+  private validatePhone(input: string) {
     if (input[0] !== '+' || !input) {
       this.statePhone = false;
       return;
@@ -188,21 +181,18 @@ export default class Modal {
       this.statePhone = false;
     }
   }
-  public validateAddress(input: string) {
+  private validateAddress(input: string) {
     if (!input) {
       this.stateAddress = false;
       return;
     }
     const splitAddres = input.split(' ');
-    if (splitAddres.length < 3 || !splitAddres[0] || !splitAddres[1] || !splitAddres[2]) {
-      this.stateAddress = false;
-      return;
-    }
-    if (splitAddres[0].length >= 5 && splitAddres[1].length >= 5 && splitAddres[2].length >= 5) {
-      this.stateAddress = true;
-    } else {
-      this.stateAddress = false;
-    }
+    let result = true;
+    splitAddres.forEach((address) => {
+      if (address.length < 5) result = false;
+    });
+    if (splitAddres.length < 3) result = false;
+    this.stateAddress = result;
   }
   public validateEmail(input: string) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -230,14 +220,19 @@ export default class Modal {
   private validateExpirationDate(input: string) {
     if (input.length === 5) {
       const dateString = input.split('/');
-      dateString[0] = dateString[0].replace('', '0');
-      if (dateString[0] && dateString[1] && +dateString[0] >= 1 && +dateString[0] <= 12) this.stateExpDate = true;
+      if (
+        dateString[0] &&
+        dateString[1] &&
+        +dateString[0] >= 1 &&
+        +dateString[0] <= 12 &&
+        +dateString[1] >= 1 &&
+        +dateString[1] <= 31
+      ) {
+        this.stateExpDate = true;
+      }
     } else {
       this.stateExpDate = false;
     }
-  }
-  printstateName() {
-    console.log(this.stateName);
   }
   private confirmForm() {
     this.showErrors();
