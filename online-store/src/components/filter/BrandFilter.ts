@@ -45,16 +45,11 @@ export class BrandFilter implements IFilter {
       const index = this.brandsArray.indexOf(value as BrandType);
       this.brandsArray.splice(index, 1);
     }
-    //console.log(this.brandsArray);
     this.dispatchState(this.brandsArray);
   }
-  //may be private, not sure
   public dispatchState(brands: BrandType[]) {
     STATE_MANAGER.dispatchState({
       brand: brands,
     });
-  }
-  resetFilter() {
-    console.log('сброс фильтра');
   }
 }

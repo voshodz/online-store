@@ -42,12 +42,9 @@ export class BasketManager {
     }
   }
   private listenerInputLimit() {
-    console.log('started');
     const limitInput: HTMLInputElement | null = document.querySelector('.basket__limit');
     if (!limitInput) return;
-    console.log('alert is working');
     limitInput.value = this.limit.toString();
-    //this.limit = parseInt(limitInput.value);
     limitInput.addEventListener('input', (e) => {
       const currentInput = e.target as HTMLInputElement;
       const limitValue = parseInt(currentInput.value);

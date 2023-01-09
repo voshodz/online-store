@@ -28,7 +28,6 @@ export const urlGetState = (): FilterState | string => {
   arr.forEach((item) => {
     switch (item[0]) {
       case 'brand':
-        console.log('brand');
         state.brand = urlParseBrand(item[1]);
         break;
       case 'category':

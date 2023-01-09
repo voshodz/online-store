@@ -44,7 +44,6 @@ export class CategoryFilter {
       const index = this.categoriesArray.indexOf(value as CategoriesType);
       this.categoriesArray.splice(index, 1);
     }
-    console.log(this.categoriesArray);
     this.dispatchState(this.categoriesArray);
   }
 

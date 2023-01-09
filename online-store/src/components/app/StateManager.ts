@@ -26,7 +26,6 @@ export class StateManager {
     };
     this.events = [];
     this.loadStateFromUrl();
-    console.log(this.state);
   }
 
   public addCallback(callback: callback): void {
@@ -81,7 +80,6 @@ export class StateManager {
     this.stateChangedEventHandler();
   }
   private stateChangedEventHandler() {
-    console.log(this.state);
     DualSlider.setPriceValue(filterBrandCategory(this.state));
     DualSlider.setStockValue(filterBrandCategory(this.state));
     this.state = { ...this.state, ...DualSlider.getStateFromSliders() };
