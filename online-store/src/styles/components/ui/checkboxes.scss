@@ -1,0 +1,58 @@
+.brand, .category {
+  max-height: 300px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 4px 8px #333;
+}
+
+.brand__header,
+.category__header {
+  color: #fff;
+  background-color: rgb(78, 78, 190);
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 5px;
+  font-weight:600;
+  font-size: 20px;
+}
+
+.brand__content,
+.category__content {
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.category__item,
+.brand__item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.category__checkbox, 
+.brand__checkbox {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #333;
+}
+
+.category__checkbox.empty, 
+.brand__checkbox.empty {
+  font-size: 16px;
+  font-weight: 400;
+  color: #555;
+}
+
+@media (max-width: 1225px) {
+  .brand,
+  .category {
+    height: 300px;
+    min-height: 300px;
+  }
+}

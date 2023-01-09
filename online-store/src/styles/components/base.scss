@@ -1,0 +1,38 @@
+* {
+  box-sizing: border-box;
+}
+h1, h2, h3, h4 {
+  margin: 0;
+}
+body {
+  color: #333;
+  background: #e2f2ff;
+  font-family: "Verdana", sans-serif;
+  margin: 0;
+  height: calc(100vh - 85px);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+h1 {
+  color: red;
+}
+
+.hidden {
+  display: none;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  padding-bottom: 20px;
+  justify-self: start;
+}
+
+.not-found {
+  text-align: center;
+  width: 100%;
+}
