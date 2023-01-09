@@ -34,6 +34,9 @@ export class BrandFilter implements IFilter {
         checkbox.checked = true;
       }
     });
+    if (brands) {
+      this.brandsArray = brands;
+    }
   }
   private updateBrandsArray(checked: boolean, value: BrandType) {
     if (checked) {

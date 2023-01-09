@@ -1,6 +1,7 @@
 import { STATE_MANAGER } from '../../..';
 import { FilterState } from '../../../domain/IState';
 import { Product } from '../../../domain/model';
+import { sourceData } from '../../../domain/source';
 
 export class DualSlider {
   static priceChange: boolean;
@@ -9,7 +10,8 @@ export class DualSlider {
     DualSlider.priceChange = true;
     DualSlider.stockChange = true;
     this.addListeners();
-    this.setPriceValue();
+    DualSlider.setPriceValue();
+    DualSlider.setStockValue();
   }
 
   static getStateFromSliders(): FilterState {
@@ -35,15 +37,15 @@ export class DualSlider {
     const fromInputPrice: HTMLInputElement | null = document.querySelector('#priceFromInput');
     const toInputPrice: HTMLInputElement | null = document.querySelector('#priceToInput');
     if (fromSliderPrice && toSliderPrice && fromInputPrice && toInputPrice) {
-      this.fillSlider(fromSliderPrice, toSliderPrice, '#C6C6C6', '#25daa5', toSliderPrice);
-      this.setToggleAccessible(toSliderPrice);
+      DualSlider.fillSlider(fromSliderPrice, toSliderPrice, '#C6C6C6', '#25daa5', toSliderPrice);
+      DualSlider.setToggleAccessible(toSliderPrice);
 
       fromSliderPrice.oninput = () => {
-        this.controlFromSlider(fromSliderPrice, toSliderPrice, fromInputPrice);
+        DualSlider.controlFromSlider(fromSliderPrice, toSliderPrice, fromInputPrice);
         DualSlider.priceChange = false;
       };
       toSliderPrice.oninput = () => {
-        this.controlToSlider(fromSliderPrice, toSliderPrice, toInputPrice);
+        DualSlider.controlToSlider(fromSliderPrice, toSliderPrice, toInputPrice);
         DualSlider.priceChange = false;
       };
       fromInputPrice.oninput = () => {
@@ -61,15 +63,15 @@ export class DualSlider {
     const fromInputStock: HTMLInputElement | null = document.querySelector('#stockFromInput');
     const toInputStock: HTMLInputElement | null = document.querySelector('#stockToInput');
     if (fromSliderStock && toSliderStock && fromInputStock && toInputStock) {
-      this.fillSlider(fromSliderStock, toSliderStock, '#C6C6C6', '#25daa5', toSliderStock);
-      this.setToggleAccessible(toSliderStock);
+      DualSlider.fillSlider(fromSliderStock, toSliderStock, '#C6C6C6', '#25daa5', toSliderStock);
+      DualSlider.setToggleAccessible(toSliderStock);
 
       fromSliderStock.oninput = () => {
-        this.controlFromSlider(fromSliderStock, toSliderStock, fromInputStock);
+        DualSlider.controlFromSlider(fromSliderStock, toSliderStock, fromInputStock);
         DualSlider.stockChange = false;
       };
       toSliderStock.oninput = () => {
-        this.controlToSlider(fromSliderStock, toSliderStock, toInputStock);
+        DualSlider.controlToSlider(fromSliderStock, toSliderStock, toInputStock);
         DualSlider.stockChange = false;
       };
       fromInputStock.oninput = () => {
@@ -83,7 +85,7 @@ export class DualSlider {
     }
   }
 
-  setPriceValue(filteredData?: Product[]) {
+  static setPriceValue(filteredData?: Product[]) {
     const fromSliderPrice: HTMLInputElement | null = document.querySelector('#min-price');
     const toSliderPrice: HTMLInputElement | null = document.querySelector('#max-price');
     const fromInputPrice: HTMLInputElement | null = document.querySelector('#priceFromInput');
@@ -102,6 +104,13 @@ export class DualSlider {
           toSliderPrice.value = String(max);
           toInputPrice.value = String(max);
         }
+      } else if (filteredData.length == sourceData.length) {
+        if (DualSlider.priceChange) {
+          fromSliderPrice.value = String(10);
+          fromInputPrice.value = String(10);
+          toSliderPrice.value = String(1749);
+          toInputPrice.value = String(1749);
+        }
       } else {
         if (DualSlider.priceChange) {
           fromSliderPrice.value = String(10);
@@ -115,7 +124,7 @@ export class DualSlider {
     }
   }
 
-  setStockValue(filteredData?: Product[]) {
+  static setStockValue(filteredData?: Product[]) {
     const fromSliderStock: HTMLInputElement | null = document.querySelector('#min-stock');
     const toSliderStock: HTMLInputElement | null = document.querySelector('#max-stock');
     const fromInputStock: HTMLInputElement | null = document.querySelector('#stockFromInput');
@@ -154,7 +163,7 @@ export class DualSlider {
     controlSlider: HTMLInputElement
   ) {
     const [from, to] = DualSlider.getParsed(fromInput, toInput);
-    this.fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
+    DualSlider.fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
     if (from > to) {
       fromSlider.value = String(to);
       fromInput.value = String(to);
@@ -170,8 +179,8 @@ export class DualSlider {
     controlSlider: HTMLInputElement
   ) {
     const [from, to] = DualSlider.getParsed(fromInput, toInput);
-    this.fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
-    this.setToggleAccessible(toInput);
+    DualSlider.fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
+    DualSlider.setToggleAccessible(toInput);
     if (from <= to) {
       toSlider.value = String(to);
       toInput.value = String(to);
@@ -180,7 +189,7 @@ export class DualSlider {
     }
   }
 
-  controlFromSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement, fromInput: HTMLInputElement) {
+  static controlFromSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement, fromInput: HTMLInputElement) {
     const [from, to] = DualSlider.getParsed(fromSlider, toSlider);
     this.fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
     if (from > to) {
@@ -191,7 +200,7 @@ export class DualSlider {
     }
   }
 
-  controlToSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement, toInput: HTMLInputElement) {
+  static controlToSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement, toInput: HTMLInputElement) {
     const [from, to] = DualSlider.getParsed(fromSlider, toSlider);
     this.fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
     this.setToggleAccessible(toSlider);
@@ -210,7 +219,7 @@ export class DualSlider {
     return [from, to];
   }
 
-  fillSlider(
+  static fillSlider(
     from: HTMLInputElement,
     to: HTMLInputElement,
     sliderColor: string,
@@ -230,7 +239,7 @@ export class DualSlider {
       ${sliderColor} 100%)`;
   }
 
-  setToggleAccessible(currentTarget: HTMLInputElement) {
+  static setToggleAccessible(currentTarget: HTMLInputElement) {
     const toSlider: HTMLElement | null = document.querySelector('#toSlider');
     if (toSlider) {
       if (Number(currentTarget.value) <= 0) {

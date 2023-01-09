@@ -54,11 +54,11 @@ export function updateProductInfo(product: Product) {
   if (breadCrumbs.length > 0) {
     breadCrumbs[0].textContent = 'STORE';
     breadCrumbs[1].textContent = product.category;
-    breadCrumbs[1].href = `./?category=${product.category.replace(/\s/g, '').toLowerCase()}`;
+    breadCrumbs[1].href = `/?category=${product.category.replace(/\s/g, '').toLowerCase()}`;
     breadCrumbs[2].textContent = product.brand;
-    breadCrumbs[2].href = `./?brand=${product.brand.replace(/\s/g, '').toLowerCase()}`;
+    breadCrumbs[2].href = `/?brand=${product.brand.replace(/\s/g, '').toLowerCase()}`;
     breadCrumbs[3].textContent = product.title;
-    breadCrumbs[3].href = `./?search=${product.title}`;
+    breadCrumbs[3].href = `/?search=${product.title}`;
   }
   const productName: HTMLDivElement | null = document.querySelector('.product__name');
   if (productName) {
@@ -141,7 +141,7 @@ export function updateProductInfo(product: Product) {
         BASKET_MANAGER.addToBasket(product.id);
       }
       localStorage.setItem('modal', 'on');
-      window.location.assign('/?basket');
+      window.location.assign('/basket');
     });
   }
 }

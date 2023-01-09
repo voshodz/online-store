@@ -49,11 +49,19 @@ export function sortData(products: Product[]): Product[] {
   if (sortBox) {
     switch (sortBox.selectedOptions[0].value) {
       case SortType.priceASC: {
-        products.sort((a, b) => a.price - b.price);
+        products.sort((a, b) => {
+          const discountA = (a.price * (100 - a.discountPercentage)) / 100;
+          const discountB = (b.price * (100 - b.discountPercentage)) / 100;
+          return discountA - discountB;
+        });
         break;
       }
       case SortType.priceDESC: {
-        products.sort((a, b) => b.price - a.price);
+        products.sort((a, b) => {
+          const discountA = (a.price * (100 - a.discountPercentage)) / 100;
+          const discountB = (b.price * (100 - b.discountPercentage)) / 100;
+          return discountB - discountA;
+        });
         break;
       }
       case SortType.ratingASC: {

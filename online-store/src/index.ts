@@ -12,6 +12,7 @@ import { SearchFilter } from './components/filter/SearchFilter';
 import { StockFilter } from './components/filter/StockFilter';
 import { initTypeBtns } from './components/util/cardLogic/cardLogic';
 import { DualSlider } from './components/util/dualSlider/dualSlider';
+import { filterBrandCategory } from './components/util/filterLogic/filterData';
 import { urlGetState } from './components/util/parseLogic/parseUrl';
 import { initSortBox } from './components/util/sortLogic/sortData';
 import { renderBrandCheckboxes, renderCategoryCheckboxes } from './components/views/render';
@@ -44,10 +45,6 @@ STATE_MANAGER.addCallback(() => {
 });
 STATE_MANAGER.addCallback(() => {
   renderCategoryCheckboxes(categoryHandler.checkboxArray, STATE_MANAGER.getFilterState());
-});
-STATE_MANAGER.addCallback(() => {
-  sliders.setPriceValue(STATE_MANAGER.getFilterState());
-  sliders.setStockValue(STATE_MANAGER.getFilterState());
 });
 
 const resetBtn = document.querySelector('#reset-filter');
@@ -82,8 +79,4 @@ if (resetBtn && copyBtn && filterBtn && closeBtn) {
   filterBtn.addEventListener('click', toggleFunc);
   closeBtn.addEventListener('click', toggleFunc);
 }
-
-window.onpopstate = () => {
-  console.log('откручивание истории, не будем обрабатывать');
-};
 urlGetState();

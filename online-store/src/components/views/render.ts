@@ -36,7 +36,7 @@ function draw(products: Product[]) {
       const productCard: HTMLLinkElement | null = cardClone.querySelector('.product-card');
       const cardImgLink: HTMLLinkElement | null = cardClone.querySelector('.card__img');
       if (cardImgLink !== null) {
-        cardImgLink.href = `?details/${item.id}`;
+        cardImgLink.href = `/details/${item.id}`;
         cardImgLink.style.backgroundImage = `url('${item.thumbnail}')`;
       }
 
@@ -62,7 +62,7 @@ function draw(products: Product[]) {
       }
       const cardBtnDetails: HTMLLinkElement | null = cardClone.querySelector('.details');
       if (cardBtnDetails) {
-        cardBtnDetails.href = `?details/${item.id}`;
+        cardBtnDetails.href = `./details/${item.id}`;
       }
       const cardBtnCart: HTMLButtonElement | null = cardClone.querySelector('.cart');
       if (cardBtnCart && productCard) {

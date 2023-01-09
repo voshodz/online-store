@@ -3,23 +3,19 @@ import { BrandArray, BrandType, CategoriesType, CategoryArray } from '../../../d
 
 export const urlGetState = (): FilterState | string => {
   const state: FilterState = {};
-  const paramsString = window.location.href.slice(window.location.origin.length + 1); //включительно вопрос знак +1
-
-  if (paramsString === '') {
-    return 'root';
+  // const paramsString = window.location.href.slice(window.location.origin.length + 1); //включительно вопрос знак +1
+  const paramsString = window.location.pathname;
+  const reg = /^\/details\/\d+$/i;
+  if (paramsString !== '/basket' && paramsString !== '/' && !reg.test(paramsString)) {
+    return '404';
   }
-  if (paramsString.includes('?basket')) {
+  if (paramsString.includes('/basket')) {
     return 'basket';
   }
-  /*if (paramsString.includes('basket')) {
-    return '404';
-  }*/
-  const reg = /^\?details\/\d+$/i;
-  console.log(reg.test(paramsString));
   if (reg.test(paramsString)) {
     return 'details';
   }
-  const params = new URLSearchParams(paramsString);
+  const params = new URLSearchParams(window.location.search);
   const arr: Array<string[]> = [];
   for (const p of params) {
     arr.push(p);
@@ -34,7 +30,6 @@ export const urlGetState = (): FilterState | string => {
         state.category = urlParseCategory(item[1]);
         break;
       case 'price':
-        console.log('price');
         state.price = urlParsePrice(item[1]);
         break;
       case 'stock':
@@ -53,18 +48,16 @@ export const urlGetState = (): FilterState | string => {
         break;
     }
   });
-  console.log(state);
   return state;
 };
 
 const urlParseBrand = (query: string): BrandType[] => {
-  //console.log('=> ' + query);
   const brandsQuerry = query.split(' ');
   const result: BrandType[] = [];
   brandsQuerry.forEach((brand) => {
     const index = getIndexOfBrand(brand);
     if (index >= 0) {
-      result.push(BrandArray[index]); //TODO: если -1, следовательно неправильный параметр, надо как то 404 продумать
+      result.push(BrandArray[index]);
     }
   });
   return result;

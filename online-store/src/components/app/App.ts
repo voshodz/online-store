@@ -30,7 +30,6 @@ export class App {
       return;
     }
     this.contentContainer.innerHTML = '';
-    console.log(id);
     const product: Product | undefined = sourceData.find((el) => el.id === Number(id));
     if (product) {
       this.contentContainer.innerHTML = DetailsPage;

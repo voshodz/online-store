@@ -345,7 +345,8 @@ export class BasketManager {
       const controlTotalStock = document.createElement('span');
       controlTotalStock.innerHTML = 'stock: ' + currentProduct.stock.toString();
       const controlTotalPrice = document.createElement('span');
-      controlTotalPrice.innerHTML = `сумма: ${item.count * currentProduct.price}$`;
+      const discountPrice: number = (item.price * (100 - currentProduct.discountPercentage)) / 100;
+      controlTotalPrice.innerHTML = `Sum: ${(discountPrice * item.count).toFixed(2)}$`;
       controlWrapper.append(controlTotalStock);
       controlWrapper.append(controlBtns);
       controlWrapper.append(controlTotalPrice);

@@ -24,6 +24,17 @@ export const filterAllData = (state: FilterState): Product[] => {
   return filterAllData;
 };
 
+export function filterBrandCategory(state: FilterState): Product[] {
+  let filterAllData = sourceData;
+  if (state.brand) {
+    filterAllData = filterByBrand(state.brand, filterAllData);
+  }
+  if (state.category) {
+    filterAllData = filterByCategory(state.category, filterAllData);
+  }
+  return filterAllData;
+}
+
 const filterByBrand = (brands: BrandType[], data: Product[]): Product[] => {
   //console.log(brands);
   if (brands.length === 0) {
