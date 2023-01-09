@@ -7,13 +7,13 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: rgba($color: #000000, $alpha: 0.3);
   width: 100vw;
   height: 100vh;
   opacity: 0;
   transition: 0.6s ease-out;
   pointer-events: none;
   color: black;
+  z-index: 1000;
   
   &__content {
     display: flex;
@@ -23,20 +23,21 @@
     width: 600px;
     height: 520px;
     padding: 20px;
-    background: #474646;
+    background: #3a3a50;
     //height: 400px;
     background-size: cover;
     background-repeat: no-repeat;
     transform: scale(0.3);
     transition: 0.6s all;
-    border: 1px solid rgb(107, 55, 3);
+    border: 1px solid rgb(255, 149, 27);
+    border-radius: 10px;
   }
   &__name, &__phone, &__adress, &__email {
     width: 250px;
     height: 40px;
     padding: 10px;
     font-size: 18px;
-    border: 2px solid orange;
+    border: 2px solid rgb(255, 149, 27);;
     border-radius: 20px;
   }
   &__result {
@@ -47,6 +48,7 @@
     align-items: center;
     font-size: 24px;
     color: white;
+    gap: 5px;
   }
   &__content.active {
     transform: scale(1);
@@ -61,11 +63,12 @@
     align-items: center;
     width: 150px;
     height: 40px;
-    border: 2px solid orangered;
-    background-color: orange;
+    border: 2px solid rgb(255, 149, 27);
+    background-color: rgb(255, 149, 27);;
     color: rgb(250, 232, 232);
     font-weight: 700;
     transition: 0.2s ease-in-out;
+    border-radius: 5px;
   }
   &__confirm:hover {
     cursor: pointer;
@@ -81,7 +84,7 @@
     color: white;
     width: 350px;
     height: 180px;
-    border: 2px solid orangered;
+    border: 2px solid rgb(255, 149, 27);;
     border-radius: 15px;
     background: linear-gradient(126deg, rgba(0,10,36,1) 11%, rgba(65,69,57,1) 50%, rgba(39,42,39,0.9556197478991597) 100%, rgba(74,56,164,0.958420868347339) 100%);
   }
@@ -103,13 +106,13 @@
     height: 30px;
     font-size: 18px;
     font-weight: 700;
-    border: 2px solid orangered;
+    border: 2px solid rgb(255, 149, 27);;
     border-radius: 15px;
   }
   &__duedate, &__cvv {
     width: 100px;
     height: 30px;
-    border: 2px solid orangered;
+    border: 2px solid rgb(255, 149, 27);;
     border-radius: 15px;
     font-size: 18px;
     font-weight: 700;
@@ -123,7 +126,7 @@
     border: 1px solid black;
   }
   &__paysystem > img{
-    width: 30px;
+    width: auto;
     height: 30px;
   }
 }

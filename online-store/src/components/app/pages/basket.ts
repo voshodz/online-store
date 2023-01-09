@@ -90,6 +90,6 @@ export const basketPageHTML = `<div class="basket__wrapper">
     
   </div>
   <h4>"RS", "TS" - promocodes</h4>
-  <div class="basket__buybtn">BUY NOW</div>
+  <div class="basket__buybtn btn">BUY NOW</div>
 </div>
 </div>`;

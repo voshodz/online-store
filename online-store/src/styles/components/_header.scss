@@ -1,17 +1,18 @@
 .header {
   display: flex;
   justify-content: space-between;
-  padding: 0 150px;
+  padding: 10px 150px;
   align-items: center;
   color: rgb(78, 78, 190);
-}
+  background-color: rgb(78, 78, 190);
+  margin-bottom: 25px;
+} 
 
 .header__link {
-  color: rgb(78, 78, 190);
   text-decoration: none;
 
   h1 {
-    color: rgb(78, 78, 190);
+    color: #fff;
 
     span {
       color: rgb(255, 149, 27);
@@ -45,14 +46,14 @@
 
 @media (max-width: 1200px) {
   .header {
-    padding: 0 20px;
+    padding: 10px 20px;
   }
 }
 
 @media (max-width: 720px) {
   .header {
     flex-wrap: wrap;
-    padding-bottom: 5px;
+    padding-bottom: 15px;
   }
   
   .header__link {

@@ -89,10 +89,11 @@ export default class Modal {
     this.modalConfirmBtn.addEventListener('click', () => {
       this.confirmForm();
     });
-    this.modalCardInput.addEventListener('input', (e) => {
+    this.modalCardInput.addEventListener('input', (e: Event) => {
       if (!this.modalCardInput) {
         return;
       }
+      const event: InputEvent = e as InputEvent;
       const inputElement = e.target as HTMLInputElement;
       const inputString = inputElement.value;
       this.validateCardNumber(inputString);
@@ -107,8 +108,10 @@ export default class Modal {
         this.validateCardNumber(inputElement.value);
         return;
       }
-      if (inputString.length == 4 || inputString.length == 9 || inputString.length == 14) {
-        inputElement.value += ' ';
+      if (event.inputType !== 'deleteContentBackward') {
+        if (inputString.length == 5 || inputString.length == 10 || inputString.length == 15) {
+          inputElement.value = inputString.slice(0, lastChar) + ' ' + inputString[lastChar];
+        }
       }
       this.validateCardNumber(inputElement.value);
     });

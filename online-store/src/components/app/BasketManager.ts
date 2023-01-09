@@ -164,7 +164,6 @@ export class BasketManager {
               promoTS.classList.remove('hidden');
               this.updateAppliedPromoView();
             }
-            console.log('tss');
             break;
           default:
             break;
@@ -220,8 +219,8 @@ export class BasketManager {
       return;
     }
     if (promoPrice) {
-      const discountPrice = (this.getTotalProductsAndPrice()[1] * this.getDiscount()).toFixed(0);
-      promoPrice.innerHTML = `Total : ${discountPrice} $`;
+      const discountPrice = (this.getTotalProductsAndPrice()[1] * this.getDiscount()).toFixed(2);
+      promoPrice.innerHTML = `Total : ${discountPrice}$`;
     }
 
     const promoApplied: HTMLElement | null = document.querySelector('.basket__promo-applied');
@@ -301,6 +300,7 @@ export class BasketManager {
       const currentProduct = this.getProductFromId(item.id);
 
       const basketOrderItem = document.createElement('div');
+      basketOrderItem.classList.add(`basket__number`);
       basketOrderItem.innerHTML = `${this.getOrderIndexFromId(item.id) + 1}`;
 
       const basketImg = document.createElement('a');

@@ -44,6 +44,6 @@ export class App {
     if (!this.contentContainer) {
       return;
     }
-    this.contentContainer.innerHTML = '404';
+    this.contentContainer.innerHTML = '<h2 class="not-found">404</h2>';
   }
 }
