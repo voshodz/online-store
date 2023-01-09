@@ -35,7 +35,7 @@ export function filterBrandCategory(state: FilterState): Product[] {
   return filterAllData;
 }
 
-const filterByBrand = (brands: BrandType[], data: Product[]): Product[] => {
+export const filterByBrand = (brands: BrandType[], data: Product[]): Product[] => {
   //console.log(brands);
   if (brands.length === 0) {
     return data;
