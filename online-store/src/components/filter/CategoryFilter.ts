@@ -34,6 +34,9 @@ export class CategoryFilter implements IFilter {
         checkbox.checked = true;
       }
     });
+    if (categories) {
+      this.categoriesArray = categories;
+    }
   }
   private updateCategoriesArray(checked: boolean, value: CategoriesType) {
     if (checked) {

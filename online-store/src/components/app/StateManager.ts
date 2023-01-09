@@ -2,7 +2,7 @@ import { APP_PAGES, BASKET_MANAGER, MODAL_WINDOW } from '../..';
 import { dispatchType, FilterState, PageEnum, SortType } from '../../domain/IState';
 import { sourceData } from '../../domain/source';
 import { DualSlider } from '../util/dualSlider/dualSlider';
-import { filterAllData } from '../util/filterLogic/filterData';
+import { filterAllData, filterBrandCategory } from '../util/filterLogic/filterData';
 import { urlGetState, urlUpdateFromState } from '../util/parseLogic/parseUrl';
 import { sortData, updateSortBoxFromState } from '../util/sortLogic/sortData';
 import { renderProducts } from '../views/render';
@@ -26,6 +26,7 @@ export class StateManager {
     };
     this.events = [];
     this.loadStateFromUrl();
+    console.log(this.state);
   }
 
   public addCallback(callback: callback): void {
@@ -52,9 +53,11 @@ export class StateManager {
       this.setState({
         page: PageEnum.ProductDetailPage,
       });
-      const query = window.location.href.slice(window.location.origin.length + 1);
+      const query = window.location.pathname;
       const temp = query.split('/');
-      APP_PAGES.renderProductDetails(temp.pop());
+      const id = temp.pop();
+      APP_PAGES.renderProductDetails(id);
+      window.history.pushState({}, '', `/details/${id}`);
       return;
     }
     if (resultFromUrl === '404') {
@@ -79,12 +82,15 @@ export class StateManager {
     this.stateChangedEventHandler();
   }
   private stateChangedEventHandler() {
+    console.log(this.state);
+    DualSlider.setPriceValue(filterBrandCategory(this.state));
+    DualSlider.setStockValue(filterBrandCategory(this.state));
+    this.state = { ...this.state, ...DualSlider.getStateFromSliders() };
     const filteredData = filterAllData(this.state);
     this.state.filteredArray = filteredData;
     const sortedData = sortData(filteredData);
     renderProducts(sortedData);
     this.events.forEach((callback: callback) => callback());
-    this.state = { ...this.state, ...DualSlider.getStateFromSliders() };
     urlUpdateFromState(this.state);
   }
   public dispatchState(dispatchedState: dispatchType) {

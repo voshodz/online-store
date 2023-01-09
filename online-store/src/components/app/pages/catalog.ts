@@ -84,7 +84,7 @@ export const catalogPageHTML = `
           </div>
           <div class="card__buttons">
             <button class="btn cart">Add to cart</button>
-            <button class="btn details">Details</button>
+            <a class="btn details">Details</a>
           </div>
         </div>
       </template>`;
