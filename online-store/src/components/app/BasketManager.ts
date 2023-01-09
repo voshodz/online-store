@@ -304,7 +304,7 @@ export class BasketManager {
       basketOrderItem.innerHTML = `${this.getOrderIndexFromId(item.id) + 1}`;
 
       const basketImg = document.createElement('a');
-      basketImg.href = `${window.location.origin}/?details/${item.id}`;
+      basketImg.href = `${window.location.origin}/details/${item.id}`;
       basketImg.innerHTML = `<img src="${currentProduct.images[0]}">`;
       basketImg.className = 'basket__img';
       const productTitle = document.createElement('div');
