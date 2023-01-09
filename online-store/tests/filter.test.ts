@@ -1,52 +1,31 @@
 /* eslint-disable no-undef */
 
 import { sourceData } from '../src/domain/source';
-//import { Product } from '../src/domain/model';
-import { filterByBrand } from '../src/components/util/filterLogic/filterData';
-import { abc } from './sum';
-test('test filter By brand', () => {
-  const brands = ['Apple'];
-  //expect(filterByBrand(brands, sourceData)).toHaveBeenCalled();
-  expect(sourceData[0].brand).toBe('Apple');
-});
+import { filterByBrand } from '../src/components/util/filterLogic/filterBrand';
+import { filterByCategory } from '../src/components/util/filterLogic/filterCategory';
+import { filterByPrice } from '../src/components/util/filterLogic/filterPrice';
+import { filterByStock } from '../src/components/util/filterLogic/filterStock';
+import { filterBySearch } from '../src/components/util/filterLogic/filterSearch';
 
-/* arr: Product[] = [
-    {
-      id: 1,
-      title: 'iPhone 9',
-      description: 'An apple mobile which is nothing like apple',
-      price: 549,
-      discountPercentage: 12.96,
-      rating: 4.69,
-      stock: 94,
-      brand: 'Apple',
-      category: 'smartphones',
-      thumbnail: 'https://i.dummyjson.com/data/products/1/thumbnail.jpg',
-      images: [
-        'https://i.dummyjson.com/data/products/1/1.jpg',
-        'https://i.dummyjson.com/data/products/1/2.jpg',
-        'https://i.dummyjson.com/data/products/1/3.jpg',
-        'https://i.dummyjson.com/data/products/1/4.jpg',
-        'https://i.dummyjson.com/data/products/1/thumbnail.jpg',
-      ],
-    },
-    {
-      id: 2,
-      title: 'iPhone X',
-      description:
-        'SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...',
-      price: 899,
-      discountPercentage: 17.94,
-      rating: 4.44,
-      stock: 34,
-      brand: 'Apple',
-      category: 'smartphones',
-      thumbnail: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg',
-      images: [
-        'https://i.dummyjson.com/data/products/2/1.jpg',
-        'https://i.dummyjson.com/data/products/2/2.jpg',
-        'https://i.dummyjson.com/data/products/2/3.jpg',
-        'https://i.dummyjson.com/data/products/2/thumbnail.jpg',
-      ],
-    },
-  ];*/
+describe('filter test', () => {
+  test('test filter By brand', () => {
+    const brands = ['Apple', 'Samsung'];
+    expect(filterByBrand(brands, sourceData)).toHaveLength(5);
+  });
+  test('test filter By category', () => {
+    const categories = ['smartphones', 'laptops'];
+    expect(filterByCategory(categories, sourceData)).toHaveLength(10);
+  });
+  test('test filter By price', () => {
+    const price: [number, number] = [1609, 1749];
+    expect(filterByPrice(price, sourceData)).toHaveLength(1);
+  });
+  test('test filter By Stock', () => {
+    const stock: [number, number] = [2, 10];
+    expect(filterByStock(stock, sourceData)).toHaveLength(6);
+  });
+  test('test filter By Search', () => {
+    const search = 'mag';
+    expect(filterBySearch(search, sourceData)).toHaveLength(2);
+  });
+});
