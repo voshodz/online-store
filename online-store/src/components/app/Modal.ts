@@ -157,17 +157,14 @@ export default class Modal {
       return;
     }
     const splitName = input.split(' ');
-    if (splitName.length !== 2 || !splitName[0] || !splitName[1]) {
-      this.stateName = false;
-      return;
-    }
-    if (splitName[0].length >= 3 && splitName[1].length >= 3) {
-      if (splitName[0].toLowerCase().match('^[a-z]+$') && splitName[1].toLowerCase().match('^[a-z]+$')) {
-        this.stateName = true;
-      } else {
-        this.stateName = false;
+    let result = true;
+    splitName.forEach((name) => {
+      if (!name.toLowerCase().match('^[a-z]+$') || name.length < 3) {
+        result = false;
       }
-    }
+    });
+    if (splitName.length < 2) result = false;
+    this.stateName = result;
   }
   private validatePhone(input: string) {
     if (input[0] !== '+' || !input) {
