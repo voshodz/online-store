@@ -103,10 +103,8 @@ const getIndexOfCategory = (param: string): number => {
 const urlParsePrice = (query: string): [number, number] => {
   const price = query.split(' ');
   let result: [number, number] = [0, 2000];
-  const min = Number(price[0]);
-  const max = Number(price[1]);
-  if (typeof min === 'number' && typeof max === 'number') {
-    result = [min, max];
+  if (price[0].match('^[0-9]+$') && price[1].match('^[0-9]+$') && price[0] && price[1]) {
+    result = [+price[0], +price[1]];
   }
   return result;
 };
@@ -143,13 +141,7 @@ const urlParseSort = (query: string): SortType => {
 };
 
 const urlParseBigMode = (query: string): boolean => {
-  if (query === 'true') {
-    return true;
-  }
-  if (query === 'false') {
-    return false;
-  }
-  return false;
+  return query === 'true' ? true : false;
 };
 
 export const urlUpdateFromState = (state: FilterState) => {
