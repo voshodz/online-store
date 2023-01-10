@@ -96,11 +96,7 @@ export class BasketManager {
       return [resultLimit, resultPage];
     }
     const params = new URLSearchParams(query);
-    const arr: Array<string[]> = [];
-    for (const p of params) {
-      arr.push(p);
-    }
-    arr.forEach((item) => {
+    for (const item of params) {
       switch (item[0]) {
         case 'limit':
           resultLimit = parseInt(item[1]);
@@ -111,7 +107,7 @@ export class BasketManager {
         default:
           break;
       }
-    });
+    }
     return [resultLimit, resultPage];
   }
   private changeUrl() {

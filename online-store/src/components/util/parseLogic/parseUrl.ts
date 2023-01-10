@@ -21,11 +21,7 @@ export const urlGetState = (): FilterState | string => {
     return 'details';
   }
   const params = new URLSearchParams(window.location.search);
-  const arr: Array<string[]> = [];
-  for (const p of params) {
-    arr.push(p);
-  }
-  arr.forEach((item) => {
+  for (const item of params) {
     switch (item[0]) {
       case 'brand':
         state.brand = urlParseBrand(item[1]);
@@ -51,7 +47,7 @@ export const urlGetState = (): FilterState | string => {
       default:
         break;
     }
-  });
+  }
   return state;
 };
 
