@@ -1,8 +1,11 @@
-import { STATE_MANAGER } from '../../..';
 import { FilterState } from '../../../domain/IState';
 import { Product } from '../../../domain/model';
 import { sourceData } from '../../../domain/source';
 
+const DEFAULT_STOCK_MINVALUE = 2;
+const DEFAULT_STOCK_MAXVALUE = 150;
+const DEFAULT_PRICE_MINVALUE = 10;
+const DEFAULT_PRICE_MAXVALUE = 1749;
 export class DualSlider {
   static priceChange: boolean;
   static stockChange: boolean;
@@ -106,17 +109,17 @@ export class DualSlider {
         }
       } else if (filteredData.length == sourceData.length) {
         if (DualSlider.priceChange) {
-          fromSliderPrice.value = String(10);
-          fromInputPrice.value = String(10);
-          toSliderPrice.value = String(1749);
-          toInputPrice.value = String(1749);
+          fromSliderPrice.value = String(DEFAULT_PRICE_MINVALUE);
+          fromInputPrice.value = String(DEFAULT_PRICE_MINVALUE);
+          toSliderPrice.value = String(DEFAULT_PRICE_MAXVALUE);
+          toInputPrice.value = String(DEFAULT_PRICE_MAXVALUE);
         }
       } else {
         if (DualSlider.priceChange) {
-          fromSliderPrice.value = String(10);
-          fromInputPrice.value = String(10);
-          toSliderPrice.value = String(1749);
-          toInputPrice.value = String(1749);
+          fromSliderPrice.value = String(DEFAULT_PRICE_MINVALUE);
+          fromInputPrice.value = String(DEFAULT_PRICE_MINVALUE);
+          toSliderPrice.value = String(DEFAULT_PRICE_MAXVALUE);
+          toInputPrice.value = String(DEFAULT_PRICE_MAXVALUE);
         }
       }
       this.controlToSlider(fromSliderPrice, toSliderPrice, toInputPrice);
@@ -145,10 +148,10 @@ export class DualSlider {
         }
       } else {
         if (DualSlider.stockChange) {
-          fromSliderStock.value = String(2);
-          toSliderStock.value = String(150);
-          fromInputStock.value = String(2);
-          toInputStock.value = String(150);
+          fromSliderStock.value = String(DEFAULT_STOCK_MINVALUE);
+          toSliderStock.value = String(DEFAULT_STOCK_MAXVALUE);
+          fromInputStock.value = String(DEFAULT_STOCK_MINVALUE);
+          toInputStock.value = String(DEFAULT_STOCK_MAXVALUE);
         }
       }
       this.controlFromSlider(fromSliderStock, toSliderStock, fromInputStock);
