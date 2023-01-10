@@ -37,5 +37,3 @@ export function filterBrandCategory(state: FilterState): Product[] {
   }
   return filterAllData;
 }
-
-export { filterByBrand };

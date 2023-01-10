@@ -1,7 +1,6 @@
 import { STATE_MANAGER } from '../..';
-import { IFilter } from '../../domain/iFilter';
 
-export class StockFilter implements IFilter {
+export class StockFilter {
   minStockInput: HTMLInputElement | null;
   maxStockInput: HTMLInputElement | null;
   minStockNumber: HTMLInputElement | null;
@@ -44,8 +43,5 @@ export class StockFilter implements IFilter {
     STATE_MANAGER.dispatchState({
       stock: stocks,
     });
-  }
-  resetFilter() {
-    console.log('сброс фильтра');
   }
 }

@@ -1,4 +1,4 @@
-import { APP_PAGES, BASKET_MANAGER, MODAL_WINDOW } from '../..';
+import { APP_PAGES, BASKET_MANAGER } from '../..';
 import { dispatchType, FilterState, PageEnum, SortType } from '../../domain/IState';
 import { sourceData } from '../../domain/source';
 import { DualSlider } from '../util/dualSlider/dualSlider';
@@ -26,7 +26,6 @@ export class StateManager {
     };
     this.events = [];
     this.loadStateFromUrl();
-    console.log(this.state);
   }
 
   public addCallback(callback: callback): void {
@@ -34,38 +33,32 @@ export class StateManager {
   }
 
   public loadStateFromUrl() {
-    const resultFromUrl = urlGetState(); // static method, no need create object of class
-    if (resultFromUrl === 'root') {
-      APP_PAGES.renderMain();
-      renderProducts(sourceData);
-      return;
-    }
-    if (resultFromUrl === 'basket') {
-      /*this.setState({
-        page: PageEnum.BasketPage,
-      });*/
-      APP_PAGES.renderBasket();
-      BASKET_MANAGER.updateDataHandler();
-      BASKET_MANAGER.listenerPromoInput();
-      return;
-    }
-    if (resultFromUrl === 'details') {
-      this.setState({
-        page: PageEnum.ProductDetailPage,
-      });
-      const query = window.location.pathname;
-      const temp = query.split('/');
-      const id = temp.pop();
-      APP_PAGES.renderProductDetails(id);
-      window.history.pushState({}, '', `/details/${id}`);
-      return;
-    }
-    if (resultFromUrl === '404') {
-      this.setState({
-        page: PageEnum.NotFound,
-      });
-      APP_PAGES.renderPage404();
-      return;
+    const resultFromUrl = urlGetState();
+    switch (resultFromUrl) {
+      case 'root':
+        APP_PAGES.renderMain();
+        renderProducts(sourceData);
+        break;
+      case 'basket':
+        APP_PAGES.renderBasket();
+        BASKET_MANAGER.updateDataHandler();
+        BASKET_MANAGER.listenerPromoInput();
+        break;
+      case 'details':
+        this.setState({
+          page: PageEnum.ProductDetailPage,
+        });
+        APP_PAGES.renderProductDetails(this.getDetailsUrl());
+        window.history.pushState({}, '', `/details/${this.getDetailsUrl()}`);
+        break;
+      case '404':
+        this.setState({
+          page: PageEnum.NotFound,
+        });
+        APP_PAGES.renderPage404();
+        break;
+      default:
+        break;
     }
     if (typeof resultFromUrl === 'object') {
       APP_PAGES.renderMain();
@@ -76,13 +69,17 @@ export class StateManager {
       renderProducts(sortedData);
     }
   }
-
+  private getDetailsUrl() {
+    const query = window.location.pathname;
+    const temp = query.split('/');
+    const id = temp.pop();
+    return id;
+  }
   private setState(newState: dispatchType) {
     this.state = { ...this.state, ...newState };
     this.stateChangedEventHandler();
   }
   private stateChangedEventHandler() {
-    console.log(this.state);
     DualSlider.setPriceValue(filterBrandCategory(this.state));
     DualSlider.setStockValue(filterBrandCategory(this.state));
     this.state = { ...this.state, ...DualSlider.getStateFromSliders() };
@@ -125,8 +122,5 @@ export class StateManager {
   }
   public getBasketState() {
     return 'basket state';
-  }
-  printFilterState() {
-    console.log(this.state);
   }
 }

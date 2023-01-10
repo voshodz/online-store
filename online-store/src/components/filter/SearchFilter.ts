@@ -1,8 +1,7 @@
 import { STATE_MANAGER } from '../..';
-import { IFilter } from '../../domain/iFilter';
 import { DualSlider } from '../util/dualSlider/dualSlider';
 
-export class SearchFilter implements IFilter {
+export class SearchFilter {
   searchInput: HTMLInputElement | null;
   search?: string;
   constructor() {
@@ -39,8 +38,5 @@ export class SearchFilter implements IFilter {
     STATE_MANAGER.dispatchState({
       search: search,
     });
-  }
-  resetFilter() {
-    console.log('сброс фильтра');
   }
 }

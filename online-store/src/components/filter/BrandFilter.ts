@@ -1,10 +1,9 @@
 import { STATE_MANAGER } from '../..';
-import { IFilter } from '../../domain/iFilter';
 import { BrandArray, BrandType } from '../../domain/model';
 import { DualSlider } from '../util/dualSlider/dualSlider';
 import { createCheckboxes, renderBrandCheckboxes } from '../views/render';
 
-export class BrandFilter implements IFilter {
+export class BrandFilter {
   checkboxArray: HTMLInputElement[];
   brandsArray: BrandType[];
   constructor() {
@@ -45,16 +44,11 @@ export class BrandFilter implements IFilter {
       const index = this.brandsArray.indexOf(value as BrandType);
       this.brandsArray.splice(index, 1);
     }
-    //console.log(this.brandsArray);
     this.dispatchState(this.brandsArray);
   }
-  //may be private, not sure
   public dispatchState(brands: BrandType[]) {
     STATE_MANAGER.dispatchState({
       brand: brands,
     });
-  }
-  resetFilter() {
-    console.log('сброс фильтра');
   }
 }

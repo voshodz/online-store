@@ -1,10 +1,9 @@
 import { STATE_MANAGER } from '../..';
-import { IFilter } from '../../domain/iFilter';
 import { CategoryArray, CategoriesType } from '../../domain/model';
 import { DualSlider } from '../util/dualSlider/dualSlider';
 import { createCheckboxes, renderCategoryCheckboxes } from '../views/render';
 
-export class CategoryFilter implements IFilter {
+export class CategoryFilter {
   checkboxArray: HTMLInputElement[];
   categoriesArray: CategoriesType[];
   constructor() {
@@ -45,7 +44,6 @@ export class CategoryFilter implements IFilter {
       const index = this.categoriesArray.indexOf(value as CategoriesType);
       this.categoriesArray.splice(index, 1);
     }
-    console.log(this.categoriesArray);
     this.dispatchState(this.categoriesArray);
   }
 
@@ -53,8 +51,5 @@ export class CategoryFilter implements IFilter {
     STATE_MANAGER.dispatchState({
       category: categories,
     });
-  }
-  resetFilter() {
-    console.log('сброс фильтра');
   }
 }

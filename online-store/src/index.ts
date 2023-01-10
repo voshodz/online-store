@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import '../src/styles/index.scss';
@@ -25,7 +26,6 @@ export const STATE_MANAGER = new StateManager();
 export const MODAL_WINDOW = new Modal();
 
 if (localStorage.getItem('modal') === 'on') {
-  console.log(MODAL_WINDOW);
   MODAL_WINDOW.showModal();
   localStorage.setItem('modal', 'off');
 }
@@ -63,7 +63,6 @@ if (resetBtn && copyBtn && filterBtn && closeBtn) {
       stock: [2, 150],
     });
     location.reload();
-    console.log(location);
   });
   copyBtn.addEventListener('click', () => {
     copyBtn.textContent = 'Copied';

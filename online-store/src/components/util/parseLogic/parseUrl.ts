@@ -21,14 +21,9 @@ export const urlGetState = (): FilterState | string => {
     return 'details';
   }
   const params = new URLSearchParams(window.location.search);
-  const arr: Array<string[]> = [];
-  for (const p of params) {
-    arr.push(p);
-  }
-  arr.forEach((item) => {
+  for (const item of params) {
     switch (item[0]) {
       case 'brand':
-        console.log('brand');
         state.brand = urlParseBrand(item[1]);
         break;
       case 'category':
@@ -52,7 +47,7 @@ export const urlGetState = (): FilterState | string => {
       default:
         break;
     }
-  });
+  }
   return state;
 };
 
@@ -104,10 +99,8 @@ const getIndexOfCategory = (param: string): number => {
 const urlParsePrice = (query: string): [number, number] => {
   const price = query.split(' ');
   let result: [number, number] = [0, 2000];
-  const min = Number(price[0]);
-  const max = Number(price[1]);
-  if (typeof min === 'number' && typeof max === 'number') {
-    result = [min, max];
+  if (price[0].match('^[0-9]+$') && price[1].match('^[0-9]+$') && price[0] && price[1]) {
+    result = [+price[0], +price[1]];
   }
   return result;
 };
@@ -144,13 +137,7 @@ const urlParseSort = (query: string): SortType => {
 };
 
 const urlParseBigMode = (query: string): boolean => {
-  if (query === 'true') {
-    return true;
-  }
-  if (query === 'false') {
-    return false;
-  }
-  return false;
+  return query === 'true' ? true : false;
 };
 
 export const urlUpdateFromState = (state: FilterState) => {
@@ -180,13 +167,6 @@ export const urlUpdateFromState = (state: FilterState) => {
     return;
   }
   window.history.replaceState({}, '', '?' + urlQuery.slice(1, urlQuery.length));
-};
-
-const checkDefaultState = (state: FilterState): boolean => {
-  if (state.brand?.length === 0 && state.price && state.price[0] <= 10 && state.price[1] === 1749) {
-    return true;
-  }
-  return false;
 };
 
 const getQueryParamSort = (sort: SortType | undefined): string => {

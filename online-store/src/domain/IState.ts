@@ -19,7 +19,7 @@ export interface FilterState {
   brand?: BrandType[];
   price?: [number, number];
   stock?: [number, number];
-  sort?: SortType; //воскликацетельный знак везде потому что фильтры будут отправлять только часть поля
+  sort?: SortType;
   search?: string;
   big?: boolean;
   page?: PageEnum;
