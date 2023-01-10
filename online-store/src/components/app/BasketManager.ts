@@ -43,46 +43,49 @@ export class BasketManager {
   }
   private listenerInputLimit() {
     const limitInput: HTMLInputElement | null = document.querySelector('.basket__limit');
-    if (!limitInput) return;
-    limitInput.value = this.limit.toString();
-    limitInput.addEventListener('input', (e) => {
-      const currentInput = e.target as HTMLInputElement;
-      const limitValue = parseInt(currentInput.value);
-      if (limitValue < 1) {
-        limitInput.value = '1';
-      }
-      if (limitValue > this.basketData.length) {
-        limitInput.value = `${this.basketData.length}`;
-      }
-      this.limit = parseInt(limitInput.value);
-      this.renderBasketItems();
-      this.changeUrl();
-    });
+    if (limitInput) {
+      limitInput.value = this.limit.toString();
+      limitInput.addEventListener('input', (e) => {
+        const currentInput = e.target as HTMLInputElement;
+        const limitValue = parseInt(currentInput.value);
+        if (limitValue < 1) {
+          limitInput.value = '1';
+        }
+        if (limitValue > this.basketData.length) {
+          limitInput.value = `${this.basketData.length}`;
+        }
+        this.limit = parseInt(limitInput.value);
+        this.renderBasketItems();
+        this.changeUrl();
+      });
+    }
+
     const prevPage: HTMLInputElement | null = document.querySelector('.basket__prevpage');
     const nextPage: HTMLInputElement | null = document.querySelector('.basket__nextpage');
     const pageField: HTMLInputElement | null = document.querySelector('.basket__page');
-    if (!prevPage || !nextPage || !pageField) return;
-    pageField.innerHTML = '';
-    pageField.innerHTML = this.page.toString();
-    prevPage.addEventListener('click', () => {
-      if (this.page > 1) {
-        pageField.innerHTML = '';
-        this.page -= 1;
-        pageField.innerHTML += this.page;
-        this.renderBasketItems();
-        this.changeUrl();
-      }
-    });
-    nextPage.addEventListener('click', () => {
-      const totalPages = this.getTotalPages(this.basketData.length, this.limit);
-      if (this.page < totalPages) {
-        pageField.innerHTML = '';
-        this.page += 1;
-        pageField.innerHTML += this.page;
-        this.renderBasketItems();
-        this.changeUrl();
-      }
-    });
+    if (prevPage && nextPage && pageField) {
+      pageField.innerHTML = '';
+      pageField.innerHTML = this.page.toString();
+      prevPage.addEventListener('click', () => {
+        if (this.page > 1) {
+          pageField.innerHTML = '';
+          this.page -= 1;
+          pageField.innerHTML += this.page;
+          this.renderBasketItems();
+          this.changeUrl();
+        }
+      });
+      nextPage.addEventListener('click', () => {
+        const totalPages = this.getTotalPages(this.basketData.length, this.limit);
+        if (this.page < totalPages) {
+          pageField.innerHTML = '';
+          this.page += 1;
+          pageField.innerHTML += this.page;
+          this.renderBasketItems();
+          this.changeUrl();
+        }
+      });
+    }
   }
   private getPageAndLimitFromUrl(): [number, number] {
     const paramsString = window.location.href.slice(window.location.origin.length + 1);
@@ -138,35 +141,34 @@ export class BasketManager {
     }
     const promoInput: HTMLInputElement | null = document.querySelector('.basket__promo-input');
 
-    if (!promoInput) {
-      return;
-    }
-    promoInput.addEventListener('input', (e) => {
-      if (promoRS && promoTS) {
-        promoRS.classList.add('hidden');
-        promoTS.classList.add('hidden');
-      }
-      const target = e.target as HTMLInputElement;
-      const inputValue = target.value.toLowerCase();
-      if (inputValue === 'rs' || inputValue === 'ts') {
-        switch (inputValue) {
-          case 'rs':
-            if (promoRS) {
-              promoRS.classList.remove('hidden');
-              this.updateAppliedPromoView();
-            }
-            break;
-          case 'ts':
-            if (promoTS) {
-              promoTS.classList.remove('hidden');
-              this.updateAppliedPromoView();
-            }
-            break;
-          default:
-            break;
+    if (promoInput) {
+      promoInput.addEventListener('input', (e) => {
+        if (promoRS && promoTS) {
+          promoRS.classList.add('hidden');
+          promoTS.classList.add('hidden');
         }
-      }
-    });
+        const target = e.target as HTMLInputElement;
+        const inputValue = target.value.toLowerCase();
+        if (inputValue === 'rs' || inputValue === 'ts') {
+          switch (inputValue) {
+            case 'rs':
+              if (promoRS) {
+                promoRS.classList.remove('hidden');
+                this.updateAppliedPromoView();
+              }
+              break;
+            case 'ts':
+              if (promoTS) {
+                promoTS.classList.remove('hidden');
+                this.updateAppliedPromoView();
+              }
+              break;
+            default:
+              break;
+          }
+        }
+      });
+    }
   }
   private getTotalProductsAndPrice(): [number, number] {
     let price = 0;
@@ -212,16 +214,13 @@ export class BasketManager {
   private updateAppliedPromoView() {
     const promoPrice: HTMLElement | null = document.querySelector('.basket__promo-price');
     const promoTotalPrice: HTMLElement | null = document.querySelector('.basket__total-price');
-    if (!promoTotalPrice) {
-      return;
-    }
     if (promoPrice) {
       const discountPrice = (this.getTotalProductsAndPrice()[1] * this.getDiscount()).toFixed(2);
       promoPrice.innerHTML = `Total : ${discountPrice}$`;
     }
 
     const promoApplied: HTMLElement | null = document.querySelector('.basket__promo-applied');
-    if (promoApplied) {
+    if (promoApplied && promoTotalPrice) {
       promoApplied.innerHTML = '';
       promoTotalPrice.classList.remove('basket__old-price');
       const rsCheckbox = document.querySelector('.basket__promo-rs') as HTMLInputElement;
@@ -268,9 +267,10 @@ export class BasketManager {
   private renderBasketItems() {
     if (this.basketData.length === 0) {
       const basketWrapper = document.querySelector('.basket__wrapper');
-      if (!basketWrapper) return;
-      basketWrapper.innerHTML = `<div style="margin-top: 100px;font-size: 48px;">Корзина пуста</div>`;
-      return;
+      if (basketWrapper) {
+        basketWrapper.innerHTML = `<div style="margin-top: 100px;font-size: 48px;">Корзина пуста</div>`;
+        return;
+      }
     }
 
     const dataCurrentPage = this.getPaginatedData(this.basketData);
@@ -422,9 +422,6 @@ export class BasketManager {
     this.updateHeaderView();
   }
   public hasProduct(id: number): boolean {
-    if (this.basketData.filter((el) => el.id === id).length > 0) {
-      return true;
-    }
-    return false;
+    return this.basketData.filter((el) => el.id === id).length > 0 ? true : false;
   }
 }
