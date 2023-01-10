@@ -41,117 +41,119 @@ export default class Modal {
     this.modalCardInput = document.querySelector('.modal__cardnumber');
     this.modalCardDueDate = document.querySelector('.modal__duedate');
     this.modalCardCVV = document.querySelector('.modal__cvv');
+    this.listenersToInputs();
+  }
+  private listenersToInputs() {
     if (
-      !this.modalWindow ||
-      !this.modalContent ||
-      !this.modalName ||
-      !this.modalPhone ||
-      !this.modalAdress ||
-      !this.modalEmail ||
-      !this.modalConfirmBtn ||
-      !this.modalCardInput ||
-      !this.modalCardDueDate ||
-      !this.modalCardCVV
+      this.modalWindow &&
+      this.modalContent &&
+      this.modalName &&
+      this.modalPhone &&
+      this.modalAdress &&
+      this.modalEmail &&
+      this.modalConfirmBtn &&
+      this.modalCardInput &&
+      this.modalCardDueDate &&
+      this.modalCardCVV
     ) {
-      return;
-    }
-    this.modalWindow.addEventListener('click', () => {
-      if (!this.modalWindow || !this.modalContent) {
-        return;
-      }
-      this.modalWindow.classList.remove('active');
-      this.modalContent.classList.remove('active');
-    });
-    this.modalContent.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-    this.modalName.addEventListener('input', (e) => {
-      const inputElement = e.target as HTMLInputElement;
-      this.validateName(inputElement.value);
-    });
-    this.modalPhone.addEventListener('input', (e) => {
-      const inputElement = e.target as HTMLInputElement;
-      this.validatePhone(inputElement.value);
-    });
-    this.modalAdress.addEventListener('input', (e) => {
-      const inputElement = e.target as HTMLInputElement;
-      this.validateAddress(inputElement.value);
-    });
-    this.modalEmail.addEventListener('input', (e) => {
-      const inputElement = e.target as HTMLInputElement;
-      this.validateEmail(inputElement.value);
-    });
-    this.modalConfirmBtn.addEventListener('click', () => {
-      this.confirmForm();
-    });
-    this.modalCardInput.addEventListener('input', (e: Event) => {
-      if (!this.modalCardInput) {
-        return;
-      }
-      const event: InputEvent = e as InputEvent;
-      const inputElement = e.target as HTMLInputElement;
-      const inputString = inputElement.value;
-      this.validateCardNumber(inputString);
-      const lastChar = inputString.length - 1;
-      if (inputString[lastChar] && !inputString[lastChar].match('^[0-9]+$')) {
-        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
-        this.validateCardNumber(inputElement.value);
-        return;
-      }
-      if (inputString.length === 20) {
-        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
-        this.validateCardNumber(inputElement.value);
-        return;
-      }
-      if (event.inputType !== 'deleteContentBackward') {
-        if (inputString.length == 5 || inputString.length == 10 || inputString.length == 15) {
-          inputElement.value = inputString.slice(0, lastChar) + ' ' + inputString[lastChar];
+      this.modalWindow.addEventListener('click', () => {
+        if (!this.modalWindow || !this.modalContent) {
+          return;
         }
-      }
-      this.validateCardNumber(inputElement.value);
-    });
-    this.modalCardDueDate.addEventListener('input', (e) => {
-      if (!this.modalCardDueDate) {
-        return;
-      }
-      const inputElement = e.target as HTMLInputElement;
-      const inputString = inputElement.value;
-      this.stateDueDateField = inputString;
-      this.validateExpirationDate(inputString);
-      if (inputString.length === 6) {
-        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+        this.modalWindow.classList.remove('active');
+        this.modalContent.classList.remove('active');
+      });
+      this.modalContent.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+      this.modalName.addEventListener('input', (e) => {
+        const inputElement = e.target as HTMLInputElement;
+        this.validateName(inputElement.value);
+      });
+      this.modalPhone.addEventListener('input', (e) => {
+        const inputElement = e.target as HTMLInputElement;
+        this.validatePhone(inputElement.value);
+      });
+      this.modalAdress.addEventListener('input', (e) => {
+        const inputElement = e.target as HTMLInputElement;
+        this.validateAddress(inputElement.value);
+      });
+      this.modalEmail.addEventListener('input', (e) => {
+        const inputElement = e.target as HTMLInputElement;
+        this.validateEmail(inputElement.value);
+      });
+      this.modalConfirmBtn.addEventListener('click', () => {
+        this.confirmForm();
+      });
+      this.modalCardInput.addEventListener('input', (e: Event) => {
+        if (!this.modalCardInput) {
+          return;
+        }
+        const event: InputEvent = e as InputEvent;
+        const inputElement = e.target as HTMLInputElement;
+        const inputString = inputElement.value;
+        this.validateCardNumber(inputString);
+        const lastChar = inputString.length - 1;
+        if (inputString[lastChar] && !inputString[lastChar].match('^[0-9]+$')) {
+          inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+          this.validateCardNumber(inputElement.value);
+          return;
+        }
+        if (inputString.length === 20) {
+          inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+          this.validateCardNumber(inputElement.value);
+          return;
+        }
+        if (event.inputType !== 'deleteContentBackward') {
+          if (inputString.length == 5 || inputString.length == 10 || inputString.length == 15) {
+            inputElement.value = inputString.slice(0, lastChar) + ' ' + inputString[lastChar];
+          }
+        }
+        this.validateCardNumber(inputElement.value);
+      });
+      this.modalCardDueDate.addEventListener('input', (e) => {
+        if (!this.modalCardDueDate) {
+          return;
+        }
+        const inputElement = e.target as HTMLInputElement;
+        const inputString = inputElement.value;
+        this.stateDueDateField = inputString;
+        this.validateExpirationDate(inputString);
+        if (inputString.length === 6) {
+          inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+          this.validateExpirationDate(inputElement.value);
+          return;
+        }
+        const lastChar = this.stateDueDateField.length - 1;
+        if (inputString[lastChar] && !inputString[lastChar].match('^[0-9]+$')) {
+          inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+          this.validateExpirationDate(inputElement.value);
+          return;
+        }
+        if (inputString.length === 2 && !inputString.includes('/')) {
+          inputElement.value += '/';
+        }
         this.validateExpirationDate(inputElement.value);
-        return;
-      }
-      const lastChar = this.stateDueDateField.length - 1;
-      if (inputString[lastChar] && !inputString[lastChar].match('^[0-9]+$')) {
-        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
-        this.validateExpirationDate(inputElement.value);
-        return;
-      }
-      if (inputString.length === 2 && !inputString.includes('/')) {
-        inputElement.value += '/';
-      }
-      this.validateExpirationDate(inputElement.value);
-    });
-    this.modalCardCVV.addEventListener('input', (e) => {
-      if (!this.modalCardCVV) {
-        return;
-      }
-      const inputElement = e.target as HTMLInputElement;
-      const inputString = inputElement.value;
-      this.validateCVV(inputElement.value);
-      if (inputString[inputString.length - 1] && !inputString[inputString.length - 1].match('^[0-9]+$')) {
-        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+      });
+      this.modalCardCVV.addEventListener('input', (e) => {
+        if (!this.modalCardCVV) {
+          return;
+        }
+        const inputElement = e.target as HTMLInputElement;
+        const inputString = inputElement.value;
         this.validateCVV(inputElement.value);
-        return;
-      }
-      if (inputString.length === 4) {
-        inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
-        this.validateCVV(inputElement.value);
-        return;
-      }
-    });
+        if (inputString[inputString.length - 1] && !inputString[inputString.length - 1].match('^[0-9]+$')) {
+          inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+          this.validateCVV(inputElement.value);
+          return;
+        }
+        if (inputString.length === 4) {
+          inputElement.value = inputElement.value.slice(0, inputElement.value.length - 1);
+          this.validateCVV(inputElement.value);
+          return;
+        }
+      });
+    }
   }
   private validateName(input: string) {
     if (!input) {
